@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Cadastrar Chamados</span></li>
+				</ul>
+			</div>
+			<a class="btn btn-primary btn-md" th:href="@{/chamados/listar}"
+				role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
+				aria-hidden="true"></span> <span>Listar Chamados</span>
+			</a>
+		</nav>
+
+		<div class="container" id="cadastro">
+
+			<div th:replace="fragments/alert"></div>
+
+			<form
+				th:action="${chamado.id == null} ? @{/chamados/salvar} : @{/chamados/editar}"
+				th:object="${chamado}" method="POST">
+
+				<div th:replace="fragments/validacao  :: validacao"></div>
+
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="abertura">Data Abertura</label> <input type="date"
+							class="form-control" id="abertura" placeholder="Data de abertura"
+							autofocus="autofocus" th:field="*{chDataAbertura}"
+							th:classappend="${#fields.hasErrors('chDataAbertura')} ? 'is-invalid'" />
+						<div class="invalid-feedback">
+							<span th:errors="*{chDataAbertura}"></span>
+						</div>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="fechamento">Data Fechamento</label> <input type="date"
+							class="form-control" id="fechamento"
+							placeholder="Data de fechamento" autofocus="autofocus"
+							th:field="*{chDataFechamento}"
+							th:classappend="${#fields.hasErrors('chDataFechamento')} ? 'is-invalid'" />
+						<div class="invalid-feedback">
+							<span th:errors="*{chDataFechamento}"></span>
+						</div>
+
+					</div>
+					<div class="form-group col-md-4">
+						<label for="setor">Nome do Setor</label> <select id="setor"
+							class="form-control" th:field="*{setor}"
+							th:classappend="${#fields.hasErrors('setor')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="s : ${setores}" th:value="${s.id}"
+								th:text="${s.setNome}">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{setor.setNome}"></span>
+						</div>
+					</div>
+					<div class="form-group col-md-1">
+						<a class="btn btn-primary btn-sm" th:href="@{/setores/cadastrar}"
+							role="button"> <span class="oi oi-plus" title="Cadastro"
+							aria-hidden="true"></span>
+						</a>
+					</div>
+				</div>
+				<div class="form-row">
+
+					<div class="form-group col-md-3">
+						<label for="tecnico">Nome do Técnico</label> <select id="tecnico"
+							class="form-control" th:field="*{tecnico}"
+							th:classappend="${#fields.hasErrors('tecnico')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="t: ${tecnicos}" th:value="${t.id}"
+								th:text="${t.tecNome}">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{tecnico.tecNome}"></span>
+						</div>
+					</div>
+					<div class="form-group col-md-1">
+						<a class="btn btn-primary btn-sm" th:href="@{/tecnicos/cadastrar}"
+							role="button"> <span class="oi oi-plus" title="Cadastro"
+							aria-hidden="true"></span>
+						</a>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="equipamento">Equipamento</label> <select
+							id="equipamento" class="form-control" th:field="*{equipamento}"
+							th:classappend="${#fields.hasErrors('equipamento')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="e: ${equipamentos}" th:value="${e.id}"
+								th:text="${e.eqDescricao}" selected="selected">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{equipamento.eqDescricao}"></span>
+						</div>
+					</div>
+					<div class="form-group col-md-1">
+						<a class="btn btn-primary btn-sm"
+							th:href="@{/equipamentos/cadastrar}" role="button"> <span
+							class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
+						</a>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="tipo">Tipo de Equipamento</label> <select id="tipo"
+							class="form-control" th:field="*{equipamento.tipo}"
+							th:classappend="${#fields.hasErrors('equipamento.tipo')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="t : ${eqTipos}" th:value="${t}"
+								th:text="${t.descricao}">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{equipamento.tipo}"></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					
+					<div class="form-group col-md-3">
+						<label for="modelo">Modelo</label> <input type="text"
+							class="form-control" id="modelo"
+							placeholder="Modelo do equipamento" autofocus="autofocus"
+							th:field="*{equipamento.eqModelo}"
+							th:classappend="${#fields.hasErrors('equipamento.eqModelo')} ? 'is-invalid'" />
+						<div class="invalid-feedback">
+							<span th:errors="*{equipamento.eqModelo}"></span>
+						</div>
+					</div>
+
+					<div class="form-group col-md-2">
+						<label for="seriebp">Patrimônio/Série</label> <input type="text"
+							class="form-control" id="seriebp"
+							placeholder="Patrimônio ou série do equipamento"
+							autofocus="autofocus" th:field="*{equipamento.eqSeriebp}"
+							th:classappend="${#fields.hasErrors('equipamento.eqSeriebp')} ? 'is-invalid'" />
+						<div class="invalid-feedback">
+							<span th:errors="*{equipamento.eqSeriebp}"></span>
+						</div>
+					</div>
+
+					<div class="form-group col-md-2">
+						<label for="ip">IP</label> <input type="text" class="form-control"
+							id="ip" placeholder="IP da máquina (000.000.000.000 )" data-mask="000.000.000.000"
+							autofocus="autofocus" th:field="*{chIp}"
+							th:classappend="${#fields.hasErrors('chIp')} ? 'is-invalid'" />
+						<div class="invalid-feedback">
+							<span th:errors="*{chIp}"></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="problema">Problema</label>
+						<textarea class="form-control" id="problema" rows="2"
+							placeholder="Descreva o problema" autofocus="autofocus"
+							th:field="*{chProblema}"
+							th:classappend="${#fields.hasErrors('chProblema')} ? 'is-invalid'"></textarea>
+						<div class="invalid-feedback">
+							<span th:errors="*{chProblema}"></span>
+						</div>
+					</div>
+					<div class="form-group col-md-4">
+						<label for="observacao">Observação</label>
+						<textarea class="form-control" id="observacao" rows="2"
+							placeholder="Descreva a observação" autofocus="autofocus"
+							th:field="*{chObservacao}"
+							th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
+						<div class="invalid-feedback">
+							<span th:errors="*{chObservacao}"></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="prioridade">Prioridade</label> <select id="prioridade"
+							class="form-control" th:field="*{chPrioridade}"
+							th:classappend="${#fields.hasErrors('chPrioridade')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="p : ${prioridades}" th:value="${p}"
+								th:text="${p.descricao}">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{chPrioridade}"></span>
+						</div>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="situacao">Situação</label> <select id="situacao"
+							class="form-control" th:field="*{chSituacao}"
+							th:classappend="${#fields.hasErrors('chSituacao')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="s : ${situacoes}" th:value="${s}"
+								th:text="${s.descricao}">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{chSituacao}"></span>
+						</div>
+					</div>
+				</div>
+
+				<input type="hidden" id="id" th:field="*{id}" />
+				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<nav class="sidebar sidebar-open" th:fragment="navbar">
+		<ul class="nav nav-pills">
+			<li class="nav-item"><a class="nav-link active" th:href="@{/chamados/painel}"> <i
+					class="oi oi-home"></i> <span>Home</span>
+			</a></li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown">
+			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="tablist" aria-orientation="vertical" aria-expanded="false">Solicitações</a>
+			 <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/chamados/cadastrar"> 
+			         <i class="oi oi-plus"></i> 
+			           <span>Cadastrar</span>
+			    </a>
+			    <a class="dropdown-item" href="/chamados/listar">
+					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
+			    </a>
+			 </div>
+			</li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown">
+			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="tablist" aria-orientation="vertical" aria-expanded="false">Equipamentos</a>
+			 <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/equipamentos/cadastrar"> 
+			         <i class="oi oi-plus"></i> 
+			           <span>Cadastrar</span>
+			    </a>
+			    <a class="dropdown-item" href="/equipamentos/listar">
+					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
+			    </a>
+			 </div>
+			</li>
+		</ul>
+
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown">
+			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Serviços</a>
+			 <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/servicos/cadastrar"> 
+			         <i class="oi oi-plus"></i> 
+			           <span>Cadastrar</span>
+			    </a>
+			    <a class="dropdown-item" href="/servicos/listar">
+					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
+			    </a>
+			 </div>
+			</li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown">
+			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Técnicos</a>
+			 <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/tecnicos/cadastrar"> 
+			         <i class="oi oi-plus"></i> 
+			           <span>Cadastrar</span>
+			    </a>
+			    <a class="dropdown-item" href="/tecnicos/listar">
+					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
+			    </a>
+			 </div>
+			</li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown">
+			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Usuários</a>
+			 <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/usuarios/cadastrar"> 
+			         <i class="oi oi-plus"></i> 
+			           <span>Cadastrar</span>
+			    </a>
+			    <a class="dropdown-item" href="/usuarios/listar">
+					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
+			    </a>
+			 </div>
+			</li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown">
+			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cargos</a>
+			 <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/cargos/cadastrar"> 
+			         <i class="oi oi-plus"></i> 
+			           <span>Cadastrar</span>
+			    </a>
+			    <a class="dropdown-item" href="/cargos/listar">
+					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
+			    </a>
+			 </div>
+			</li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown">
+			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Setor</a>
+			 <div class="dropdown-menu">
+			    <a class="dropdown-item" href="/setores/cadastrar"> 
+			         <i class="oi oi-plus"></i> 
+			           <span>Cadastrar</span>
+			    </a>
+			    <a class="dropdown-item" href="/setores/listar">
+					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
+			    </a>
+			 </div>
+			</li>
+		</ul>
+	</nav>
+</body>
+</html>
