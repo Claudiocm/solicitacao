@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.solicitacao.sv.dominio.Cargo;
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Equipamento;
 import com.solicitacao.sv.dominio.Prioridade;
@@ -28,6 +29,7 @@ import com.solicitacao.sv.dominio.Setor;
 import com.solicitacao.sv.dominio.Situacao;
 import com.solicitacao.sv.dominio.Tecnico;
 import com.solicitacao.sv.dominio.TipoEquipamento;
+import com.solicitacao.sv.service.CargoService;
 import com.solicitacao.sv.service.ChamadoService;
 import com.solicitacao.sv.service.EquipamentoService;
 import com.solicitacao.sv.service.ServicoService;
@@ -48,6 +50,8 @@ public class ChamadoController {
 	private TecnicoService tecService;
 	@Autowired
 	private SetorService setService;
+	@Autowired
+	private CargoService cargoService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -55,8 +59,13 @@ public class ChamadoController {
 	}
 
 	@GetMapping("/cadastrar")
-	public String cadastrar(Chamado Chamado) {
+	public String cadastrar(Chamado chamado) {
 		return "/chamado/cadastro";
+	}
+
+	@GetMapping("/adicionaTecnico")
+	public String adicionaTecnico(Chamado chamado) {
+		return "/chamado/modal";
 	}
 
 	@GetMapping("/listar")
@@ -65,9 +74,15 @@ public class ChamadoController {
 		return "/chamado/lista";
 	}
 
-	@GetMapping("/painel")
-	public String painel(ModelMap model) {
-		model.addAttribute("chamados", chService.buscarTodos());
+	@GetMapping("/buscarLista")
+	public String buscaLista(ModelMap model) {
+		model.addAttribute("chamados", chService.buscarLista());
+		return "/chamado/lista";
+	}
+
+	@GetMapping("/buscar")
+	public String busca(ModelMap model) {
+		model.addAttribute("chamados", chService.buscar());
 		return "/chamado/painel";
 	}
 
@@ -106,10 +121,16 @@ public class ChamadoController {
 		return listar(modelo);
 	}
 
-	@GetMapping("/buscar/numero")
+	@GetMapping("/buscar/{id}")
 	public String getPorNumero(@RequestParam("id") Long id, ModelMap model) {
 		model.addAttribute("chamados", chService.buscarPorNumero(id));
 		return "/chamado/lista";
+	}
+	
+	@GetMapping("/servicos/{id}")
+	public String getServico(@RequestParam("id") Long id, ModelMap model) {
+		model.addAttribute("chamados", serService.buscarServico(id));
+		return "/chamado/cadastro/servicos";
 	}
 
 	@GetMapping("/buscar/equipamento")
@@ -117,11 +138,11 @@ public class ChamadoController {
 		model.addAttribute("chamados", chService.buscarPorBpEquipamento(bp));
 		return "/chamado/lista";
 	}
-	
+
 	@GetMapping("/buscar/data")
 	public String getPorDatas(
-			@RequestParam("dataAbertura") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate abertura,
-			@RequestParam("dataFechamento") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechamento,
+			@RequestParam("chDataAbertura") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate abertura,
+			@RequestParam("chDataFechamento") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechamento,
 			ModelMap model) {
 
 		model.addAttribute("chamados", chService.buscarPorDatas(abertura, fechamento));
@@ -153,13 +174,19 @@ public class ChamadoController {
 		return setService.buscarTodos();
 	}
 
+	@ModelAttribute("cargos")
+	public List<Cargo> getCargo() {
+		return cargoService.buscarTodos();
+	}
+
 	@ModelAttribute("tecnicos")
 	public List<Tecnico> getTecnico() {
 		return tecService.buscarTodos();
 	}
 
-	@ModelAttribute("eqTipos")
-	public TipoEquipamento[] getEqTipos() {
+	@ModelAttribute("tipos")
+	public TipoEquipamento[] getTipos() {
 		return TipoEquipamento.values();
 	}
+
 }

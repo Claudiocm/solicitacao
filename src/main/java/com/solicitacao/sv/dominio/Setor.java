@@ -1,9 +1,10 @@
 package com.solicitacao.sv.dominio;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
@@ -19,12 +20,11 @@ public class Setor extends AbstractEntity<Long> {
 	@Size(min = 3, max = 60, message = "O nome do Setor deve ter entre {min} e {max} caracteres.")
     @Column(name = "set_nome", nullable = false, length = 60)
     private String setNome;
-    @JoinColumn(name = "id_usuario_fk", referencedColumnName = "id")
-	@ManyToOne
-    private Usuario usuario;
     @Digits(integer = 4, fraction = 0)
     @Column(name = "set_ramal")
     private Integer setRamal;
+    @OneToMany(mappedBy = "setor")
+	private List<Usuario> usuarios;
 
     public Setor() {
     }
@@ -45,13 +45,14 @@ public class Setor extends AbstractEntity<Long> {
 		this.setRamal = setRamal;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public List<Usuario> getUsuarios() {
+		return usuarios;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
-
 	
+	
+
 }

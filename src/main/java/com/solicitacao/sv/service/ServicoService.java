@@ -16,4 +16,8 @@ public interface ServicoService {
 	public List<Servico> buscarTodos();
 
 	public List<Servico> buscarPorNome(String nome);
+
+	public List<Servico> buscarPorIdEquipamento(Long id);
+
+	public List<Servico> buscarServico(Long id);
 }

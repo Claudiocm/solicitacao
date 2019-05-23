@@ -42,7 +42,7 @@ public class ServicoController {
 
 	@PostMapping("/salvar")
 	public String salvar(@Valid Servico ser, BindingResult result, RedirectAttributes attr) {
-		if(result.hasErrors()){
+		if (result.hasErrors()) {
 			return "/servico/cadastro";
 		}
 		servico.salvar(ser);
@@ -55,33 +55,32 @@ public class ServicoController {
 		modelo.addAttribute("servico", servico.buscarPorId(id));
 		return "/servico/cadastro";
 	}
-	
+
 	@PostMapping("/editar")
 	public String editar(@Valid Servico e, BindingResult result, RedirectAttributes attr) {
-		if(result.hasErrors()){
+		if (result.hasErrors()) {
 			return "/servico/cadastro";
 		}
 		servico.editar(e);
 		attr.addFlashAttribute("success", "Servico editado com sucesso!");
 		return "redirect:/servicos/cadastrar";
 	}
-	
+
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap modelo){
-		
+	public String excluir(@PathVariable("id") Long id, ModelMap modelo) {
+
 		servico.excluir(id);
-		modelo.addAttribute("success","Servico excluido com sucesso");
-	
+		modelo.addAttribute("success", "Servico excluido com sucesso");
+
 		return listar(modelo);
 	}
-	
+
 	@GetMapping("/buscar/nome")
-	public String getPorNome(@RequestParam("nome") String nome, ModelMap modelo){
-		modelo.addAttribute("servicos",servico.buscarPorNome(nome));		
+	public String getPorNome(@RequestParam("nome") String nome, ModelMap modelo) {
+		modelo.addAttribute("servicos", servico.buscarPorNome(nome));
 		return "/servico/lista";
 	}
-	
-	
+
 	@ModelAttribute("chamados")
 	public List<Chamado> getChamado() {
 		return chamado.buscarTodos();

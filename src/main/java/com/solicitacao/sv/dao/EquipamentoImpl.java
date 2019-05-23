@@ -24,4 +24,5 @@ public class EquipamentoImpl extends AbstractDao<Equipamento, Long> implements E
 		return createQuery("select e from Equipamento e where e.eq_seriebp = ?1 ", serie);
 	}
 
+
 }

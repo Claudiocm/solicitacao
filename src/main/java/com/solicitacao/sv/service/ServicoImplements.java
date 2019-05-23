@@ -47,4 +47,14 @@ public class ServicoImplements implements ServicoService {
 		return dao.buscarPorNome(nome);
 	}
 
+	@Override
+	public List<Servico> buscarPorIdEquipamento(Long id) {
+		return dao.buscarPorEquipamento(id);
+	}
+
+	@Override
+	public List<Servico> buscarServico(Long id) {
+		return dao.buscarServicoId(id);
+	}
+
 }

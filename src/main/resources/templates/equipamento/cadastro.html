@@ -6,7 +6,7 @@
 <body>
 
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="page-header">
+		<div class="panel-header">
 			<nav class="navbar navbar-expand-md navbar-top bg-light">
 				<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 					<ul class="navbar-nav">
@@ -24,7 +24,7 @@
 		<div class="container" id="cadastro">
 			<div th:replace="fragments/alert"></div>
 
-			<form
+			<form class="form-horizontal"
 				th:action="${equipamento.id == null} ? @{/equipamentos/salvar} : @{/equipamentos/editar}"
 				th:object="${equipamento}" method="POST">
 
@@ -77,9 +77,12 @@
 						</div>
 					</div>
 				</div>
+				
 				<input type="hidden" id="id" name="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 			</form>
+          
+			
 		</div>
 	</section>
 </body>

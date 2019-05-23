@@ -56,4 +56,5 @@ public class EquipamentoImplements implements EquipamentoService {
 		return dao.findBySerie(serie);
 	}
 
+
 }

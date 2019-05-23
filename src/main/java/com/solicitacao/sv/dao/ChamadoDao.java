@@ -27,4 +27,9 @@ public interface ChamadoDao {
 	List<Chamado> findByBp(String bp);
 
 	List<Chamado> findByNumber(Long id);
+
+	List<Chamado> buscaLista();
+	
+	List<Chamado> buscar();
+
 }

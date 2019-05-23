@@ -17,17 +17,18 @@
 				role="button"> <span class="oi oi-plus" title="Cadastro"
 				aria-hidden="true"></span> <span>Novo Chamado</span>
 			</a>
+
 		</nav>
 
 		<div class="container" id="painel">
 			<p>
 				<i class="oi oi-magnifying-glass"></i><span></span>
 				<button class="btn btn-primary" type="button" data-toggle="collapse"
-					data-target="#collapsePatrimonio" aria-controls="collapsePatrimonio">Patrimônio/Série
-				</button>
+					data-target="#collapsePatrimonio"
+					aria-controls="collapsePatrimonio">Patrimônio/Série</button>
 				<button class="btn btn-primary" type="button" data-toggle="collapse"
-					data-target="#collapseChamado" aria-controls="collapseChamado">Número do Chamado
-				</button>
+					data-target="#collapseChamado" aria-controls="collapseChamado">Número
+					do Chamado</button>
 				<button class="btn btn-primary" type="button" data-toggle="collapse"
 					data-target="#collapseData" aria-controls="collapseData">Datas
 				</button>
@@ -41,8 +42,8 @@
 								th:action="@{/chamados/buscar/equipamento}">
 								<input class="form-control mr-sm-2" type="text"
 									aria-label="Search" th:name="eqSeriebp" />
-								<button class="btn btn-outline-success my-2 my-sm-0">Pesquise
-									por Série</button>
+								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar
+									Série</button>
 							</form>
 						</nav>
 
@@ -55,11 +56,11 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								th:action="@{/chamados/buscar/numero}">
+								th:action="@{/chamados/buscar/id}">
 								<input class="form-control mr-sm-2" type="text"
 									aria-label="Search" th:name="id" />
-								<button class="btn btn-outline-success my-2 my-sm-0">Pesquise
-									por Número de chamado</button>
+								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar
+									Número</button>
 							</form>
 						</nav>
 
@@ -74,12 +75,11 @@
 							<form class="form-inline" method="GET"
 								th:action="@{/chamados/buscar/data}">
 								<input class="form-control mr-sm-2" type="date"
-									aria-label="Search" th:name="dataAbertura" /> 
-								<input
+									aria-label="Search" th:name="chDataAbertura" /> <input
 									class="form-control mr-sm-2" type="date" aria-label="Search"
-									th:name="dataFechamento" />
-								<button class="btn btn-outline-success my-2 my-sm-0">Pesquise
-									por Data</button>
+									th:name="chDataFechamento" />
+								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar
+									Data</button>
 							</form>
 						</nav>
 
@@ -98,7 +98,8 @@
 							<th>Nº</th>
 							<th>Data abertura</th>
 							<th>Setor</th>
-							<th>Equipamento</th>
+							<th>Equipamento/Série</th>
+							<th>Situação</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -107,19 +108,16 @@
 							<td
 								th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">2017/08/14</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
-							<td th:text="${c.equipamento.eqSeriebp}">Descrição</td>
-							<td th:text="${c.equipamento.eqModelo}">Equipamento</td>
-
-							<td colspan="2"><a class="btn btn-info btn-sm"
-								th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
+							<td><a><span
+									th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}"
+									th:href="@{/servicos/{id} (id=${c.id}) }"></span></a></td>
+							<td th:text="${c.chSituacao.descricao}">Situação</td>
+							<td colspan="2">
+							<a class="btn btn-info btn-sm" th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
 									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
 							</a>
-								<button
-									th:id="${#strings.concat('btn_chamados/excluir/', c.id) }"
-									type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-									data-target="#myModal">
-									<span class="oi oi-circle-x" title="Excluir" aria-hidden="true"></span>
-								</button></td>
+						
+							</td>
 						</tr>
 					</tbody>
 				</table>

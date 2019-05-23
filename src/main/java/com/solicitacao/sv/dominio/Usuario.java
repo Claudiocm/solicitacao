@@ -2,6 +2,8 @@ package com.solicitacao.sv.dominio;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -24,6 +26,9 @@ public class Usuario extends AbstractEntity<Long>{
 	@Size(min = 6, message = "A senha deve ter no mínimo {min} caracteres.")
 	@Column(name = "usu_senha")
 	private String usuSenha;
+	@JoinColumn(name="id_setor_fk")
+	@ManyToOne
+	private Setor setor;
 
 	public String getUsuNome() {
 		return usuNome;
@@ -48,5 +53,15 @@ public class Usuario extends AbstractEntity<Long>{
 	public void setUsuSenha(String usuSenha) {
 		this.usuSenha = usuSenha;
 	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
+	}
+	
+	
 
 }

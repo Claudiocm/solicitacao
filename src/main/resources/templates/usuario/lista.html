@@ -31,7 +31,7 @@
 					        <th>Nº</th>
 					        <th>Nome</th>
 					        <th>Login</th>
-					        <th>Senha</th>
+					        <th>Setor</th>
 					    </tr>
 					    </thead>
 					    <tbody>
@@ -39,7 +39,7 @@
 					         <td th:text="${u.id}">3</td>
 					         <td th:text="${u.usuNome}">Descrição</td>
 					         <td th:text="${u.usuLogin}">Modelo</td>
-					         <td th:text="${u.usuSenha}">Série</td>
+					         <td th:text="${u.setor.setNome}">Modelo</td>
 					         <td colspan="2">
 					             <a class="btn btn-info btn-sm" th:href="@{/usuarios/editar/{id} (id=${u.id}) }" role="button">
 					                 <span class="oi oi-brush" title="Editar" aria-hidden="true"></span>

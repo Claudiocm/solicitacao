@@ -16,9 +16,10 @@ public class Servico extends AbstractEntity<Long> {
 	@Size(min = 3, max = 60, message = "O nome do serviço deve ter entre {min} e {max} caracteres.")
 	@Column(name = "ser_nome", nullable = false, unique = true, length = 60)
 	private String serNome;
-	@JoinColumn(name = "id_chamado_fk", referencedColumnName = "id")
+	
+	@JoinColumn(name = "id_equipamento_fk")
 	@ManyToOne
-	private Chamado chamado;
+	private Equipamento equipamento;
 	
 	public Servico() {
 	}
@@ -31,13 +32,11 @@ public class Servico extends AbstractEntity<Long> {
 		this.serNome = serNome;
 	}
 
-	public Chamado getChamado() {
-		return chamado;
+	public Equipamento getEquipamento() {
+		return equipamento;
 	}
 
-	public void setChamado(Chamado chamado) {
-		this.chamado = chamado;
+	public void setEquipamento(Equipamento equipamento) {
+		this.equipamento = equipamento;
 	}
-
-	
 }

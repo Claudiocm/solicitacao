@@ -1,7 +1,6 @@
 package com.solicitacao.sv.dominio;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +8,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -52,19 +50,19 @@ public class Chamado extends AbstractEntity<Long>{
 	@JoinColumn(name="id_setor_fk", referencedColumnName = "id")
 	@ManyToOne
 	private Setor setor;
-	@Valid
+
 	@JoinColumn(name = "id_equipamento_fk", referencedColumnName = "id")
 	@ManyToOne
 	private Equipamento equipamento;
 	
-	@OneToMany(mappedBy = "chamado")
-	private List<Servico> servicos;
 	@Valid
 	@JoinColumn(name = "id_tecnico_fk", referencedColumnName = "id")
 	@ManyToOne
 	private Tecnico tecnico;
 
-	public LocalDate getSlDataAbertura() {
+
+	public LocalDate getChDataAbertura() {
+		chDataAbertura = LocalDate.now();
 		return chDataAbertura;
 	}
 
@@ -136,14 +134,6 @@ public class Chamado extends AbstractEntity<Long>{
 		this.equipamento = equipamento;
 	}
 
-	public List<Servico> getServicos() {
-		return servicos;
-	}
-
-	public void setServicos(List<Servico> servicos) {
-		this.servicos = servicos;
-	}
-
 	public Tecnico getTecnico() {
 		return tecnico;
 	}
@@ -152,13 +142,8 @@ public class Chamado extends AbstractEntity<Long>{
 		this.tecnico = tecnico;
 	}
 
-	public LocalDate getChDataAbertura() {
-		return chDataAbertura;
-	}
-
 	public void setChSituacao(Situacao chSituacao) {
 		this.chSituacao = chSituacao;
 	}
 
-	
 }

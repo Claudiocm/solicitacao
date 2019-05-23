@@ -27,14 +27,15 @@
 			<form
 				th:action="${usuario.id== null} ? @{/usuarios/salvar} : @{/usuarios/editar}"
 				th:object="${usuario}" method="POST">
-				
+
 				<div th:replace="fragments/validacao  :: validacao"></div>
-				
+
 				<div class="form-row">
 					<div class="form-group col-md-8">
 						<label for="nome">Nome</label> <input type="text"
 							class="form-control" id="nome" placeholder="Nome do usuário"
-							autofocus="autofocus" th:field="*{usuNome}" th:classappend="${#fields.hasErrors('usuNome')} ? 'is-invalid'"/>
+							autofocus="autofocus" th:field="*{usuNome}"
+							th:classappend="${#fields.hasErrors('usuNome')} ? 'is-invalid'" />
 						<div class="invalid-feedback"></div>
 					</div>
 				</div>
@@ -42,19 +43,30 @@
 					<div class="form-group col-md-4">
 						<label for="login">Login</label> <input type="text"
 							class="form-control" id="login" placeholder="Login"
-							autofocus="autofocus" th:field="*{usuLogin}" th:classappend="${#fields.hasErrors('usuLogin')} ? 'is-invalid'"/>
+							autofocus="autofocus" th:field="*{usuLogin}"
+							th:classappend="${#fields.hasErrors('usuLogin')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
 							</span>
 						</div>
 					</div>
 					<div class="form-group col-md-4">
-						<label for="senha">Senha</label> <input type="text"
+						<label for="senha">Senha</label> <input type="password"
 							class="form-control" id="senha" placeholder="Senha"
-							autofocus="autofocus" th:field="*{usuSenha}" th:classappend="${#fields.hasErrors('usuSenha')} ? 'is-invalid'"/>
+							autofocus="autofocus" th:field="*{usuSenha}"
+							th:classappend="${#fields.hasErrors('usuSenha')} ? 'is-invalid'" />
 						<div class="invalid-feedback"></div>
 					</div>
 				</div>
-
+				<div class="form-row">
+					<div class="form-group col-md-4">
+					<label for="setor">Setor</label>
+					<select id="setor" class="form-control" th:field="*{setor}"  th:classappend="${#fields.hasErrors('setor')} ? 'is-invalid'">
+	                            <option value="">Selecione</option>
+	                            <option th:each="s : ${setores}" 
+	                                    th:value="${s.id}" th:text="${s.setNome}">Administração</option>
+	                        </select>
+					</div>
+				</div>
 				<input type="hidden" id="id" name="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 			</form>

@@ -6,7 +6,7 @@
 <body>
 	<nav class="sidebar sidebar-open" th:fragment="navbar">
 		<ul class="nav nav-pills">
-			<li class="nav-item"><a class="nav-link active" th:href="@{/chamados/painel}"> <i
+			<li class="nav-item"><a class="nav-link active" th:href="@{/chamados/buscar}"> <i
 					class="oi oi-home"></i> <span>Home</span>
 			</a></li>
 		</ul>
@@ -18,7 +18,7 @@
 			         <i class="oi oi-plus"></i> 
 			           <span>Cadastrar</span>
 			    </a>
-			    <a class="dropdown-item" href="/chamados/listar">
+			    <a class="dropdown-item" th:href="@{/chamados/buscarLista}">
 					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
 			    </a>
 			 </div>
@@ -32,6 +32,7 @@
 			         <i class="oi oi-plus"></i> 
 			           <span>Cadastrar</span>
 			    </a>
+			   
 			    <a class="dropdown-item" href="/equipamentos/listar">
 					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
 			    </a>

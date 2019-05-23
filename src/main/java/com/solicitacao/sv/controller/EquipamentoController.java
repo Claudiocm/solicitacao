@@ -27,10 +27,10 @@ import com.solicitacao.sv.service.ServicoService;
 public class EquipamentoController {
 
 	@Autowired
-	private EquipamentoService servico;
+	private EquipamentoService equipamentoService;
 	@Autowired
-	private ServicoService serv;
-	
+	private ServicoService servicoService;
+
 	@GetMapping("/cadastrar")
 	public String cadastrar(Equipamento equipamento) {
 		return "/equipamento/cadastro";
@@ -38,7 +38,7 @@ public class EquipamentoController {
 
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("equipamentos", servico.buscarTodos());
+		model.addAttribute("equipamentos", equipamentoService.buscarTodos());
 		return "/equipamento/lista";
 	}
 
@@ -48,14 +48,14 @@ public class EquipamentoController {
 			return "/equipamento/cadastro";
 		}
 
-		servico.salvar(equipamento);
+		equipamentoService.salvar(equipamento);
 		attr.addAttribute("success", "Equipamento inserido com sucesso!");
 		return "redirect:/equipamentos/cadastrar";
 	}
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap modelo) {
-		modelo.addAttribute("equipamento", servico.buscarPorId(id));
+		modelo.addAttribute("equipamento", equipamentoService.buscarPorId(id));
 		return "/equipamento/cadastro";
 	}
 
@@ -65,7 +65,7 @@ public class EquipamentoController {
 			return "/equipamento/cadastro";
 		}
 
-		servico.editar(equipamento);
+		equipamentoService.editar(equipamento);
 		attr.addFlashAttribute("success", "Equipamento editado com sucesso!");
 		return "redirect:/equipamentos/cadastrar";
 	}
@@ -73,7 +73,7 @@ public class EquipamentoController {
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap modelo) {
 
-		servico.excluir(id);
+		equipamentoService.excluir(id);
 		modelo.addAttribute("success", "Equipamento excluido com sucesso");
 
 		return listar(modelo);
@@ -81,13 +81,13 @@ public class EquipamentoController {
 
 	@GetMapping("/buscar/descricao")
 	public String getPorDescricao(@RequestParam("descricao") String descricao, ModelMap modelo) {
-		modelo.addAttribute("equipamentos", servico.buscarPorDescricao(descricao));
+		modelo.addAttribute("equipamentos", equipamentoService.buscarPorDescricao(descricao));
 		return "/equipamento/lista";
 	}
-
+	
 	@GetMapping("/buscar/serie")
 	public String getPorSerie(@RequestParam("eqSeriebp") String serie, ModelMap modelo) {
-		modelo.addAttribute("equipamentos", servico.buscarPorSerie(serie));
+		modelo.addAttribute("equipamentos", equipamentoService.buscarPorSerie(serie));
 		return "/equipamento/lista";
 	}
 
@@ -98,6 +98,6 @@ public class EquipamentoController {
 
 	@ModelAttribute("servicos")
 	private List<Servico> getServico() {
-		return serv.buscarTodos();
+		return servicoService.buscarTodos();
 	}
 }

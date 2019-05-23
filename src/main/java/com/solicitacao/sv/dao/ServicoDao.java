@@ -16,4 +16,8 @@ public interface ServicoDao {
 	List<Servico> findAll();
 
 	List<Servico> buscarPorNome(String nome);
+
+	List<Servico> buscarPorEquipamento(Long id);
+
+	List<Servico> buscarServicoId(Long id);
 }

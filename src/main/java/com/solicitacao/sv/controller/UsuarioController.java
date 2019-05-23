@@ -1,5 +1,7 @@
 package com.solicitacao.sv.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.solicitacao.sv.dominio.Setor;
 import com.solicitacao.sv.dominio.Usuario;
+import com.solicitacao.sv.service.SetorService;
 import com.solicitacao.sv.service.UsuarioService;
 
 @Controller
@@ -21,6 +26,8 @@ import com.solicitacao.sv.service.UsuarioService;
 public class UsuarioController {
 	@Autowired
 	private UsuarioService servico;
+	@Autowired
+	private SetorService setService;
 	
 	@GetMapping("/cadastrar")
 	public String cadastrar(Usuario usuario) {
@@ -80,5 +87,8 @@ public class UsuarioController {
 		return "/usuario/lista";
 	}
 	
-	
+	@ModelAttribute("setores")
+	public List<Setor> getSetor() {
+		return setService.buscarTodos();
+	}
 }

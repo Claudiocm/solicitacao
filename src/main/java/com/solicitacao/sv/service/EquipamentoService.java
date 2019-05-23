@@ -18,5 +18,4 @@ public interface EquipamentoService {
 	public List<Equipamento> buscarPorDescricao(String descricao);
 
 	public List<Equipamento>  buscarPorSerie(String serie);
-
 }
