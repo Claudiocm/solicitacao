@@ -32,6 +32,7 @@
 
 				<div class="form-row">
 					<div class="form-group col-md-8">
+
 						<label for="descricao">Descrição/Nome</label> <input type="text"
 							class="form-control" id="descricao"
 							placeholder="Descrição do equipamento" autofocus="autofocus"
@@ -40,6 +41,7 @@
 						<div class="invalid-feedback">
 							<span th:errors="*{eqDescricao}"></span>
 						</div>
+
 					</div>
 				</div>
 				<div class="form-row">
@@ -65,7 +67,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-row">
+				<div class="form-row" >
 					<div class="form-group col-md-4">
 						<label for="serie">Série/Patrimônio</label> <input type="text"
 							class="form-control" id="serie" placeholder="Série/Patrimônio"
@@ -77,11 +79,10 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<input type="hidden" id="id" name="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 			</form>
-          
 			
 		</div>
 	</section>

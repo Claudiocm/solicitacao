@@ -1,19 +1,21 @@
 package com.solicitacao.sv.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.solicitacao.sv.dao.ServicoDao;
+import com.solicitacao.sv.dominio.Equipamento;
 import com.solicitacao.sv.dominio.Servico;
+import com.solicitacao.sv.repository.ServicoRepository;
 
 @Service
 @Transactional(readOnly = false)
 public class ServicoImplements implements ServicoService {
 	@Autowired
-	private ServicoDao dao;
+	private ServicoRepository dao;
 
 	@Override
 	public void salvar(Servico servico) {
@@ -22,18 +24,23 @@ public class ServicoImplements implements ServicoService {
 
 	@Override
 	public void editar(Servico servico) {
-		dao.update(servico);
+		Servico s = dao.findById(servico.getId()).get();
+		s.setId(servico.getId());
+		s.setSerNome(servico.getSerNome());
+		s.setEquipamento(servico.getEquipamento());
+
 	}
 
 	@Override
 	public void excluir(Long id) {
-		dao.delete(id);
+		dao.deleteById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Servico buscarPorId(Long id) {
-		return dao.findById(id);
+		Optional<Servico> serv = dao.findById(id);
+		return serv.orElse(null);
 	}
 
 	@Override
@@ -55,6 +62,11 @@ public class ServicoImplements implements ServicoService {
 	@Override
 	public List<Servico> buscarServico(Long id) {
 		return dao.buscarServicoId(id);
+	}
+
+	@Override
+	public Iterable<Servico> buscarPorIdEquipamento(Equipamento e) {
+		return dao.findByEquipamento(e);
 	}
 
 }

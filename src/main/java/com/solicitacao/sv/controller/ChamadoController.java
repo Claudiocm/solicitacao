@@ -63,14 +63,13 @@ public class ChamadoController {
 		return "/chamado/cadastro";
 	}
 
-	@GetMapping("/adicionaTecnico")
-	public String adicionaTecnico(Chamado chamado) {
-		return "/chamado/modal";
-	}
-
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("chamados", chService.buscarTodos());
+		List<Chamado> c = chService.buscarTodos();
+		for (Chamado ch : c) {
+			ch.setEquipamento(ch.getEquipamento());
+			model.addAttribute("chamados", chService.buscarTodos());
+		}
 		return "/chamado/lista";
 	}
 
@@ -98,7 +97,8 @@ public class ChamadoController {
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap modelo) {
-		modelo.addAttribute("chamado", chService.buscarPorId(id));
+		Chamado chamado = chService.buscarPorId(id);
+		modelo.addAttribute("chamado", chamado);
 		return "/chamado/cadastro";
 	}
 
@@ -125,12 +125,6 @@ public class ChamadoController {
 	public String getPorNumero(@RequestParam("id") Long id, ModelMap model) {
 		model.addAttribute("chamados", chService.buscarPorNumero(id));
 		return "/chamado/lista";
-	}
-	
-	@GetMapping("/servicos/{id}")
-	public String getServico(@RequestParam("id") Long id, ModelMap model) {
-		model.addAttribute("chamados", serService.buscarServico(id));
-		return "/chamado/cadastro/servicos";
 	}
 
 	@GetMapping("/buscar/equipamento")

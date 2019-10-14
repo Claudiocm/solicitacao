@@ -10,35 +10,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.solicitacao.sv.dao.ChamadoDao;
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Servico;
+import com.solicitacao.sv.repository.ChamadoRepository;
 
 @Service
 @Transactional(readOnly = false)
 public class ChamadoImplements implements ChamadoService {
 	@Autowired
-	private ChamadoDao dao;
+	private ChamadoRepository dao;
 
 	@Override
-	public void salvar(Chamado Chamado) {
-		dao.save(Chamado);
+	public void salvar(Chamado chamado) {
+		dao.save(chamado);
 	}
 
 	@Override
-	public void editar(Chamado Chamado) {
-		dao.update(Chamado);
+	public void editar(Chamado chamado) {
+		Chamado chama = dao.findById(chamado.getId()).get();
+		
+		chama.setChDataAbertura(chamado.getChDataAbertura());
+		chama.setChDataFechamento(chamado.getChDataFechamento());
+		chama.setChIp(chamado.getChIp());
+		chama.setChObservacao(chamado.getChObservacao());
+		chama.setChPrioridade(chamado.getChPrioridade());
+		chama.setChSituacao(chamado.getChSituacao());
+		chama.setChProblema(chamado.getChProblema());
+		if(chamado != null){
+		  chama.setEquipamento(chamado.getEquipamento());
+		}
+		chama.setSetor(chamado.getSetor());
+		chama.setTecnico(chamado.getTecnico());
 	}
 
 	@Override
 	public void excluir(Long id) {
-		dao.delete(id);
+		dao.deleteById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Chamado buscarPorId(Long id) {
-		return dao.findById(id);
+		return dao.findById(id).get();
 	}
 
 	@Override
@@ -58,11 +71,6 @@ public class ChamadoImplements implements ChamadoService {
 		} else {
 			return new ArrayList<>();
 		}
-	}
-
-	@Override
-	public List<Chamado> buscarPorServico(Long id) {
-		return dao.findByServico(id);
 	}
 
 	@Override
@@ -89,6 +97,5 @@ public class ChamadoImplements implements ChamadoService {
 	public List<Chamado> buscarLista() {
 		return dao.buscaLista();
 	}
-
 
 }

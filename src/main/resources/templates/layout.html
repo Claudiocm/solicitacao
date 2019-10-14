@@ -71,26 +71,19 @@
 			})
 		});
 	</script>
-	<!-- <script type="text/javascript">
-		$(document).ready(function() {
-			$('servico').onSelect('submit', function(event) {
-				event.preventDefault();
-				if ($('#servico').val() != '') {
-					var form_data = $(this.serializable);
-					$.ajax({
-						url : "/chamado/cadastro",
-						method : "POST",
-						data : form_data,
-						success : function(data) {
-							console.log(data);
-						}
-					})
-				} else {
-					alert("Por favor selecione um servico!");
-					return false;
-				}
-			})
-		})
-	</script> -->
+	<script type="text/javascript">
+		function inserir() {
+			if ($('#servico').val() != '') {
+				var e = document.getElementById("servico");
+				var itemSelecionado = e.options[e.selectIndex].value
+
+				document.getElementByName('tabServico').value = itemSelecionado;
+			} else {
+				alert("Por favor selecione um servico!");
+				return false;
+			}
+		}
+		
+	</script>
 </body>
 </html>

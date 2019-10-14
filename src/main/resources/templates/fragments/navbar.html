@@ -6,110 +6,113 @@
 <body>
 	<nav class="sidebar sidebar-open" th:fragment="navbar">
 		<ul class="nav nav-pills">
-			<li class="nav-item"><a class="nav-link active" th:href="@{/chamados/buscar}"> <i
-					class="oi oi-home"></i> <span>Home</span>
+			<li class="nav-item"><a class="nav-link active" th:href="@{/chamados/buscar}">
+					<i class="oi oi-home"></i> <span>Home</span>
 			</a></li>
 		</ul>
 		<ul class="nav nav-pills">
-			<li class="nav-item dropdown">
-			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="tablist" aria-orientation="vertical" aria-expanded="false">Solicitações</a>
-			 <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/chamados/cadastrar"> 
-			         <i class="oi oi-plus"></i> 
-			           <span>Cadastrar</span>
-			    </a>
-			    <a class="dropdown-item" th:href="@{/chamados/buscarLista}">
-					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
-			    </a>
-			 </div>
+			<li class="nav-item dropdown"
+				sec:authorize="hasAnyAuthority('ADMIN','TECNICOS')"><a
+				class="nav-link active dropdown-toggle" data-toggle="dropdown"
+				href="#" role="tablist" aria-orientation="vertical"
+				aria-expanded="false"><i class="oi oi-phone"></i> Solicitações</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/chamados/cadastrar"> <i
+						class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a> <a class="dropdown-item" th:href="@{/chamados/buscarLista}"> <i
+						class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a>
+				</div></li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown"
+				sec:authorize="hasAnyAuthority('ADMIN','TECNICOS')"><a
+				class="nav-link active dropdown-toggle" data-toggle="dropdown"
+				href="#" role="tablist" aria-orientation="vertical"
+				aria-expanded="false"><i class="oi oi-wrench"></i> Equipamentos</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/equipamentos/cadastrar"> <i
+						class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a> <a class="dropdown-item" href="/equipamentos/listar"> <i
+						class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a>
+				</div></li>
+		</ul>
+
+		<ul class="nav nav-pills"
+			sec:authorize="hasAnyAuthority('ADMIN','TECNICOS')">
+			<li class="nav-item dropdown"><a
+				class="nav-link active dropdown-toggle" data-toggle="dropdown"
+				href="#" role="button" aria-haspopup="true" aria-expanded="false"><i
+					class="oi oi-cog"></i> Serviços</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/servicos/cadastrar"> <i
+						class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a> <a class="dropdown-item" href="/servicos/listar"> <i
+						class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a>
+				</div></li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown"
+				sec:authorize="hasAnyAuthority('ADMIN','TECNICOS')"><a
+				class="nav-link active dropdown-toggle" data-toggle="dropdown"
+				href="#" role="button" aria-haspopup="true" aria-expanded="false">
+					<i class="oi oi-people"></i> Técnicos
+			</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/tecnicos/cadastrar"> <i
+						class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a> <a class="dropdown-item" href="/tecnicos/listar"> <i
+						class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a>
+				</div></li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
+				<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
+				href="#" role="button" aria-haspopup="true" aria-expanded="false"><i
+					class="oi oi-person"></i> Usuários</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/usuarios/cadastrar"> <i
+						class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a> <a class="dropdown-item" href="/usuarios/listar"> <i
+						class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a>
+				</div>
 			</li>
 		</ul>
 		<ul class="nav nav-pills">
-			<li class="nav-item dropdown">
-			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="tablist" aria-orientation="vertical" aria-expanded="false">Equipamentos</a>
-			 <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/equipamentos/cadastrar"> 
-			         <i class="oi oi-plus"></i> 
-			           <span>Cadastrar</span>
-			    </a>
-			   
-			    <a class="dropdown-item" href="/equipamentos/listar">
-					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
-			    </a>
-			 </div>
+			<li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
+				<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
+				href="#" role="button" aria-haspopup="true" aria-expanded="false">
+					<i class="oi oi-file"></i> Cargos
+			</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/cargos/cadastrar"> <i
+						class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a> <a class="dropdown-item" href="/cargos/listar"> <i
+						class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a>
+				</div>
+			</li>
+		</ul>
+		<ul class="nav nav-pills">
+			<li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
+				<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
+				href="#" role="button" aria-haspopup="true" aria-expanded="false">
+					<i class="oi oi-list"></i> Setor
+			</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/setores/cadastrar"> <i
+						class="oi oi-plus"></i> <span>Cadastrar</span>
+					</a> <a class="dropdown-item" href="/setores/listar"> <i
+						class="oi oi-spreadsheet"></i> <span>Listar </span>
+					</a>
+				</div>
 			</li>
 		</ul>
 
-		<ul class="nav nav-pills">
-			<li class="nav-item dropdown">
-			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Serviços</a>
-			 <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/servicos/cadastrar"> 
-			         <i class="oi oi-plus"></i> 
-			           <span>Cadastrar</span>
-			    </a>
-			    <a class="dropdown-item" href="/servicos/listar">
-					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
-			    </a>
-			 </div>
-			</li>
-		</ul>
-		<ul class="nav nav-pills">
-			<li class="nav-item dropdown">
-			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Técnicos</a>
-			 <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/tecnicos/cadastrar"> 
-			         <i class="oi oi-plus"></i> 
-			           <span>Cadastrar</span>
-			    </a>
-			    <a class="dropdown-item" href="/tecnicos/listar">
-					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
-			    </a>
-			 </div>
-			</li>
-		</ul>
-		<ul class="nav nav-pills">
-			<li class="nav-item dropdown">
-			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Usuários</a>
-			 <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/usuarios/cadastrar"> 
-			         <i class="oi oi-plus"></i> 
-			           <span>Cadastrar</span>
-			    </a>
-			    <a class="dropdown-item" href="/usuarios/listar">
-					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
-			    </a>
-			 </div>
-			</li>
-		</ul>
-		<ul class="nav nav-pills">
-			<li class="nav-item dropdown">
-			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cargos</a>
-			 <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/cargos/cadastrar"> 
-			         <i class="oi oi-plus"></i> 
-			           <span>Cadastrar</span>
-			    </a>
-			    <a class="dropdown-item" href="/cargos/listar">
-					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
-			    </a>
-			 </div>
-			</li>
-		</ul>
-		<ul class="nav nav-pills">
-			<li class="nav-item dropdown">
-			<a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Setor</a>
-			 <div class="dropdown-menu">
-			    <a class="dropdown-item" href="/setores/cadastrar"> 
-			         <i class="oi oi-plus"></i> 
-			           <span>Cadastrar</span>
-			    </a>
-			    <a class="dropdown-item" href="/setores/listar">
-					<i class="oi oi-spreadsheet"></i> <span>Listar </span>
-			    </a>
-			 </div>
-			</li>
-		</ul>
 	</nav>
 </body>
 </html>

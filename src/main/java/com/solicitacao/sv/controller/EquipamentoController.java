@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Equipamento;
@@ -25,7 +26,6 @@ import com.solicitacao.sv.service.ServicoService;
 @Controller
 @RequestMapping("/equipamentos")
 public class EquipamentoController {
-
 	@Autowired
 	private EquipamentoService equipamentoService;
 	@Autowired
@@ -51,6 +51,27 @@ public class EquipamentoController {
 		equipamentoService.salvar(equipamento);
 		attr.addAttribute("success", "Equipamento inserido com sucesso!");
 		return "redirect:/equipamentos/cadastrar";
+	}
+
+	@GetMapping("/listar/{id}/equipamentos")
+	public String buscaPorEquipamento(@PathVariable Long idEquip, ModelMap modelo, ModelAndView mv) {
+		Iterable <Servico> servicos = servicoService.buscarPorIdEquipamento(idEquip);
+		mv.addObject("servicos", servicos);
+		return "equipamento/lista";
+	}
+
+	@GetMapping("/listar/{id}/equipamentos/servicos/{id}s")
+	public String servicoPorEquipamento(@PathVariable Long idEquip, @PathVariable Long id, ModelMap modelo) {
+		modelo.addAttribute("equipamento", equipamentoService.buscarServicoPorEquipamento(idEquip, id));
+		return "equipamento/lista";
+	}
+
+	@PostMapping(value = "/servico/{id}")
+	public String adicionaServico(@PathVariable("id") long id, Servico servico) {
+		Equipamento e = equipamentoService.buscarPorId(id);
+		servico.setEquipamento(e);
+		equipamentoService.salvar(servico.getEquipamento());
+		return "redirect:/{id}";
 	}
 
 	@GetMapping("/editar/{id}")
@@ -84,7 +105,7 @@ public class EquipamentoController {
 		modelo.addAttribute("equipamentos", equipamentoService.buscarPorDescricao(descricao));
 		return "/equipamento/lista";
 	}
-	
+
 	@GetMapping("/buscar/serie")
 	public String getPorSerie(@RequestParam("eqSeriebp") String serie, ModelMap modelo) {
 		modelo.addAttribute("equipamentos", equipamentoService.buscarPorSerie(serie));

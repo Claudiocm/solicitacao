@@ -2,11 +2,13 @@ package com.solicitacao.sv.dominio;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -26,9 +28,21 @@ public class Tecnico extends AbstractEntity<Long>{
     @JoinColumn(name="id_cargo_fk", referencedColumnName = "id")
 	@ManyToOne
 	private Cargo cargo;
+    @OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
 	
     public Tecnico() {
-    }
+		super();
+	}
+
+	public Tecnico(Long id) {
+		super.setId(id);
+	}
+
+	public Tecnico(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
     public String getTecNome() {
         return tecNome;
@@ -52,6 +66,14 @@ public class Tecnico extends AbstractEntity<Long>{
 
 	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	

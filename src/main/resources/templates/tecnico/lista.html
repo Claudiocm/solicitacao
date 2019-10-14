@@ -36,7 +36,7 @@
 		                    <tr th:each="t : ${tecnicos}">
 		                        <td th:text="${t.id}">1</td>
 		                        <td th:text="${t.tecNome}">Claudio C. Matos</td>
-		                        <td th:text="${t.cargo.nome}"></td>
+		                        <td th:text="${t.cargo}"></td>
 		                        <td colspan="2">
 		                            <a class="btn btn-info btn-sm" th:href="@{/tecnicos/editar/{id} (id=${t.id}) }" role="button">
 		                                <span class="oi oi-brush" title="Editar" aria-hidden="true"></span>

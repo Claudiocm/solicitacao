@@ -3,6 +3,7 @@ package com.solicitacao.sv.service;
 import java.util.List;
 
 import com.solicitacao.sv.dominio.Equipamento;
+import com.solicitacao.sv.dominio.Servico;
 
 public interface EquipamentoService {
 	public void salvar(Equipamento equipamento);
@@ -17,5 +18,9 @@ public interface EquipamentoService {
 
 	public List<Equipamento> buscarPorDescricao(String descricao);
 
-	public List<Equipamento>  buscarPorSerie(String serie);
+	public List<Equipamento> buscarPorSerie(String serie);
+	
+	public Servico adicionaServico(Long id, Long idServico);
+	
+	public Servico buscarServicoPorEquipamento(Long idEquip, Long idServ);
 }

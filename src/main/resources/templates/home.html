@@ -5,7 +5,9 @@
 </head>
 
 <body>
+
 	<section class="content" layout:fragment="corpo">
+	<main role="main">
 		<nav class="navbar navbar-expand-md bg-light">
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
@@ -14,11 +16,15 @@
 				</ul>
 			</div>
 		</nav>
-	</section>
-	<div class="container">
-		<div id="list-home" class="row">
+		<div class="container">
+		  <div id="list-home" class="row">
 		
-		</div>
-	</div>
+		   </div>
+	     </div>
+	</main>
+	</section>
+	
+	<script th:src="~{}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
 </body>
 </html>

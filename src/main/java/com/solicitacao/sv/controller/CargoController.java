@@ -53,7 +53,8 @@ public class CargoController {
 	
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-		model.addAttribute("cargo", cargoService.buscarPorId(id));
+		Cargo cargo = cargoService.buscarPorId(id);
+		model.addAttribute("cargo", cargo);
 		return "/cargo/cadastro";
 	}
 	

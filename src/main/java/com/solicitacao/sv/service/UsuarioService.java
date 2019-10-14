@@ -20,4 +20,17 @@ public interface UsuarioService {
 	public List<Usuario> buscarPorLogin(String login);
 
 	boolean usuarioExiste(String nome);
+
+	/*public void salvarUsuario(Usuario usuario);
+
+	public Usuario buscarPorIdEPerfis(Long usuarioId, Long[] perfisId);
+
+	public Usuario buscarPorEmail(String name);
+
+	public static boolean isSenhaCorreta(String s3, String usuSenha) {
+		return false;
+	}
+
+	public void alterarSenha(Usuario u, String s1);*/
+
 }

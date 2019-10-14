@@ -18,14 +18,12 @@ public interface ChamadoService {
 	public Chamado buscarPorId(Long id);
 
 	public List<Chamado> buscarTodos();
-	
+
 	public List<Chamado> buscar();
-	
+
 	public List<Chamado> buscarLista();
 
 	public List<Chamado> buscarPorDatas(LocalDate entrada, LocalDate saida);
-
-	public List<Chamado> buscarPorServico(Long id);
 
 	public List<Chamado> buscarPorBpEquipamento(String bp);
 

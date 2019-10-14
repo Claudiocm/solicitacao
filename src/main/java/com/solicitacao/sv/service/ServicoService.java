@@ -2,6 +2,7 @@ package com.solicitacao.sv.service;
 
 import java.util.List;
 
+import com.solicitacao.sv.dominio.Equipamento;
 import com.solicitacao.sv.dominio.Servico;
 
 public interface ServicoService {
@@ -20,4 +21,6 @@ public interface ServicoService {
 	public List<Servico> buscarPorIdEquipamento(Long id);
 
 	public List<Servico> buscarServico(Long id);
+
+	public Iterable<Servico> buscarPorIdEquipamento(Equipamento e);
 }

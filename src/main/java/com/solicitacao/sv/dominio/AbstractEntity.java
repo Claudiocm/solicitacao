@@ -19,6 +19,14 @@ public abstract class AbstractEntity<ID extends Serializable> implements Seriali
 	public void setId(ID id) {
 		this.id = id;
 	}
+	
+	public boolean hasNotId() {
+		return id == null;
+	}
+
+	public boolean hasId() {
+		return id != null;
+	}
 
 	@Override
 	public int hashCode() {

@@ -16,4 +16,6 @@ public interface TecnicoService {
 	public List<Tecnico> buscarTodos();
 
 	public List<Tecnico> buscarPorNome(String nome);
+
+	public Tecnico buscarPorUsuarioId(Long usuarioId);
 }
