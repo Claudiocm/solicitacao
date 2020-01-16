@@ -86,8 +86,7 @@
 					</div>
 				</div>
 			</div>
-
-
+			
 			<div class="table-responsive">
 
 				<div th:replace="fragments/alert"></div>
@@ -113,19 +112,27 @@
 									th:href="@{/servicos/{id} (id=${c.id}) }"></span></a></td>
 							<td th:text="${c.chSituacao.descricao}">Situação</td>
 							<td colspan="2">
-							<a class="btn btn-info btn-sm" th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
+							<a class="btn btn-info btn-sm"
+								th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
 									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
 							</a>
-						
-							</td>
+							<button th:id="${'btn_chamados/excluir/' + c.id}"
+									type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+									data-target="#myModal">
+									<span class="oi oi-circle-x" title="Exclusão desabilitada"
+										aria-hidden="true"></span>
+							</button></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-
+        <canvas id="grfTotal"></canvas>
 		<div th:replace="fragments/modal :: modal"></div>
 
 	</section>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
+	<script src="https://cdnjs/cloudfare.com/ajax/libs/Chart.js/2.8.0/Chart.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/grafico.js"></script>
 </body>
 </html>

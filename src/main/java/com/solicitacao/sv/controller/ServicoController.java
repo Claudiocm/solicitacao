@@ -2,9 +2,11 @@ package com.solicitacao.sv.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -18,16 +20,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Servico;
-import com.solicitacao.sv.service.ChamadoService;
-import com.solicitacao.sv.service.ServicoService;
+import com.solicitacao.sv.dominio.TipoServico;
+import com.solicitacao.sv.service.ChamadoImplements;
+import com.solicitacao.sv.service.ServicoImplements;
+import com.solicitacao.sv.service.TipoServicoImpl;
 
 @Controller
 @RequestMapping("/servicos")
 public class ServicoController {
 	@Autowired
-	private ServicoService servico;
+	private ServicoImplements servico;
 	@Autowired
-	private ChamadoService chamado;
+	private TipoServicoImpl tipoServicoService;
+	@Autowired
+	private ChamadoImplements chamado;
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Servico servico) {
@@ -84,6 +90,21 @@ public class ServicoController {
 	@ModelAttribute("chamados")
 	public List<Chamado> getChamado() {
 		return chamado.buscarTodos();
+	}
+
+	@ModelAttribute("tipos")
+	public List<TipoServico> getTipo() {
+		return tipoServicoService.buscarTodos();
+	}
+
+	@GetMapping("/datatables/server")
+	public ResponseEntity<?> getServicosPorNome(@RequestParam("termo") String nome) {
+		return ResponseEntity.ok(servico.buscarPorNome(nome));
+	}
+
+	@GetMapping("/datatables/server/equipamento/{id}")
+	public ResponseEntity<?> getServicosPorTecnico(@PathVariable("id") Long id, HttpServletRequest request) {
+		return ResponseEntity.ok(servico.buscarServicosPorTecnico(id, request));
 	}
 
 }

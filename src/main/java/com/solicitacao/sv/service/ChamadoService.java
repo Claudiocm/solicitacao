@@ -31,4 +31,6 @@ public interface ChamadoService {
 
 	public void adicionaServico(@Valid Chamado chamado, List<Servico> buscarPorNome);
 
+	public Iterable<Chamado> todos();
+
 }

@@ -3,22 +3,31 @@ package com.solicitacao.sv.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.solicitacao.sv.datatables.Datatables;
+import com.solicitacao.sv.datatables.DatatablesColunas;
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Servico;
+import com.solicitacao.sv.exception.AcessoNegadoException;
 import com.solicitacao.sv.repository.ChamadoRepository;
+import com.solicitacao.sv.repository.projection.HistoricoSolicitante;
+import com.solicitacao.sv.repository.projection.HistoricoTecnico;
 
 @Service
 @Transactional(readOnly = false)
 public class ChamadoImplements implements ChamadoService {
 	@Autowired
 	private ChamadoRepository dao;
+	@Autowired
+	private Datatables datatables;
 
 	@Override
 	public void salvar(Chamado chamado) {
@@ -26,9 +35,10 @@ public class ChamadoImplements implements ChamadoService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void editar(Chamado chamado) {
 		Chamado chama = dao.findById(chamado.getId()).get();
-		
+
 		chama.setChDataAbertura(chamado.getChDataAbertura());
 		chama.setChDataFechamento(chamado.getChDataFechamento());
 		chama.setChIp(chamado.getChIp());
@@ -36,11 +46,15 @@ public class ChamadoImplements implements ChamadoService {
 		chama.setChPrioridade(chamado.getChPrioridade());
 		chama.setChSituacao(chamado.getChSituacao());
 		chama.setChProblema(chamado.getChProblema());
-		if(chamado != null){
-		  chama.setEquipamento(chamado.getEquipamento());
+		if (chamado != null) {
+			chama.setEquipamento(chamado.getEquipamento());
+		}
+		if (chamado != null) {
+			chama.setServico(chamado.getServico());
 		}
 		chama.setSetor(chamado.getSetor());
 		chama.setTecnico(chamado.getTecnico());
+		chama.setSolicitante(chamado.getSolicitante());
 	}
 
 	@Override
@@ -57,6 +71,11 @@ public class ChamadoImplements implements ChamadoService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Chamado> buscarTodos() {
+		return dao.findAll();
+	}
+	
+	@Override
+	public Iterable<Chamado> todos() {
 		return dao.findAll();
 	}
 
@@ -96,6 +115,33 @@ public class ChamadoImplements implements ChamadoService {
 	@Override
 	public List<Chamado> buscarLista() {
 		return dao.buscaLista();
+	}
+
+	@Transactional(readOnly = true)
+	public Map<String, Object> buscarHistoricoPorSolicitanteEmail(String email, HttpServletRequest request) {
+		datatables.setRequest(request);
+		datatables.setColunas(DatatablesColunas.CHAMADOS);
+		Page<HistoricoSolicitante> page = dao.findHistoricoBySolicitanteEmail(email, datatables.getPageable());
+		return datatables.getResponse(page);
+	}
+
+	@Transactional(readOnly = true)
+	public Map<String, Object> buscarHistoricoPorTecnicoEmail(String email, HttpServletRequest request) {
+		datatables.setRequest(request);
+		datatables.setColunas(DatatablesColunas.CHAMADOS);
+		Page<HistoricoTecnico> page = dao.findHistoricoByTecnicoEmail(email, datatables.getPageable());
+		return datatables.getResponse(page);
+	}
+
+	@Transactional(readOnly = true)
+	public Chamado buscarPorIdEUsuario(Long id, String email) {
+		return dao
+				.findByIdAndSolicitanteOrTecnicoEmail(id, email)
+				.orElseThrow(() -> new AcessoNegadoException("Acesso negado ao usuário: " + email));
+	}
+
+	public Chamado buscarPorUsuarioEmail(String username) {
+		return null;
 	}
 
 }

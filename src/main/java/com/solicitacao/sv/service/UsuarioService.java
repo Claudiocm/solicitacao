@@ -15,13 +15,7 @@ public interface UsuarioService {
 
 	public List<Usuario> buscarTodos();
 
-	public List<Usuario> buscarPorNome(String nome);
-
-	public List<Usuario> buscarPorLogin(String login);
-
-	boolean usuarioExiste(String nome);
-
-	/*public void salvarUsuario(Usuario usuario);
+	public void salvarUsuario(Usuario usuario);
 
 	public Usuario buscarPorIdEPerfis(Long usuarioId, Long[] perfisId);
 
@@ -31,6 +25,6 @@ public interface UsuarioService {
 		return false;
 	}
 
-	public void alterarSenha(Usuario u, String s1);*/
+	public void alterarSenha(Usuario u, String s1);
 
 }

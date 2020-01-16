@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Setor;
-import com.solicitacao.sv.service.SetorService;
+import com.solicitacao.sv.service.SetorImplements;
 
 @Controller
 @RequestMapping("/setores")
 public class SetorController {
 	@Autowired
-	private SetorService servico;
+	private SetorImplements servico;
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Setor setor) {
@@ -40,6 +40,7 @@ public class SetorController {
 		}
 		servico.salvar(setor);
 		attr.addAttribute("success", "Setor inserido com sucesso!");
+
 		return "redirect:/setores/cadastrar";
 	}
 
@@ -61,10 +62,12 @@ public class SetorController {
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap modelo) {
-
-		servico.excluir(id);
-		modelo.addAttribute("success", "Setor excluido com sucesso");
-
+		if (servico.setorTemUsuarios(id)) {
+			modelo.addAttribute("fail", "Setor não removido. Possui usuario(s) vinculado(s).");
+		} else {
+			servico.excluir(id);
+			modelo.addAttribute("success", "Setor excluido com sucesso");
+		}
 		return listar(modelo);
 	}
 

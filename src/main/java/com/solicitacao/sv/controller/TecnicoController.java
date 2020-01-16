@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -17,20 +19,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Cargo;
+import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Tecnico;
-import com.solicitacao.sv.service.CargoService;
-import com.solicitacao.sv.service.TecnicoService;
+import com.solicitacao.sv.dominio.Usuario;
+import com.solicitacao.sv.service.CargoServiceImpl;
+import com.solicitacao.sv.service.ChamadoImplements;
+import com.solicitacao.sv.service.TecnicoImplements;
+import com.solicitacao.sv.service.UsuarioServiceImpl;
 
 @Controller
 @RequestMapping("/tecnicos")
 public class TecnicoController {
 	@Autowired
-	private TecnicoService servico;
+	private TecnicoImplements servico;
 	@Autowired
-	private CargoService cargoService;
-	
+	private CargoServiceImpl cargoService;
+	@Autowired
+	private ChamadoImplements chamadoService;
+	@Autowired
+	private UsuarioServiceImpl usuarioService;
+
 	@GetMapping("/cadastrar")
-	public String cadastrar(Tecnico tecnico) {
+	public String cadastrar(Tecnico tecnico, ModelMap modelo, @AuthenticationPrincipal User user) {
+		if(tecnico.hasNotId()) {
+			tecnico = servico.buscarPorUsuarioEmail(tecnico.getUsuario().getEmail());
+			modelo.addAttribute("tecnico",tecnico);
+		}
 		return "/tecnico/cadastro";
 	}
 
@@ -41,21 +55,29 @@ public class TecnicoController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Tecnico tecnico, BindingResult result, RedirectAttributes attr) {
+	public String salvar(@Valid Tecnico tecnico, BindingResult result, RedirectAttributes attr,
+			@AuthenticationPrincipal User user) {
 		if (result.hasErrors()) {
 			return "/tecnico/cadastro";
 		}
+		if (tecnico.hasNotId() && tecnico.getUsuario().hasNotId()) {
+			Usuario usuario = usuarioService.buscarPorEmail(user.getUsername());
+			tecnico.setUsuario(usuario);
+		}
 		servico.salvar(tecnico);
-		attr.addAttribute("success", "Técnico inserido com sucesso!");
+		attr.addFlashAttribute("success", "Técnico inserido com sucesso!");
+		attr.addFlashAttribute("tecnico", tecnico);
+		
 		return "redirect:/tecnicos/cadastrar";
 	}
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap modelo) {
 		modelo.addAttribute("tecnico", servico.buscarPorId(id));
+		
 		return "/tecnico/cadastro";
 	}
-	
+
 	@PostMapping("/editar")
 	public String editar(@Valid Tecnico tecnico, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
@@ -63,27 +85,37 @@ public class TecnicoController {
 		}
 		servico.editar(tecnico);
 		attr.addFlashAttribute("success", "Técnico editado com sucesso!");
+		attr.addFlashAttribute("tecnico", tecnico);
 		return "redirect:/tecnicos/cadastrar";
 	}
-	
+
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap modelo){
-		
-		servico.excluir(id);
-		modelo.addAttribute("success","Técnico excluido com sucesso");
-	
+	public String excluir(@PathVariable("id") Long id, ModelMap modelo) {
+		if (servico.tecnicoTemChamados(id)) {
+			modelo.addAttribute("fail", "Técnico não removido. Possui chamado(s) vinculado(s).");
+		} else if (servico.tecnicoTemEquipamentos(id)) {
+			modelo.addAttribute("fail", "Técnico não removido. Possui equipamento(s) vinculado(s).");
+		} else {
+			servico.excluir(id);
+			modelo.addAttribute("success", "Técnico excluido com sucesso");
+		}
+
 		return listar(modelo);
 	}
-	
+
 	@GetMapping("/buscar/nome")
-	public String getPorNome(@RequestParam("nome") String nome, ModelMap modelo){
-		modelo.addAttribute("tecnicos",servico.buscarPorNome(nome));		
+	public String getPorNome(@RequestParam("nome") String nome, ModelMap modelo) {
+		modelo.addAttribute("tecnicos", servico.buscarPorNome(nome));
 		return "/tecnico/lista";
 	}
-	
+
 	@ModelAttribute("cargos")
 	public List<Cargo> getCargos() {
 		return cargoService.buscarTodos();
 	}
 
+	@ModelAttribute("chamados")
+	public List<Chamado> getChamados() {
+		return chamadoService.buscarTodos();
+	}
 }

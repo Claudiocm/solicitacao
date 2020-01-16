@@ -5,12 +5,13 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import com.solicitacao.sv.dominio.Chamado;
+import com.solicitacao.sv.service.ChamadoImplements;
 import com.solicitacao.sv.service.ChamadoService;
 
 @Component
 public class StringToChamadoConverter implements Converter<String, Chamado> {
 	@Autowired
-	private ChamadoService service;
+	private ChamadoImplements service;
 
 	@Override
 	public Chamado convert(String text) {

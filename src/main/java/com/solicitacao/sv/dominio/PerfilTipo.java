@@ -1,7 +1,7 @@
 package com.solicitacao.sv.dominio;
 
 public enum PerfilTipo {
-	ADMIN(1, "ADMIN"), TECNICO(2, "TECNICO"), USUARIO(3, "USUARIO");
+	ADMIN(1, "ADMIN"), TECNICO(2, "TECNICO"), SOLICITANTE(3, "SOLICITANTE");
 
 	private long cod;
 	private String desc;

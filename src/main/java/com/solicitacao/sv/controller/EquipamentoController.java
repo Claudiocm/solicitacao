@@ -2,9 +2,11 @@ package com.solicitacao.sv.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,22 +16,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Equipamento;
 import com.solicitacao.sv.dominio.Servico;
 import com.solicitacao.sv.dominio.TipoEquipamento;
-import com.solicitacao.sv.service.EquipamentoService;
-import com.solicitacao.sv.service.ServicoService;
+import com.solicitacao.sv.service.EquipamentoImplements;
+import com.solicitacao.sv.service.ServicoImplements;
+import com.solicitacao.sv.service.TipoEquipamentoImpl;
 
 @Controller
 @RequestMapping("/equipamentos")
 public class EquipamentoController {
 	@Autowired
-	private EquipamentoService equipamentoService;
+	private EquipamentoImplements equipamentoService;
 	@Autowired
-	private ServicoService servicoService;
+	private ServicoImplements servicoService;
+	@Autowired
+	private TipoEquipamentoImpl tipoService;
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Equipamento equipamento) {
@@ -53,24 +57,21 @@ public class EquipamentoController {
 		return "redirect:/equipamentos/cadastrar";
 	}
 
-	@GetMapping("/listar/{id}/equipamentos")
-	public String buscaPorEquipamento(@PathVariable Long idEquip, ModelMap modelo, ModelAndView mv) {
-		Iterable <Servico> servicos = servicoService.buscarPorIdEquipamento(idEquip);
-		mv.addObject("servicos", servicos);
-		return "equipamento/lista";
-	}
-
-	@GetMapping("/listar/{id}/equipamentos/servicos/{id}s")
-	public String servicoPorEquipamento(@PathVariable Long idEquip, @PathVariable Long id, ModelMap modelo) {
-		modelo.addAttribute("equipamento", equipamentoService.buscarServicoPorEquipamento(idEquip, id));
-		return "equipamento/lista";
+	// buscar equipamentos por servico via ajax
+	@GetMapping("/servico/titulo/{titulo}")
+	public ResponseEntity<?> getEquipamentosPorServico(@PathVariable("titulo") String titulo) {
+		return ResponseEntity.ok(equipamentoService.buscarEquipamentosPorServico(titulo));
 	}
 
 	@PostMapping(value = "/servico/{id}")
 	public String adicionaServico(@PathVariable("id") long id, Servico servico) {
 		Equipamento e = equipamentoService.buscarPorId(id);
-		servico.setEquipamento(e);
-		equipamentoService.salvar(servico.getEquipamento());
+		for (Servico s : e.getServicos()) {
+			s.setEquipamentos(servico.getEquipamentos());
+		}
+
+		servicoService.salvar(servico);
+
 		return "redirect:/{id}";
 	}
 
@@ -93,11 +94,23 @@ public class EquipamentoController {
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap modelo) {
-
-		equipamentoService.excluir(id);
-		modelo.addAttribute("success", "Equipamento excluido com sucesso");
-
+		if (equipamentoService.equipamentoTemServicos(id)) {
+			modelo.addAttribute("fail", "Equipamento não removido. Possui serviços(s) vinculado(s).");
+		} else if (equipamentoService.equiapamentoTemChamado(id)) {
+			modelo.addAttribute("fail", "Equipamento não removido. Possui chamados(s) vinculado(s).");
+		} else if (equipamentoService.equipamentoTemTecnicos(id)) {
+			modelo.addAttribute("fail", "Equipamento não removido. Possui tecnicos(s) vinculado(s).");
+		} else {
+			equipamentoService.excluir(id);
+			modelo.addAttribute("success", "Equipamento excluido com sucesso");
+		}
 		return listar(modelo);
+	}
+
+	@GetMapping("/datatables/server")
+	public ResponseEntity<?> getEquipamentos(HttpServletRequest request) {
+
+		return ResponseEntity.ok(equipamentoService.buscarEquipamentos(request));
 	}
 
 	@GetMapping("/buscar/descricao")
@@ -113,8 +126,8 @@ public class EquipamentoController {
 	}
 
 	@ModelAttribute("tipos")
-	public TipoEquipamento[] getTipos() {
-		return TipoEquipamento.values();
+	public List<TipoEquipamento> getTipo() {
+		return tipoService.buscarTodos();
 	}
 
 	@ModelAttribute("servicos")

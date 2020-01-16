@@ -1,10 +1,15 @@
 package com.solicitacao.sv.dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -14,48 +19,44 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Entity
-@Table(name = "Usuario", indexes = {@Index(name = "idx_usuario_email", columnList = "email")})
-public class Usuario extends AbstractEntity<Long>{
+@Table(name = "Usuario", indexes = { @Index(name = "idx_usuario_email", columnList = "email") })
+@EntityListeners(AuditingEntityListener.class)
+public class Usuario extends Auditable<String> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotBlank(message = "O nome do usuário é obrigatório.")
-	@Size(min = 3, max = 60, message = "O nome do usuário deve ter entre {min} e {max} caracteres.")
-	@Column(name = "usu_nome", nullable = false, unique = true, length = 60)
-	private String usuNome;
-	@NotBlank(message = "O login do usuário é obrigatório.")
-	@Size(max = 50, min = 3, message = "O login deve ter entre {min} e {max} caracteres.")
-	@Column(name = "usu_login",  nullable = false, unique = true, length = 60)
-	private String usuLogin;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 	@NotBlank(message = "A senha do usuário não pode ser em branco.")
 	@Size(min = 6, message = "A senha deve ter no mínimo {min} caracteres.")
 	@Column(name = "usu_senha")
 	private String usuSenha;
-	@JoinColumn(name="id_setor_fk")
+	@JoinColumn(name = "setor")
 	@ManyToOne
 	private Setor setor;
 	@ManyToMany
-	@JoinTable(
-		name = "usuarios_tem_perfis", 
-        joinColumns = { @JoinColumn(name = "usuario_id", referencedColumnName = "id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "perfil_id", referencedColumnName = "id") }
-	)
+	@JoinTable(name = "usuarios_tem_perfis", joinColumns = {
+			@JoinColumn(name = "usuario", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "perfil", referencedColumnName = "id") })
 	private List<Perfil> perfis;
 	@Column(name = "ativo", nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean ativo;
-	
+
 	@Column(name = "codigo_verificador", length = 6)
 	private String codigoVerificador;
-	
+
 	public Usuario() {
 		super();
 	}
 
 	public Usuario(Long id) {
-		super.setId(id);
+		setId(id);
 	}
 
 	// adiciona perfis a lista
@@ -64,6 +65,18 @@ public class Usuario extends AbstractEntity<Long>{
 			this.perfis = new ArrayList<>();
 		}
 		this.perfis.add(new Perfil(tipo.getCod()));
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Usuario(String email) {
+		this.email = email;
 	}
 
 	public boolean isAtivo() {
@@ -80,22 +93,6 @@ public class Usuario extends AbstractEntity<Long>{
 
 	public void setCodigoVerificador(String codigoVerificador) {
 		this.codigoVerificador = codigoVerificador;
-	}
-
-	public String getUsuNome() {
-		return usuNome;
-	}
-
-	public void setUsuNome(String usuNome) {
-		this.usuNome = usuNome;
-	}
-
-	public String getUsuLogin() {
-		return usuLogin;
-	}
-
-	public void setUsuLogin(String usuLogin) {
-		this.usuLogin = usuLogin;
 	}
 
 	public String getUsuSenha() {
@@ -129,5 +126,42 @@ public class Usuario extends AbstractEntity<Long>{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	public boolean hasNotId() {
+		return id == null;
+	}
+
+	public boolean hasId() {
+		return id != null;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractEntity<?> other = (AbstractEntity<?>) obj;
+		if (id == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!id.equals(other.getId()))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "id = " + id;
+	}
 }

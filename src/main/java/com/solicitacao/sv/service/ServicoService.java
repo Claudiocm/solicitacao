@@ -21,6 +21,4 @@ public interface ServicoService {
 	public List<Servico> buscarPorIdEquipamento(Long id);
 
 	public List<Servico> buscarServico(Long id);
-
-	public Iterable<Servico> buscarPorIdEquipamento(Equipamento e);
 }

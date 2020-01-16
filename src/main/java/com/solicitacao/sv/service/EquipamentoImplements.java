@@ -1,11 +1,17 @@
 package com.solicitacao.sv.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solicitacao.sv.datatables.Datatables;
+import com.solicitacao.sv.datatables.DatatablesColunas;
 import com.solicitacao.sv.dominio.Equipamento;
 import com.solicitacao.sv.dominio.Servico;
 import com.solicitacao.sv.repository.EquipamentoRepository;
@@ -13,7 +19,8 @@ import com.solicitacao.sv.repository.EquipamentoRepository;
 @Service
 @Transactional(readOnly = false)
 public class EquipamentoImplements implements EquipamentoService {
-
+    @Autowired
+    private Datatables datatables;
 	@Autowired
 	private EquipamentoRepository dao;
 
@@ -32,6 +39,7 @@ public class EquipamentoImplements implements EquipamentoService {
 		if (!equipamento.getServicos().isEmpty()) {
 			e.getServicos().addAll(equipamento.getServicos());
 		}
+		e.setTecnico(equipamento.getTecnico());
 	}
 
 	@Override
@@ -83,6 +91,58 @@ public class EquipamentoImplements implements EquipamentoService {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public Equipamento buscarEquipamentoPorTipo(Long id, HttpServletRequest request) {
+		return null;
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<Equipamento> buscarEquipamentosPorServico(String titulo) {
+		return dao.findByDescricao(titulo);
+	}
+
+	@Transactional(readOnly = true)
+	public Map<String, Object> buscarServicos(HttpServletRequest request) {
+		datatables.setRequest(request);
+		datatables.setColunas(DatatablesColunas.SERVICOS);
+		Page<?> page = datatables.getSearch().isEmpty()
+				? dao.findAll(datatables.getPageable())
+				: dao.findAllByTitulo(datatables.getSearch(), datatables.getPageable());
+		return datatables.getResponse(page);
+	}
+
+	@Transactional(readOnly = true)
+	public Map<String, Object> buscarEquipamentos(HttpServletRequest request) {
+		datatables.setRequest(request);
+		datatables.setColunas(DatatablesColunas.EQUIPAMENTOS);
+		Page<?> page = datatables.getSearch().isEmpty()
+				? dao.findAll(datatables.getPageable())
+				: dao.findAllByModelo(datatables.getSearch(), datatables.getPageable());
+		return datatables.getResponse(page);
+	}
+
+	public boolean equipamentoTemServicos(Long id) {
+		if(buscarPorId(id).getServicos().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean equiapamentoTemChamado(Long id) {
+		if(buscarPorId(id).getChamados().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean equipamentoTemTecnicos(Long id) {
+		if(buscarPorId(id).getTecnico().isEmpty()) {
+			return false;
+		}
+		return true;
 	}
 
 }

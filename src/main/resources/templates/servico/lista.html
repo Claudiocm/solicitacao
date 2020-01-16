@@ -13,7 +13,7 @@
 	                    </li>
 	                </ul>
 	            </div>
-	            <a class="btn btn-primary btn-md" href="/servicos/cadastrar" role="button">
+	            <a class="btn btn-primary btn-md" th:href="@{/servicos/cadastrar}" role="button">
 	                <span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
 	                <span>Novo Serviço</span>
 	            </a>
@@ -29,12 +29,14 @@
 	                    <tr>
 	                        <th>Nº</th>
 	                        <th>Nome</th>
+	                        <th>Tipo</th>
 	                    </tr>
 	                    </thead>
 	                    <tbody>
 		                    <tr th:each="s : ${servicos}">
 		                        <td th:text="${s.id}">1</td>
 		                        <td th:text="${s.serNome}">Auxiliar Contábil</td>
+		                        <td th:text="${s.tipo.descricao}">Limpeza</td>
 		                        <td colspan="2">
 		                            <a class="btn btn-info btn-sm" th:href="@{/servicos/editar/{id} (id=${s.id}) }" role="button">
 		                                <span class="oi oi-brush" title="Editar" aria-hidden="true"></span>

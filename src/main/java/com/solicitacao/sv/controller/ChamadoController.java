@@ -1,12 +1,20 @@
 package com.solicitacao.sv.controller;
 
+import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -18,100 +26,155 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Cargo;
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Equipamento;
+import com.solicitacao.sv.dominio.PerfilTipo;
 import com.solicitacao.sv.dominio.Prioridade;
 import com.solicitacao.sv.dominio.Servico;
 import com.solicitacao.sv.dominio.Setor;
 import com.solicitacao.sv.dominio.Situacao;
+import com.solicitacao.sv.dominio.Solicitante;
 import com.solicitacao.sv.dominio.Tecnico;
 import com.solicitacao.sv.dominio.TipoEquipamento;
-import com.solicitacao.sv.service.CargoService;
-import com.solicitacao.sv.service.ChamadoService;
-import com.solicitacao.sv.service.EquipamentoService;
-import com.solicitacao.sv.service.ServicoService;
-import com.solicitacao.sv.service.SetorService;
-import com.solicitacao.sv.service.TecnicoService;
+import com.solicitacao.sv.dominio.TipoServico;
+import com.solicitacao.sv.service.CargoServiceImpl;
+import com.solicitacao.sv.service.ChamadoImplements;
+import com.solicitacao.sv.service.EquipamentoImplements;
+import com.solicitacao.sv.service.ServicoImplements;
+import com.solicitacao.sv.service.SetorImplements;
+import com.solicitacao.sv.service.SolicitanteServiceImpl;
+import com.solicitacao.sv.service.TecnicoImplements;
+import com.solicitacao.sv.service.TipoEquipamentoImpl;
+import com.solicitacao.sv.service.TipoServicoImpl;
 import com.solicitacao.sv.validator.ChamadoValidator;
 
 @Controller
 @RequestMapping("/chamados")
 public class ChamadoController {
 	@Autowired
-	private ChamadoService chService;
+	private ChamadoImplements chService;
 	@Autowired
-	private EquipamentoService eqpService;
+	private EquipamentoImplements eqpService;
 	@Autowired
-	private ServicoService serService;
+	private ServicoImplements serService;
 	@Autowired
-	private TecnicoService tecService;
+	private TecnicoImplements tecService;
 	@Autowired
-	private SetorService setService;
+	private SetorImplements setService;
 	@Autowired
-	private CargoService cargoService;
+	private SolicitanteServiceImpl solService;
+	@Autowired
+	private CargoServiceImpl cargoService;
+	@Autowired
+	private TipoEquipamentoImpl tipoEquipamentoService;
+	@Autowired
+	private TipoServicoImpl tipoServicoService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.addValidators(new ChamadoValidator());
 	}
 
+	@RequestMapping(value = "/graficos")
+	@ResponseBody
+	public ResponseEntity<Iterable<Chamado>> todos() {
+		try {
+			return new ResponseEntity<Iterable<Chamado>>(chService.todos(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Iterable<Chamado>>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/cadastrar")
-	public String cadastrar(Chamado chamado) {
+	public String cadastrar(Chamado chamado) throws UnknownHostException {
+		/*
+		 * quando for solicitante setar o ip da maquina InetAddress ip =
+		 * InetAddress.getLocalHost(); chamado.setChIp(ip.getHostAddress());
+		 */
+
+		chamado.setchSituacao(Situacao.ABERTO);
+		chamado.setChDataAbertura(LocalDate.now());
 		return "/chamado/cadastro";
 	}
 
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
 		List<Chamado> c = chService.buscarTodos();
 		for (Chamado ch : c) {
 			ch.setEquipamento(ch.getEquipamento());
+
 			model.addAttribute("chamados", chService.buscarTodos());
 		}
 		return "/chamado/lista";
 	}
 
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/buscarLista")
 	public String buscaLista(ModelMap model) {
 		model.addAttribute("chamados", chService.buscarLista());
 		return "/chamado/lista";
 	}
 
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/buscar")
 	public String busca(ModelMap model) {
 		model.addAttribute("chamados", chService.buscar());
 		return "/chamado/painel";
 	}
 
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@PostMapping("/salvar")
-	public String salvar(@Valid Chamado Chamado, BindingResult result, RedirectAttributes attr) {
+	public String salvar(@Valid Chamado chamado, BindingResult result, RedirectAttributes attr,
+			@AuthenticationPrincipal User user) {
+		Tecnico tecnico = tecService.buscarPorUsuarioEmail(user.getUsername());
+		Solicitante solicitante = solService.buscarPorUsuarioEmail(user.getUsername());
+
 		if (result.hasErrors()) {
 			return "/chamado/cadastro";
 		}
-		chService.salvar(Chamado);
+		String titulo = chamado.getServico().getSerNome();
+		Servico servico = serService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
+		chamado.setTecnico(tecnico);
+		chamado.setServico(servico);
+		chamado.setSolicitante(solicitante);
+
+		chService.salvar(chamado);
+
 		attr.addAttribute("success", "Chamado inserido com sucesso!");
 		return "redirect:/chamados/cadastrar";
 	}
 
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/editar/{id}")
-	public String preEditar(@PathVariable("id") Long id, ModelMap modelo) {
-		Chamado chamado = chService.buscarPorId(id);
+	public String preEditar(@PathVariable("id") Long id, ModelMap modelo, @AuthenticationPrincipal User user) {
+		Chamado chamado = chService.buscarPorIdEUsuario(id, user.getUsername());
+
 		modelo.addAttribute("chamado", chamado);
 		return "/chamado/cadastro";
 	}
 
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@PostMapping("/editar")
-	public String editar(@Valid Chamado Chamado, BindingResult result, RedirectAttributes attr) {
+	public String editar(@PathVariable("id") Long id, RedirectAttributes attr, BindingResult result,
+			@AuthenticationPrincipal User user) {
+		Chamado chamado = chService.buscarPorIdEUsuario(id, user.getUsername());
+
 		if (result.hasErrors()) {
 			return "/chamado/cadastro";
 		}
-		chService.editar(Chamado);
-		attr.addFlashAttribute("success", "Chamado editado com sucesso!");
+		chService.editar(chamado);
+		attr.addAttribute("success", "Chamado editado com sucesso!");
+
 		return "redirect:/chamados/cadastrar";
 	}
 
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap modelo) {
 
@@ -119,6 +182,48 @@ public class ChamadoController {
 		modelo.addAttribute("success", "Chamado excluido com sucesso");
 
 		return listar(modelo);
+	}
+
+	// abrir pagina de historico de chamdoo do tecnico
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
+	@GetMapping({ "/historico/tecnico" })
+	public String historicoTecnico() {
+		return "chamado/historico-tecnico";
+	}
+
+	// abrir pagina de historico de chamdo do Solicitante
+	@PreAuthorize("hasAnyAuthority('SOLICITANTE','ADMIN','TECNICO')")
+	@GetMapping({ "/historico/solicitante" })
+	public String historicoSolicitante() {
+		return "chamado/historico-Solicitante";
+	}
+
+	// localizar o historico de agendamentos por usuario logado
+	@PreAuthorize("hasAnyAuthority('SOLICITANTE','TECNICO','ADMIN')")
+	@GetMapping("/datatables/server/historico-solicitante")
+	public ResponseEntity<?> historicoChamadosPorSolicitante(HttpServletRequest request,
+			@AuthenticationPrincipal User user) {
+
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SOLICITANTE.getDesc()))) {
+
+			return ResponseEntity.ok(chService.buscarHistoricoPorSolicitanteEmail(user.getUsername(), request));
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
+	// localizar o historico de agendamentos por usuario logado
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'TECNICO')")
+	@GetMapping("/datatables/server/historico-tecnico")
+	public ResponseEntity<?> historicoChamadosPorTecnico(HttpServletRequest request,
+			@AuthenticationPrincipal User user) {
+
+		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.TECNICO.getDesc()))) {
+
+			return ResponseEntity.ok(chService.buscarHistoricoPorTecnicoEmail(user.getUsername(), request));
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/buscar/{id}")
@@ -141,6 +246,11 @@ public class ChamadoController {
 
 		model.addAttribute("chamados", chService.buscarPorDatas(abertura, fechamento));
 		return "/chamado/lista";
+	}
+
+	@GetMapping("/equipamento/{id}")
+	public ResponseEntity<?> getServicoEquipamentos(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(serService.buscarPorIdEquipamento(id));
 	}
 
 	@ModelAttribute("situacoes")
@@ -178,9 +288,14 @@ public class ChamadoController {
 		return tecService.buscarTodos();
 	}
 
-	@ModelAttribute("tipos")
-	public TipoEquipamento[] getTipos() {
-		return TipoEquipamento.values();
+	@ModelAttribute("tipoEquipamentos")
+	public List<TipoEquipamento> getTipoEquipamentos() {
+		return tipoEquipamentoService.buscarTodos();
+	}
+
+	@ModelAttribute("tiposServicos")
+	public List<TipoServico> getTipoServicos() {
+		return tipoServicoService.buscarTodos();
 	}
 
 }

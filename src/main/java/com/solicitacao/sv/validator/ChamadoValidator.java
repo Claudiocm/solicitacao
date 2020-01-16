@@ -20,7 +20,7 @@ public class ChamadoValidator implements Validator {
 		
 		if (c.getChDataFechamento() != null) {
 			if (c.getChDataFechamento().isBefore(entrada)) {
-				errors.rejectValue("chDataFechamento", "PosteriorDataAbertura.chamado.chDataFechamento");
+				errors.rejectValue("chDataFechamento", "PosteriorChDataAbertura.chamado.chDataFechamento");
 			}
 		}
 	}

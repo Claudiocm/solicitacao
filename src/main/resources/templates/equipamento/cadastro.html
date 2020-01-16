@@ -55,11 +55,11 @@
 						</div>
 					</div>
 					<div class="form-group col-md-4">
-						<label for="tipo">Tipo de Equipamento</label> <select id="tipo"
-							class="form-control" th:field="*{tipo}"
+						<label for="tipo">Tipo de Equipamento</label> 
+						<select id="tipo"	class="form-control" th:field="*{tipo}"
 							th:classappend="${#fields.hasErrors('tipo')} ? 'is-invalid'">
-							<option value="#">Selecione</option>
-							<option th:each="t : ${tipos}" th:value="${t}"
+							<option value="">Selecione</option>
+							<option th:each="t : ${tipos}" th:value="${t.id}"
 								th:text="${t.descricao}">Selecione...</option>
 						</select>
 						<div class="invalid-feedback">
@@ -67,7 +67,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-row" >
+				<div class="form-row">
 					<div class="form-group col-md-4">
 						<label for="serie">Série/Patrimônio</label> <input type="text"
 							class="form-control" id="serie" placeholder="Série/Patrimônio"
@@ -78,13 +78,42 @@
 							<span th:errors="*{eqSeriebp}"></span>
 						</div>
 					</div>
+					<div class="form-group col-md-4">
+						<label for="servico">Serviço</label> <select id="servico"
+							class="form-control" th:field="*{servicos}"
+							th:classappend="${#fields.hasErrors('servicos')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="s: ${servicos}" th:value="${s.id}"
+								th:text="${s.serNome}" selected="selected">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{servicos}"></span>
+						</div>
+						<button onclick="adicionar()">Adicionar</button>
+						<div>
+							<ul id="listaServicos">
+								<li></li>
+							</ul>
+						</div>
+					</div>
 				</div>
 
 				<input type="hidden" id="id" name="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
 			</form>
-			
+
 		</div>
 	</section>
+
+	<script th:src="@{/js/equipamento.js(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+		function adicionar() {
+			var servico = document.getElementById("servico").value;
+			var lista = document.getElementById("listaServicos").innerHTML;
+			lista = lista + "<li>" + servico + "</li>";
+
+			document.getElementById("lista").innerHTML = lista;
+		}
+	</script>
 </body>
 </html>

@@ -29,17 +29,17 @@
 					    <thead>
 					    <tr>
 					        <th>Nº</th>
-					        <th>Nome</th>
-					        <th>Login</th>
+					        <th>Email</th>
+					        <th>Ativo</th>
 					        <th>Setor</th>
 					    </tr>
 					    </thead>
 					    <tbody>
 					     <tr th:each="u : ${usuarios}">
 					         <td th:text="${u.id}">3</td>
-					         <td th:text="${u.usuNome}">Descrição</td>
-					         <td th:text="${u.usuLogin}">Modelo</td>
-					         <td th:text="${u.setor.setNome}">Modelo</td>
+					         <td th:text="${u.email}">E-mail</td>
+					         <td th:text="${u.ativo} ? 'Sim' : 'Não'">Ativo</td>
+					         <td th:text="${u.setor.setNome}">Setor</td>
 					         <td colspan="2">
 					             <a class="btn btn-info btn-sm" th:href="@{/usuarios/editar/{id} (id=${u.id}) }" role="button">
 					                 <span class="oi oi-brush" title="Editar" aria-hidden="true"></span>

@@ -13,7 +13,7 @@
 						<span>Cadastrar Chamados</span></li>
 				</ul>
 			</div>
-			<a class="btn btn-primary btn-md" th:href="@{/chamados/listar}"
+			<a class="btn btn-primary btn-md" th:href="@{/chamados/buscar}"
 				role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
 				aria-hidden="true"></span> <span>Listar Chamados</span>
 			</a>
@@ -22,7 +22,7 @@
 		<div class="container" id="cadastro">
 			<div th:replace="fragments/alert"></div>
 
-			<form class="form-horizontal" id="servico-form"
+			<form class="form-horizontal"
 				th:action="${chamado.id == null} ? @{/chamados/salvar} : @{/chamados/editar}"
 				th:object="${chamado}" method="POST">
 
@@ -58,15 +58,21 @@
 							<option data-section="select" th:each="s : ${setores}"
 								th:value="${s.id}" th:text="${s.setNome}">Selecione...</option>
 						</select>
+
 						<div class="invalid-feedback">
 							<span th:errors="*{setor.setNome}"></span>
 						</div>
 					</div>
+					<div class="form-group col-md-1">
+						<button class="btn btn-primary btn-sm" type="button">
+							<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
+						</button>
+					</div>
 
 				</div>
-				<div class="form-row">
 
-					<div class="form-group col-md-3">
+				<div class="form-row">
+					<div class="form-group col-md-4">
 						<label for="tecnico">Nome do Técnico</label> <select id="tecnico"
 							class="form-control" th:field="*{tecnico}"
 							th:classappend="${#fields.hasErrors('tecnico')} ? 'is-invalid'">
@@ -77,9 +83,14 @@
 						<div class="invalid-feedback">
 							<span th:errors="*{tecnico.tecNome}"></span>
 						</div>
-					</div>
 
-					<div class="form-group col-md-4">
+					</div>
+					<div class="form-group col-md-1">
+						<button class="btn btn-primary btn-sm" type="button">
+							<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
+						</button>
+					</div>
+					<div class="form-group col-md-5">
 						<label for="equipamento">Equipamento</label> <select
 							id="equipamento" class="form-control" th:field="*{equipamento}"
 							th:classappend="${#fields.hasErrors('equipamento')} ? 'is-invalid'">
@@ -92,23 +103,24 @@
 							<span th:errors="*{equipamento}"></span>
 						</div>
 					</div>
-                 
+					<div class="form-group col-md-1">
+						<button type="button" class="btn btn-primary btn-sm">
+							<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
+						</button>
+					</div>
+					
 					<div class="form-group col-md-3">
 						<label for="ip">IP</label> <input type="text" class="form-control"
-							id="ip" placeholder="IP (000.000.000.000)"
-							data-mask="000.000.000.000" autofocus="autofocus"
+							id="ip" placeholder="IP (000.000.000.000)" autofocus="autofocus"
 							th:field="*{chIp}"
 							th:classappend="${#fields.hasErrors('chIp')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
 							<span th:errors="*{chIp}"></span>
 						</div>
 					</div>
-
-				</div>
-				<div class="form-row">
-					<div class="form-group col-md-5">
+					<div class="form-group col-md-6">
 						<label for="problema">Problema</label>
-						<textarea class="form-control" id="problema" rows="2"
+						<textarea class="form-control" id="problema" rows="1"
 							placeholder="Descreva o problema" autofocus="autofocus"
 							th:field="*{chProblema}"
 							th:classappend="${#fields.hasErrors('chProblema')} ? 'is-invalid'"></textarea>
@@ -116,18 +128,14 @@
 							<span th:errors="*{chProblema}"></span>
 						</div>
 					</div>
-					<div class="form-group col-md-5">
-						<label for="observacao">Observação</label>
-						<textarea class="form-control" id="observacao" rows="2"
-							placeholder="Descreva a observação" autofocus="autofocus"
-							th:field="*{chObservacao}"
-							th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
-						<div class="invalid-feedback">
-							<span th:errors="*{chObservacao}"></span>
-						</div>
-					</div>
+
 				</div>
 				<div class="form-row">
+					
+
+				</div>
+				<div class="form-row">
+
 					<div class="form-group col-md-3">
 						<label for="prioridade">Prioridade</label> <select id="prioridade"
 							class="form-control" th:field="*{chPrioridade}"
@@ -154,26 +162,54 @@
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-5">
-						<label for="servico">Serviço</label> <select id="servico"
-							class="form-control" th:field="*{equipamento.servicos}"
-							th:classappend="${#fields.hasErrors('equipamento.servicos')} ? 'is-invalid'">
-							<option value="">Selecione</option>
-							<option th:each="s : ${servicos}" th:value="${s.id}"
-								th:text="${s.serNome}">Selecione...</option>
-						</select>
+					<div class="form-group col-md-9">
+						<label for="observacao">Observação</label>
+						<textarea class="form-control" id="observacao" rows="2"
+							placeholder="Descreva a observação" autofocus="autofocus"
+							th:field="*{chObservacao}"
+							th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
 						<div class="invalid-feedback">
-							<span th:errors="*{equipamento.servicos}"></span>
+							<span th:errors="*{chObservacao}"></span>
 						</div>
 					</div>
-					
 				</div>
 
 				<input type="hidden" id="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
-			</form>
-
+			</form>			
 		</div>
 	</section>
+	
+	<!-- <script th:inline="javascript" th:fragment="inlinescript">
+	$(document).ready(function () {
+		moment.locale('pt-BR');
+		var idEquipamento = [[${chamado.equipamento.id != null ? equipamento.id : 0}]];
+		if (idEquipamento != 0) {
+			var table = $('#table-equipamento-servico').DataTable({
+				searching: false,
+				lengthMenu: [3, 5],
+				processing: true,
+				serverSide: true,
+				responsive: true,
+				ajax: {
+					url: '/servicos/datatables/server/equipamento/' + idEquipamento,
+					data: 'data'
+				},
+				columns: [
+					{data: 'id'},
+					{data: 'eqModelo'},
+					{data: 'eqDescricao'}
+					{orderable: false,
+					 data: 'id',
+						"render": function(id) {
+							return '<a class="btn btn-danger btn-sm btn-block" href="/equipamentos/id/' + idEquipamento + '/excluir/servico/' +
+								id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
+						}
+					}
+				]
+			});
+		}
+	});   
+	</script> -->
 </body>
 </html>

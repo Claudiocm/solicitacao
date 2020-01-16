@@ -16,13 +16,12 @@
 			<a class="btn btn-primary btn-md" th:href="@{/chamados/cadastrar}"
 				role="button"> <span class="oi oi-plus" title="Cadastro"
 				aria-hidden="true"></span> <span>Novo Chamado</span>
-			</a> 
-			<a class="btn btn-primary btn-md" th:href="@{/chamados/buscar}"
+			</a> <a class="btn btn-primary btn-md" th:href="@{/chamados/buscar}"
 				role="button"> <span class="oi oi-plus"
 				title="Lista de Chamados" aria-hidden="true"></span> <span>Painel</span>
 			</a>
 		</nav>
-
+		
 		<div class="container" id="listagem">
 			<div class="table-responsive">
 				<div th:replace="fragments/alert"></div>
@@ -42,13 +41,21 @@
 							<td th:text="${c.id}">1</td>
 							<td
 								th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">Data</td>
-							<td th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
+							<td
+								th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
 							<td th:text="${c.chSituacao.descricao}">Situação</td>
-							<td colspan="2"><a class="btn btn-info btn-sm"
-								th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
+							<td colspan="2">
+							<a class="btn btn-info btn-sm"	th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
 									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
-							</a></td>
+							</a>
+							<button th:id="${'btn_chamados/excluir/' + c.id}"
+									type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+									data-target="#myModal">
+									<span class="oi oi-circle-x" title="Exclusão desabilitada"
+										aria-hidden="true"></span>
+							</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>

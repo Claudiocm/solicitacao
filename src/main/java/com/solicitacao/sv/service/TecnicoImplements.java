@@ -31,6 +31,7 @@ public class TecnicoImplements implements TecnicoService {
 			t.getChamados().addAll(tecnico.getChamados());
 			;
 		}
+	
 	}
 
 	@Override
@@ -59,5 +60,25 @@ public class TecnicoImplements implements TecnicoService {
 	public Tecnico buscarPorUsuarioId(Long id) {
 		return dao.findByUsuarioId(id).orElse(new Tecnico());
 	}
+
+	public boolean tecnicoTemChamados(Long id) {
+		if (buscarPorId(id).getChamados().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean tecnicoTemEquipamentos(Long id) {
+		if (buscarPorId(id).getEquipamentos().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	@Transactional(readOnly = true)
+	public Tecnico buscarPorUsuarioEmail(String username) {
+		return dao.findByUsuarioEmail(username).orElse(new Tecnico());
+	}
+
 
 }

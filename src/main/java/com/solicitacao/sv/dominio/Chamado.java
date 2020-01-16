@@ -1,5 +1,6 @@
 package com.solicitacao.sv.dominio;
 
+import java.net.InetAddress;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -16,26 +17,28 @@ import javax.validation.constraints.PastOrPresent;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "chamado")
-public class Chamado extends AbstractEntity<Long>{
-	private static final long serialVersionUID = 1L;
-	@NotNull
+public class Chamado extends AbstractEntity<Long> {
+	/**
+	 * 
+	 */
 	@PastOrPresent(message = "{PastOrPresent.chamado.chDataAbertura}")
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "data_abertura", nullable = false, columnDefinition = "DATE")
 	private LocalDate chDataAbertura;
-	
+
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "data_fechamento", columnDefinition = "DATE")
 	private LocalDate chDataFechamento;
 
 	@Column(name = "ch_problema")
 	private String chProblema;
-	
+
 	@Column(name = "ch_observacao")
 	private String chObservacao;
-    
+
 	@Column(name = "ch_ip")
 	private String chIp;
 
@@ -46,23 +49,29 @@ public class Chamado extends AbstractEntity<Long>{
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Prioridade chPrioridade;
-	
-	@JoinColumn(name="id_setor_fk", referencedColumnName = "id")
+
+	@JoinColumn(name = "setor", referencedColumnName = "id")
 	@ManyToOne
 	private Setor setor;
 
-	@JoinColumn(name = "id_equipamento_fk", referencedColumnName = "id")
+	@JoinColumn(name = "equipamento", referencedColumnName = "id")
 	@ManyToOne
 	private Equipamento equipamento;
-	
+
 	@Valid
-	@JoinColumn(name = "id_tecnico_fk", referencedColumnName = "id")
+	@JoinColumn(name = "tecnico", referencedColumnName = "id")
 	@ManyToOne
 	private Tecnico tecnico;
+	@Valid
+	@ManyToOne
+	@JoinColumn(name = "servico", referencedColumnName = "id")
+	private Servico servico;
 
+	@ManyToOne
+	@JoinColumn(name = "solicitante", referencedColumnName = "id")
+	private Solicitante solicitante;
 
 	public LocalDate getChDataAbertura() {
-		chDataAbertura = LocalDate.now();
 		return chDataAbertura;
 	}
 
@@ -144,6 +153,22 @@ public class Chamado extends AbstractEntity<Long>{
 
 	public void setChSituacao(Situacao chSituacao) {
 		this.chSituacao = chSituacao;
+	}
+
+	public Servico getServico() {
+		return servico;
+	}
+
+	public void setServico(Servico servico) {
+		this.servico = servico;
+	}
+
+	public Solicitante getSolicitante() {
+		return solicitante;
+	}
+
+	public void setSolicitante(Solicitante solicitante) {
+		this.solicitante = solicitante;
 	}
 
 }

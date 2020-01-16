@@ -33,6 +33,9 @@
 						<label for="nome">Nome do Técnico</label> <input type="text"
 							class="form-control" id="nome" placeholder="Nome do Técnico"
 							autofocus="autofocus" th:field="*{tecNome}" th:classappend="${#fields.hasErrors('tecNome')} ? 'is-invalid'"/>
+					<div class="invalid-feedback">
+							<span th:errors="*{tecNome}"></span>
+						</div>
 					</div>
 				</div>
 				<div class="form-group col-md-5">
@@ -42,6 +45,9 @@
 	                            <option th:each="c : ${cargos}" 
 	                                    th:value="${c.id}" th:text="${c.nome}">Administração</option>
 	                        </select>
+	                        <div class="invalid-feedback">
+							<span th:errors="*{cargo.nome}"></span>
+						</div>
 	                    </div>
 				<input type="hidden" id="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>

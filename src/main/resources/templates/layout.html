@@ -16,8 +16,21 @@
 <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 <link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css"
 	rel="stylesheet" />
+<link
+	href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css"
+	rel="stylesheet" />
+<!-- jQueryUI (autocomplete) -->
+<link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+	rel="stylesheet" />
+<!-- Icons fontawesome -->
+<link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+	crossorigin="anonymous" rel="stylesheet" />
 <!-- Custom styles for this template -->
-<link href="/css/style.css" rel="stylesheet" />
+<link th:href="@{/css/style.css}" rel="stylesheet" />
+<link th:href="@{/css/style-home.css(v=${version}) }" rel="stylesheet" />
 
 </head>
 <body>
@@ -26,11 +39,6 @@
 	</header>
 
 	<div class="layout-main">
-
-		<nav th:replace="fragments/navbar :: navbar">
-			<span>menu</span>
-		</nav>
-
 		<section layout:fragment="corpo">
 			<div>conteudo principal das páginas</div>
 		</section>
@@ -39,7 +47,7 @@
 	<footer th:replace="fragments/footer :: rodape">
 		<div>footer</div>
 	</footer>
-
+	<span th:replace="fragments/modal-confirm :: modal-confirm"></span>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -71,19 +79,6 @@
 			})
 		});
 	</script>
-	<script type="text/javascript">
-		function inserir() {
-			if ($('#servico').val() != '') {
-				var e = document.getElementById("servico");
-				var itemSelecionado = e.options[e.selectIndex].value
 
-				document.getElementByName('tabServico').value = itemSelecionado;
-			} else {
-				alert("Por favor selecione um servico!");
-				return false;
-			}
-		}
-		
-	</script>
 </body>
 </html>

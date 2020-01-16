@@ -53,4 +53,11 @@ public class SetorImplements implements SetorService {
 		return dao.findByName(nome);
 	}
 
+	public boolean setorTemUsuarios(Long id) {
+		if (buscarPorId(id).getUsuarios().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
 }

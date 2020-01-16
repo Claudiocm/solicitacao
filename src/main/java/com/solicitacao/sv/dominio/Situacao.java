@@ -1,8 +1,8 @@
 package com.solicitacao.sv.dominio;
 
 public enum Situacao {
-	ABERTO("Aberto"), AGUARDANDO_PECA("Aguardando Peça"), ANDAMENTO("Em andamento"), ENTREGUE("Entregue"), FECHADO(
-			"Fechado"), SUCATA("Sucata");
+	ABERTO("ABERTO"), AGUARDANDO_PECA("AGUARDANDO PEÇA"), ANDAMENTO("EM ANDAMENTO"), ENTREGUE("ENTREGUE"), FECHADO(
+			"FECHADO"), SUCATA("SUCATA");
 
 	private String descricao;
 

@@ -33,6 +33,9 @@
 						<label for="nome">Cargo</label> <input type="text"
 							class="form-control" id="nome" placeholder="Cargo"
 							autofocus="autofocus" th:field="*{nome}" th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'"/>
+					 <div class="invalid-feedback">
+							<span th:errors="*{nome}"></span>
+						</div>
 					</div>
 				</div>
 				
