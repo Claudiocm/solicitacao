@@ -1,0 +1,33 @@
+<html ng-app="app">
+<body>
+    <div ng-view></div>
+ 
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//code.angularjs.org/1.6.0/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.6.0/angular-route.min.js"></script>
+    <script src="logado/app.js"></script>
+    <script src="home/home.controller.js"></script>
+    <script src="logado/logdadoscontroller.js"></script>
+    <h2>Login</h2>
+<form name="form" ng-submit="vm.login()" role="form">
+    <div>
+        <label for="username">Username</label>
+        <input type="text" name="username"
+          id="username" ng-model="vm.username" required />
+        <span ng-show="form.username.$dirty
+          && form.username.$error.required">Username is required</span>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password"
+          name="password" id="password" ng-model="vm.password" required />
+        <span ng-show="form.password.$dirty
+          && form.password.$error.required">Password is required</span>
+    </div>
+    <div class="form-actions">
+        <button type="submit"
+          ng-disabled="form.$invalid || vm.dataLoading">Login</button>
+    </div>
+</form>
+</body>
+</html>
