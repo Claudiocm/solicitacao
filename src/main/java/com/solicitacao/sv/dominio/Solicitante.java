@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "solicitantes")
+@Table(name = "solicitante")
 public class Solicitante extends AbstractEntity<Long> {
 
 	@Column(name = "nome", unique = true, nullable = false)

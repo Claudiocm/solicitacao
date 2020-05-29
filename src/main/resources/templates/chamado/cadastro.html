@@ -29,8 +29,16 @@
 				<div th:replace="fragments/validacao  :: validacao"></div>
 
 				<div class="form-row">
-
-					<div class="form-group col-md-3">
+					<div class="form-group col-md-1">
+						<label for="id">Nº</label> <input type="text" class="form-control"
+							id="id" placeholder="Número do Chamado" autofocus="autofocus"
+							th:field="*{id}" disabled="true"
+							th:classappend="${#fields.hasErrors('id')} ? 'is-invalid'" />
+						<div class="invalid-feedback">
+							<span th:errors="*{id}"></span>
+						</div>
+					</div>
+					<div class="form-group col-md-2">
 						<label for="abertura">Data Abertura</label> <input type="date"
 							class="form-control" id="abertura" placeholder="Data de abertura"
 							autofocus="autofocus" th:field="*{chDataAbertura}"
@@ -39,7 +47,7 @@
 							<span th:errors="*{chDataAbertura}"></span>
 						</div>
 					</div>
-					<div class="form-group col-md-3">
+					<div class="form-group col-md-2">
 						<label for="fechamento">Data Fechamento</label> <input type="date"
 							class="form-control" id="fechamento"
 							placeholder="Data de fechamento" autofocus="autofocus"
@@ -50,6 +58,20 @@
 						</div>
 
 					</div>
+					<div class="form-group col-md-3">
+						<label for="situacao">Situação</label> <select id="situacao"
+							class="form-control" th:field="*{chSituacao}"
+							th:classappend="${#fields.hasErrors('chSituacao')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option th:each="s : ${situacoes}" th:value="${s}"
+								th:text="${s.descricao}">Selecione...</option>
+						</select>
+						<div class="invalid-feedback">
+							<span th:errors="*{chSituacao}"></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
 					<div class="form-group col-md-4">
 						<label for="setor">Nome do Setor</label> <select id="setor"
 							class="form-control" th:field="*{setor}"
@@ -68,10 +90,24 @@
 							<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
 						</button>
 					</div>
+					<div class="form-group col-md-5">
+						<label for="setor">Nome do Solicitante</label> 
+						<select id="solicitante"
+							class="form-control" th:field="*{solicitante}"
+							th:classappend="${#fields.hasErrors('solicitante')} ? 'is-invalid'">
+							<option value="">Selecione</option>
+							<option data-section="select" th:each="s : ${solicitantes}"
+								th:value="${s.id}" th:text="${s.nome}">Selecione...</option>
+						</select>
 
+						<div class="invalid-feedback">
+							<span th:errors="*{solicitante.nome}"></span>
+						</div>
+					</div>
 				</div>
 
 				<div class="form-row">
+					
 					<div class="form-group col-md-4">
 						<label for="tecnico">Nome do Técnico</label> <select id="tecnico"
 							class="form-control" th:field="*{tecnico}"
@@ -128,16 +164,29 @@
 							<span th:errors="*{chProblema}"></span>
 						</div>
 					</div>
-
+                   
 				</div>
+			
 				<div class="form-row">
-					
-
-				</div>
-				<div class="form-row">
-
+					<div class="form-group col-md-5">
+						<label for="observacao">Descrição do Serviço</label>
+						<textarea class="form-control" id="observacao" rows="2"
+							placeholder="Descreva a observação" autofocus="autofocus"
+							th:field="*{chObservacao}"
+							th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
+						<div class="invalid-feedback">
+							<span th:errors="*{chObservacao}"></span>
+						</div>
+						
+					</div>
+					<div class="form-group col-md-1">
+						<a class="btn btn-info btn-sm" role="button">
+							<span class="oi oi-plus" title="Adicionar" aria-hidden="true">  Adicionar</span>
+						</a>
+					</div>
 					<div class="form-group col-md-3">
-						<label for="prioridade">Prioridade</label> <select id="prioridade"
+						<label for="prioridade">Prioridade</label> 
+						<select id="prioridade"
 							class="form-control" th:field="*{chPrioridade}"
 							th:classappend="${#fields.hasErrors('chPrioridade')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -148,30 +197,6 @@
 							<span th:errors="*{chPrioridade}"></span>
 						</div>
 					</div>
-					<div class="form-group col-md-3">
-						<label for="situacao">Situação</label> <select id="situacao"
-							class="form-control" th:field="*{chSituacao}"
-							th:classappend="${#fields.hasErrors('chSituacao')} ? 'is-invalid'">
-							<option value="">Selecione</option>
-							<option th:each="s : ${situacoes}" th:value="${s}"
-								th:text="${s.descricao}">Selecione...</option>
-						</select>
-						<div class="invalid-feedback">
-							<span th:errors="*{chSituacao}"></span>
-						</div>
-					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-group col-md-9">
-						<label for="observacao">Observação</label>
-						<textarea class="form-control" id="observacao" rows="2"
-							placeholder="Descreva a observação" autofocus="autofocus"
-							th:field="*{chObservacao}"
-							th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
-						<div class="invalid-feedback">
-							<span th:errors="*{chObservacao}"></span>
-						</div>
-					</div>
 				</div>
 
 				<input type="hidden" id="id" th:field="*{id}" />
@@ -180,36 +205,5 @@
 		</div>
 	</section>
 	
-	<!-- <script th:inline="javascript" th:fragment="inlinescript">
-	$(document).ready(function () {
-		moment.locale('pt-BR');
-		var idEquipamento = [[${chamado.equipamento.id != null ? equipamento.id : 0}]];
-		if (idEquipamento != 0) {
-			var table = $('#table-equipamento-servico').DataTable({
-				searching: false,
-				lengthMenu: [3, 5],
-				processing: true,
-				serverSide: true,
-				responsive: true,
-				ajax: {
-					url: '/servicos/datatables/server/equipamento/' + idEquipamento,
-					data: 'data'
-				},
-				columns: [
-					{data: 'id'},
-					{data: 'eqModelo'},
-					{data: 'eqDescricao'}
-					{orderable: false,
-					 data: 'id',
-						"render": function(id) {
-							return '<a class="btn btn-danger btn-sm btn-block" href="/equipamentos/id/' + idEquipamento + '/excluir/servico/' +
-								id +'" role="button" data-toggle="modal" data-target="#confirm-modal"><i class="fas fa-times-circle"></i></a>';
-						}
-					}
-				]
-			});
-		}
-	});   
-	</script> -->
 </body>
 </html>

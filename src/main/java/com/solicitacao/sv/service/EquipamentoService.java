@@ -21,12 +21,6 @@ public interface EquipamentoService {
 	public List<Equipamento> buscarPorDescricao(String descricao);
 
 	public List<Equipamento> buscarPorSerie(String serie);
-	
-	public Servico adicionaServico(Long id, Long idServico);
-	
-	public Servico buscarServicoPorEquipamento(Long idEquip, Long idServ);
-
-	public Equipamento buscarEquipamentoPorTipo(Long id, HttpServletRequest request);
 
 	public List<Equipamento> buscarEquipamentosPorServico(String titulo);
 }

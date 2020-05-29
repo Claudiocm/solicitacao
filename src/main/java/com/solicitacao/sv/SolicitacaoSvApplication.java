@@ -22,7 +22,7 @@ public class SolicitacaoSvApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		service.enviarPedidoDeConfirmacaoDeCadastro("claudio.c.matos@gmail.com", "a2018c44");
+		//service.enviarPedidoDeConfirmacaoDeCadastro("claudio.c.matos@gmail.com", "a2018c44");
 	}
 
 }

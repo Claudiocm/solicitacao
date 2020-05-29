@@ -41,10 +41,7 @@ public class TecnicoController {
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Tecnico tecnico, ModelMap modelo, @AuthenticationPrincipal User user) {
-		if(tecnico.hasNotId()) {
-			tecnico = servico.buscarPorUsuarioEmail(tecnico.getUsuario().getEmail());
-			modelo.addAttribute("tecnico",tecnico);
-		}
+		
 		return "/tecnico/cadastro";
 	}
 

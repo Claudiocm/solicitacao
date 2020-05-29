@@ -21,12 +21,15 @@
 						<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
 						href="#" role="tablist" aria-orientation="vertical"		aria-expanded="false"> Solicitações </a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" th:href="@{/chamados/cadastrar}"> <span>Cadastrar</span>
+							<a class="dropdown-item" th:href="@{/chamados/cadastrar}"> 
+							   <span>Cadastrar</span>
 							</a> 
 							<a class="dropdown-item" th:href="@{/chamados/buscar}"> 
-							<i	class="oi oi-spreadsheet"></i>
-							<span>Listar</span>
-							</a> <a class="dropdown-item" th:href="@{/chamados/graficos}"> <span>Gráficos</span>
+							   <i	class="oi oi-spreadsheet"></i>
+							   <span>Listar</span>
+							</a> 
+							<a class="dropdown-item" th:href="@{/graficos/chamados}"> 
+							   <span>Gráficos</span>
 							</a>
 						</div>
 					</li>
@@ -35,20 +38,16 @@
 						aria-expanded="false"> Equipamentos </a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/equipamentos/cadastrar}">
-								 <span>Cadastrar</span>
+								<span>Cadastrar</span>
 							</a> <a class="dropdown-item" th:href="@{/equipamentos/listar}">
-							<i	class="oi oi-spreadsheet"></i>
-								<span>Listar </span>
+								<i class="oi oi-spreadsheet"></i> <span>Listar </span>
 							</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item"> Tipo Equipamentos </a>
-							<a class="dropdown-item" th:href="@{/tipos/cadastrar}">  
-							<i	class="oi oi-plus"></i>
-							<span>Cadastrar</span>
-							</a> 
-							<a class="dropdown-item" th:href="@{/tipos/listar}"> 
-							<i	class="oi oi-spreadsheet"></i>
-							<span>Listar </span>
+							<a class="dropdown-item"> Tipo Equipamentos </a> <a
+								class="dropdown-item" th:href="@{/tipos/cadastrar}"> <i
+								class="oi oi-plus"></i> <span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/tipos/listar}"> <i
+								class="oi oi-spreadsheet"></i> <span>Listar </span>
 							</a>
 						</div>
 						
@@ -92,7 +91,23 @@
 							<i	class="oi oi-spreadsheet"></i>
 							<span>Listar</span>
 							</a>
-						</div></li>
+						</div>
+					</li>
+					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO','SOLICITANTE')">
+					<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">
+							Solicitantes </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/solicitantes/lista}"> 
+							<i	class="oi oi-plus"></i>
+							<span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/solicitantes/}"> 
+							<i	class="oi oi-spreadsheet"></i>
+							<span>Listar</span>
+							</a>
+						</div>
+					</li>
+					
 					<li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
 					<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
 						href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -105,7 +120,8 @@
 							<i	class="oi oi-spreadsheet"></i>
 							<span>Listar</span>
 							</a>
-						</div></li>
+						</div>
+					</li>
 					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
 						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
 						href="#" role="button" aria-haspopup="true" aria-expanded="false">

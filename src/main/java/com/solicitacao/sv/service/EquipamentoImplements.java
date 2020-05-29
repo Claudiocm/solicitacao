@@ -39,6 +39,7 @@ public class EquipamentoImplements implements EquipamentoService {
 		if (!equipamento.getServicos().isEmpty()) {
 			e.getServicos().addAll(equipamento.getServicos());
 		}
+		e.setServicos(e.getServicos());
 		e.setTecnico(equipamento.getTecnico());
 	}
 
@@ -68,34 +69,6 @@ public class EquipamentoImplements implements EquipamentoService {
 	@Override
 	public List<Equipamento> buscarPorSerie(String serie) {
 		return dao.findBySerie(serie);
-	}
-
-	@Override
-	public Servico buscarServicoPorEquipamento(Long idEquip, Long idServ) {
-		Equipamento equipamento = buscarPorId(idEquip);
-		if (equipamento != null) {
-			for (Servico servico : equipamento.getServicos()) {
-				if (servico.getId().equals(idServ)) {
-					return servico;
-				}
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public Servico adicionaServico(Long id, Long idServico) {
-		Equipamento e = buscarPorId(id);
-		if(e == null){
-			return null;
-		}
-		
-		return null;
-	}
-
-	@Override
-	public Equipamento buscarEquipamentoPorTipo(Long id, HttpServletRequest request) {
-		return null;
 	}
 	
 	@Transactional(readOnly = true)

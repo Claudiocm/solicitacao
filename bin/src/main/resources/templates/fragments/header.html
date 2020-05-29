@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<header th:fragment="cabecalho">
+		<br /> <br /> <br /><br />
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<a class="navbar-brand " th:href="@{/}">Solicitação de Serviços</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarCollapse" aria-controls="navbarCollapse"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<i	class="oi oi-spreadsheet"></i>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item dropdown"	sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+						<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="tablist" aria-orientation="vertical"		aria-expanded="false"> Solicitações </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/chamados/cadastrar}"> <span>Cadastrar</span>
+							</a> 
+							<a class="dropdown-item" th:href="@{/chamados/buscar}"> 
+							<i	class="oi oi-spreadsheet"></i>
+							<span>Listar</span>
+							</a> <a class="dropdown-item" th:href="@{/chamados/graficos}"> <span>Gráficos</span>
+							</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown"	sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"	href="#" role="tablist" aria-orientation="vertical"
+						aria-expanded="false"> Equipamentos </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/equipamentos/cadastrar}">
+								 <span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/equipamentos/listar}">
+							<i	class="oi oi-spreadsheet"></i>
+								<span>Listar </span>
+							</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item"> Tipo Equipamentos </a>
+							<a class="dropdown-item" th:href="@{/tipos/cadastrar}">  
+							<i	class="oi oi-plus"></i>
+							<span>Cadastrar</span>
+							</a> 
+							<a class="dropdown-item" th:href="@{/tipos/listar}"> 
+							<i	class="oi oi-spreadsheet"></i>
+							<span>Listar </span>
+							</a>
+						</div>
+						
+					</li>
+					
+					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">Serviços</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/servicos/cadastrar}">
+							<i	class="oi oi-plus"></i> 
+							<span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/servicos/listar}"> 
+							<i	class="oi oi-spreadsheet"></i>
+							<span>Listar </span>
+							</a>
+						</div></li>
+					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+					<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">
+							Técnicos </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/tecnicos/cadastrar}"> 
+							<i	class="oi oi-plus"></i>
+							<span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/tecnicos/listar}"> <i
+								class="oi oi-spreadsheet"></i> <span>Listar </span>
+							</a> <a class="dropdown-item"
+								th:href="@{/chamados/historico/tecnico}"> <i
+								class="oi oi-spreadsheet"></i> <span>Histórico [Técnico]</span>
+							</a>
+						</div></li>
+					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+					<a		class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">Usuários</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/usuarios/cadastrar}"> 
+							<i	class="oi oi-plus"></i>
+                             <span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/usuarios/listar}"> 
+							<i	class="oi oi-spreadsheet"></i>
+							<span>Listar</span>
+							</a>
+						</div></li>
+					<li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
+					<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">
+							Cargos </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/cargos/cadastrar}"> 
+							<i	class="oi oi-plus"></i>
+							<span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/cargos/listar}"> 
+							<i	class="oi oi-spreadsheet"></i>
+							<span>Listar</span>
+							</a>
+						</div></li>
+					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">
+							Setor </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/setores/cadastrar}"> 
+							<i	class="oi oi-plus"></i>
+							<span>Cadastrar</span>
+							</a> <a class="dropdown-item" th:href="@{/setores/listar}"> 
+							<i	class="oi oi-spreadsheet"></i>
+							<span>Listar</span>
+							</a>
+						</div>
+					</li>
+				</ul>
+
+				<form class="form-inline mt-2 mt-md-0"	sec:authorize="!isAuthenticated()">
+					<div class="form-check mb-2 mr-sm-2">
+						<a class="btn btn-outline-success my-2 my-sm-0" role="button"
+							th:href="@{/login}">Login</a>
+					</div>
+
+					<div class="form-check mb-2 mr-sm-2"
+						sec:authorize="!isAuthenticated()">
+						<a class="btn btn-outline-success my-2 my-sm-0" role="button"
+							th:href="@{/}">Cadastrar-se</a>
+					</div>
+				</form>
+
+				<form th:action="@{/logout}" method="post"
+					class="form-inline mt-2 mt-md-0">
+					<div class="btn-group mb-2 mr-sm-2">
+						<button type="button" class="btn btn-light">
+							<i class="fas fa-user"></i> <span class=""
+								sec:authentication="name">Usuario</span>
+						</button>
+						<button type="button"
+							class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						</button>
+						<div class="dropdown-menu">
+							<button type="submit" class="dropdown-item">Sair</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</nav>
+	</header>
+</body>
+</html>

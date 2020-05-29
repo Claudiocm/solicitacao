@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// acessos privados chamados
 				.antMatchers("/chamados/**").hasAnyAuthority(TECNICO, ADMIN)
+				.antMatchers("/chamados/cadastrar", "/chamados/salvar", "/chamados/editar").hasAnyAuthority(SOLICITANTE, TECNICO, ADMIN)
 
 				// acessos privados tecnicos
 				.antMatchers("/equipamentos/**").hasAnyAuthority(TECNICO, ADMIN)

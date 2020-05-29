@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+
+<body>
+
+	<section class="content" layout:fragment="corpo">
+	<main role="main">
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Home</span></li>
+				</ul>
+			</div>
+		</nav>
+		<div class="container">
+		  <div id="list-home" class="row">
+		
+		   </div>
+	     </div>
+	</main>
+	</section>
+	
+	<script th:src="~{}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript"></script>
+</body>
+</html>

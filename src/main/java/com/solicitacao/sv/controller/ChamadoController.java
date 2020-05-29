@@ -79,16 +79,6 @@ public class ChamadoController {
 		binder.addValidators(new ChamadoValidator());
 	}
 
-	@RequestMapping(value = "/graficos")
-	@ResponseBody
-	public ResponseEntity<Iterable<Chamado>> todos() {
-		try {
-			return new ResponseEntity<Iterable<Chamado>>(chService.todos(), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<Iterable<Chamado>>(HttpStatus.BAD_REQUEST);
-		}
-	}
-
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/cadastrar")
 	public String cadastrar(Chamado chamado) throws UnknownHostException {
@@ -288,6 +278,11 @@ public class ChamadoController {
 		return tecService.buscarTodos();
 	}
 
+	@ModelAttribute("solicitantes")
+	public List<Solicitante> getSolicitante() {
+		return solService.buscarTodos();
+	}
+	
 	@ModelAttribute("tipoEquipamentos")
 	public List<TipoEquipamento> getTipoEquipamentos() {
 		return tipoEquipamentoService.buscarTodos();

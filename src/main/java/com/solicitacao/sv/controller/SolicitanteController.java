@@ -1,16 +1,22 @@
 package com.solicitacao.sv.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.solicitacao.sv.dominio.Servico;
+import com.solicitacao.sv.dominio.Setor;
 import com.solicitacao.sv.dominio.Solicitante;
 import com.solicitacao.sv.dominio.Usuario;
+import com.solicitacao.sv.service.SetorImplements;
 import com.solicitacao.sv.service.SolicitanteServiceImpl;
 import com.solicitacao.sv.service.UsuarioService;
 import com.solicitacao.sv.service.UsuarioServiceImpl;
@@ -20,6 +26,8 @@ import com.solicitacao.sv.service.UsuarioServiceImpl;
 public class SolicitanteController {
 	@Autowired
 	private SolicitanteServiceImpl service;
+	@Autowired
+	private SetorImplements setorService;
 	@Autowired
 	private UsuarioServiceImpl usuarioService;
 
@@ -31,7 +39,7 @@ public class SolicitanteController {
 			solicitante.setUsuario(new Usuario(user.getUsername()));
 		}
 		model.addAttribute("solicitante", solicitante);
-		return "solicitante/cadastro";
+		return "/solicitante/cadastro";
 	}
 
 	// salvar o form de dados pessoais do solicitante com verificacao de senha
@@ -45,7 +53,7 @@ public class SolicitanteController {
 		} else {
 			model.addAttribute("falha", "Sua senha não confere, tente novamente.");
 		}
-		return "solicitante/cadastro";
+		return "/solicitante/cadastro";
 	}
 
 	// editar o form de dados pessoais do paciente com verificacao de senha
@@ -58,6 +66,11 @@ public class SolicitanteController {
 		} else {
 			model.addAttribute("falha", "Sua senha não confere, tente novamente.");
 		}
-		return "solicitante/cadastro";
+		return "/solicitante/cadastro";
+	}
+	
+	@ModelAttribute("setores")
+	private List<Setor> getSetor() {
+		return setorService.buscarTodos();
 	}
 }
