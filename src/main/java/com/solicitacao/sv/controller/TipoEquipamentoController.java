@@ -22,7 +22,7 @@ import com.solicitacao.sv.service.EquipamentoImplements;
 import com.solicitacao.sv.service.TipoEquipamentoImpl;
 
 @Controller
-@RequestMapping("/tipos")
+@RequestMapping("/tipoEquipamentos")
 public class TipoEquipamentoController {
 	@Autowired
 	private EquipamentoImplements equipamentoService;
@@ -36,7 +36,7 @@ public class TipoEquipamentoController {
 
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("tipos", service.buscarTodos());
+		model.addAttribute("tipoEquipamentos", service.buscarTodos());
 		return "/tipo-equipamento/lista";
 	}
 
@@ -53,12 +53,12 @@ public class TipoEquipamentoController {
 		service.salvar(equipamento);
 		attr.addFlashAttribute("successo", "Operação realizada com sucesso!");
 
-		return "redirect:/tipos/cadastrar";
+		return "redirect:/tipoEquipamentos/cadastrar";
 	}
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap modelo) {
-		modelo.addAttribute("equipamento", service.buscarPorId(id));
+		modelo.addAttribute("tipoEquipamento", service.buscarPorId(id));
 		return "tipo-equipamento/cadastro";
 	}
 
@@ -70,20 +70,21 @@ public class TipoEquipamentoController {
 
 		service.editar(equipamento);
 		attr.addFlashAttribute("success", "Tipo editado com sucesso!");
-		return "redirect:/tipos/cadastrar";
+		return "redirect:/tipoEquipamentos/cadastrar";
 	}
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		service.remover(id);
 		attr.addFlashAttribute("sucesso", "Operação realizada com sucesso.");
-		return "redirect:/tipos";
+		return "redirect:/tipoEquipamentos";
 	}
 
 	@GetMapping("/nome")
-	public ResponseEntity<?> getTipoEquipamentosPorTermo(@RequestParam("termo") String termo) {
-		List<String> tipos = service.buscarTipoEquipamentoByTermo(termo);
-		return ResponseEntity.ok(tipos);
+	public String tipoEquipamentoPorNome(@RequestParam("nome") String nome, ModelMap modelo) {
+		modelo.addAttribute("tipoEquipamentos",service.buscarTipoEquipamentoByNome(nome));
+		
+		return "/tipo-equipamento/lista";
 	}
 
 	/*

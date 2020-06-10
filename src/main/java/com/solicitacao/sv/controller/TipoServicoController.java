@@ -43,7 +43,7 @@ public class TipoServicoController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvarTipos(TipoServico tipoServico, BindingResult result, RedirectAttributes attr) {
+	public String salvarTipos(@Valid TipoServico tipoServico, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
 			return "/tipo-servico/cadastro";
 		}
@@ -60,7 +60,7 @@ public class TipoServicoController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(TipoServico tipoServico, BindingResult result, RedirectAttributes attr) {
+	public String editar(@Valid TipoServico tipoServico, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
 			return "/tipo-servico/cadastro";
 		}
@@ -68,7 +68,7 @@ public class TipoServicoController {
 		service.editar(tipoServico);
 		
 		attr.addFlashAttribute("success", "Tipo editado com sucesso!");
-		attr.addFlashAttribute("tipoServico", tipoServico);
+		attr.addFlashAttribute("tipoServicos", tipoServico);
 		return "redirect:/tipoServicos/cadastrar";
 	}
 
@@ -79,9 +79,16 @@ public class TipoServicoController {
 		return "redirect:/tipoServicos";
 	}
 
-	@GetMapping("/nome")
+	@GetMapping("/termo")
 	public ResponseEntity<?> getTipoServicosPorTermo(@RequestParam("termo") String termo) {
 		List<String> tipos = service.buscarTipoServicoByTermo(termo);
 		return ResponseEntity.ok(tipos);
+	}
+	
+	@GetMapping("/nome")
+	public String tipoServicosPorNome(@RequestParam("nome") String nome, ModelMap modelo) {
+		modelo.addAttribute("tipoServicos",service.buscarTipoServicoByNome(nome));
+		
+		return "/tipo-servico/lista";
 	}
 }

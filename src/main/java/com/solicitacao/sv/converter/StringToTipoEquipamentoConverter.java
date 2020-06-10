@@ -6,7 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 import com.solicitacao.sv.dominio.TipoEquipamento;
 import com.solicitacao.sv.service.TipoEquipamentoImpl;
 
-public class StringToTipoequipamentoConverter implements Converter<String, TipoEquipamento> {
+public class StringToTipoEquipamentoConverter implements Converter<String, TipoEquipamento> {
 
 	@Autowired
 	private TipoEquipamentoImpl service;

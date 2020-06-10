@@ -9,7 +9,7 @@
 			<img class="d-block mx-auto"
 				th:src="@{/image/brasao_sao_vicente.png}" width="70" height="70">
 			<h1 class="jumbotron-heading">Solicitação de Serviços</h1>
-			<p class="lead text-muted">Cadastrar de Solicitantes</p>
+			<p class="lead text-muted">Dados do Técnico</p>
 		<nav class="navbar navbar-expand-md bg-light">
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
@@ -17,9 +17,9 @@
 						<span></span></li>
 				</ul>
 			</div>
-			<a class="btn btn-primary btn-md" th:href="@{/solicitantes/listar}"
+			<a class="btn btn-primary btn-md" th:href="@{/tecnicos/cadastrar}"
 				role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
-				aria-hidden="true"></span> <span>Listar Solicitantes</span>
+				aria-hidden="true"></span> <span>Cadastrar Técnico</span>
 			</a>
 		</nav>
 	</div>
@@ -27,19 +27,19 @@
 			<div th:replace="fragments/alert"></div>
 
 			<form
-				th:action="${solicitante.id == null} ? @{/solicitantes/salvar} : @{/solicitantes/editar}"
-				th:object="${solicitante}" method="POST">
+				th:action="${tecnico.id == null} ? @{/tecnicos/salvar} : @{/tecnicos/editar}"
+				th:object="${tecnico}" method="POST">
 
 				<div th:replace="fragments/validacao  :: validacao"></div>
 
 				<div class="form-row">
 					<div class="form-group col-md-5">
-						<label for="nome">Nome do Solicitante</label> 
-						<input type="text"	class="form-control" id="nome" placeholder="Nome do Solicitante"
-							autofocus="autofocus" th:field="*{nome}"
-							th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
+						<label for="nome">Nome</label> 
+						<input type="text"	class="form-control" id="nome" placeholder="Nome do Técnico"
+							autofocus="autofocus" th:field="*{setNome}"
+							th:classappend="${#fields.hasErrors('setNome')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
-							<span th:errors="*{nome}"></span>
+							<span th:errors="*{setNome}"></span>
 						</div>
 					</div>
 					<div class="form-group col-md-5">
@@ -52,13 +52,13 @@
 						</div>
 					</div>
 					<div class="form-group col-md-3">
-						<label for="data-cadastro">Data de Cadastro</label> 
-						<input type="date" class="form-control" id="data-cadastro"
-							placeholder="Data de Cadastro" autofocus="autofocus"
-							th:field="*{dtCadastro}"
-							th:classappend="${#fields.hasErrors('dtCadastro')} ? 'is-invalid'" />
+						<label for="data-cadastro">Cargo</label> 
+						<input type="text" class="form-control" id="cargo"
+							placeholder="Cargo do Técnico" autofocus="autofocus"
+							th:field="*{cargo}"
+							th:classappend="${#fields.hasErrors(cargo')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
-							<span th:errors="*{dtCadastro}"></span>
+							<span th:errors="*{cargo}"></span>
 						</div>
 					</div>
 					<div class="form-group col-md-5">

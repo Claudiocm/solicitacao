@@ -11,7 +11,7 @@ import com.solicitacao.sv.dominio.Equipamento;
 
 public interface EquipamentoRepository extends JpaRepository<Equipamento, Long>{
 		
-	@Query("select distinct e from Equipamento e join e.servicos s where s.serNome like :descricao")
+	@Query("select e from Equipamento e where e.eqDescricao like :descricao%")
 	List<Equipamento> findByDescricao(String descricao);
 	
 	@Query("Select e from Equipamento e where e.eqSeriebp like :serie%")

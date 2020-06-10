@@ -9,49 +9,50 @@
 	<section class="layout-content" layout:fragment="corpo">
 		<main role="main">
 
-		<section class="jumbotron text-center">
-			<img class="d-block mx-auto" th:src="@{/image/logo-sv.png}"
-				width="72" height="72">
+		<section class="jumbo text-center">
+			<img class="d-block mx-auto" th:src="@{/image/brasao_sao_vicente.png}"
+				width="50" height="50">
 			<div class="container">
-				<h1 class="jumbotron-heading">Solicitação de Serviços</h1>
-				<p class="lead text-muted">Chamados técnicos</p>
+			    <h1 class="jumbotron-heading">Histórico de Chamados</h1>
 			</div>
 		</section>
 
-		<div class="album py-5 bg-light">
-			<div class="container">
+		<div class="container" id="listagem">
+		<div class="container">
+				<p class="lead text-muted">Chamados solicitados</p>
+			</div>
+			<div class="table-responsive">
+				<div th:replace="fragments/alert"></div>
 
-				<div class="d-flex justify-content-center">
-					<div class="col-md-10">
-						<div th:replace="fragments/alert :: alerta-sucesso"></div>
-						<h2>Chamados Solicitados</h2>
-
-						<table id="table-solicitante-historico"
-							class="table table-sm table-striped table-bordered nowrap"
-							style="width: 100%">
-							<thead class="thead-dark">
-								<tr>
-									<th scope="col">#</th>
-									<th scope="col">Solicitante</th>
-									<th scope="col">Data do chamado</th>
-									<th scope="col">Técnico</th>
-									<th scope="col">Serviço</th>
-									<th scope="col">Editar</th>
-									<th scope="col">Exluir</th>
-								</tr>
-							</thead>
-						</table>
-					</div>
-				</div>
+				<table class="table table-striped table-hover table-sm">
+					<thead>
+						<tr>
+							<th>Nº</th>
+							<th>Abertura</th>
+							<th>Fechamento</th>
+							<th>Série</th>
+							<th>Setor</th>
+							<th>Situação</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="c : ${chamados}">
+							<td th:text="${c.id}">1</td>
+							<td	th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">Data</td>
+							<td	th:text="${#temporals.format(c.chDataFechamento, 'dd/MM/yyyy')}">Data</td>
+							<td	th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
+							<td th:text="${c.setor.setNome}">Setor</td>
+							<td th:text="${c.chSituacao.descricao}">Situação</td>
+							
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-
 		</main>
 		
 	</section>
-	<script
-		th:src="@{/js/chamado.js(v=${version})}"
-		th:fragment="js"></script>
+	
 	<script th:inline="javascript" th:fragment="inlinescript"></script>
 </body>
 </html>

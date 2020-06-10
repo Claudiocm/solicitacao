@@ -87,12 +87,12 @@ public class UsuarioController {
 		return "redirect:/usuarios/cadastrar";
 	}
 
-	@GetMapping("/editar/credenciais/usuario/{id}")
+	@GetMapping("/editar/{id}")
 	public ModelAndView preEditar(@PathVariable("id") Long id) {
 		return new ModelAndView("usuario/cadastro", "usuario", servico.buscarPorId(id));
 	}
 
-	@PostMapping("/editar/dados/usuario/{id}/perfis/{perfis}")
+	@PostMapping("/editar/usuario/{id}/perfis/{perfis}")
 	public ModelAndView editar(@PathVariable("id") Long usuarioId, @PathVariable("perfis") Long[] perfisId) {
 
 		Usuario us = servico.buscarPorIdEPerfis(usuarioId, perfisId);
@@ -125,6 +125,12 @@ public class UsuarioController {
 		modelo.addAttribute("success", "Usuário excluido com sucesso");
 
 		return listar(modelo);
+	}
+	
+	@GetMapping("/email")
+	public String getPorEmail(@RequestParam("email") String email, ModelMap modelo) {
+		modelo.addAttribute("usuarios", servico.buscaPorEmail(email));
+		return "/usuario/lista";
 	}
 
 	@GetMapping("/editar/senha")
@@ -190,18 +196,19 @@ public class UsuarioController {
 		return "redirect:/usuarios/cadastro/realizado";
 	}
 
-	/*
-	 * // recebe a requisicao de confirmacao de cadastro
-	 * 
-	 * @GetMapping("/confirmacao/cadastro") public String
-	 * respostaConfirmacaoCadastroSolicitante(@RequestParam("codigo") String codigo,
-	 * RedirectAttributes attr) { servico.ativarCadastroSolicitante(codigo);
-	 * attr.addFlashAttribute("alerta", "sucesso"); attr.addFlashAttribute("titulo",
-	 * "Cadastro Ativado!"); attr.addFlashAttribute("texto",
-	 * "Parabéns, seu cadastro está ativo."); attr.addFlashAttribute("subtexto",
-	 * "Siga com seu login/senha"); return "redirect:/login"; }
-	 */
+	// recebe a requisicao de confirmacao de cadastro
 
+	@GetMapping("/confirmacao/cadastro/solicitante")
+	public String respostaConfirmacaoCadastroSolicitante(@RequestParam("codigo") String codigo,
+			RedirectAttributes attr) {
+		servico.ativarCadastroSolicitante(codigo);
+		attr.addFlashAttribute("alerta", "sucesso");
+		attr.addFlashAttribute("titulo", "Cadastro Ativado!");
+		attr.addFlashAttribute("texto", "Parabéns, seu cadastro está ativo.");
+		attr.addFlashAttribute("subtexto", "Siga com seu login/senha");
+		return "redirect:/login";
+	}
+	
 	// recebe a requisicao de confirmacao de cadastro
 	@GetMapping("/confirmacao/cadastro")
 	public String respostaConfirmacaoCadastroTecnico(@RequestParam("codigo") String codigo, RedirectAttributes attr) {

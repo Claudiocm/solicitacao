@@ -13,6 +13,6 @@ public interface TecnicoRepository extends JpaRepository<Tecnico, Long>{
 	List<Tecnico> findByName(String nome);
 	@Query("Select t from Tecnico t where t.id = :id")
 	Optional<Tecnico> findByUsuarioId(Long id);
-	@Query("select t from Tecnico t where t.usuario.email like :email")
+	@Query("select t from Tecnico t where t.usuario.email like :email%")
 	Optional<Tecnico> findByUsuarioEmail(String email);
 }

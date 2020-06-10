@@ -103,6 +103,12 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	public Usuario buscarPorEmail(String email) {
 		return dao.findByEmail(email);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Usuario> buscaPorEmail(String email) {
+		return dao.buscaPorEmail(email);
+	}
 
 	public static boolean isSenhaCorreta(String senhaDigitada, String senhaArmazenada) {
 
@@ -166,7 +172,6 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
 	@Transactional(readOnly = true)
 	public Optional<Usuario> buscarPorEmailEAtivo(String email) {
-
 		return dao.findByEmailAndAtivo(email);
 	}
 

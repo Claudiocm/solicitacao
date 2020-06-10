@@ -63,18 +63,6 @@ public class EquipamentoController {
 		return ResponseEntity.ok(equipamentoService.buscarEquipamentosPorServico(titulo));
 	}
 
-	@PostMapping(value = "/servico/{id}")
-	public String adicionaServico(@PathVariable("id") long id, Servico servico) {
-		Equipamento e = equipamentoService.buscarPorId(id);
-		for (Servico s : e.getServicos()) {
-			s.setEquipamentos(servico.getEquipamentos());
-		}
-
-		servicoService.salvar(servico);
-
-		return "redirect:/{id}";
-	}
-
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap modelo) {
 		modelo.addAttribute("equipamento", equipamentoService.buscarPorId(id));
@@ -113,14 +101,14 @@ public class EquipamentoController {
 		return ResponseEntity.ok(equipamentoService.buscarEquipamentos(request));
 	}
 
-	@GetMapping("/buscar/descricao")
+	@GetMapping("/descricao")
 	public String getPorDescricao(@RequestParam("descricao") String descricao, ModelMap modelo) {
 		modelo.addAttribute("equipamentos", equipamentoService.buscarPorDescricao(descricao));
 		return "/equipamento/lista";
 	}
 
 	@GetMapping("/buscar/serie")
-	public String getPorSerie(@RequestParam("eqSeriebp") String serie, ModelMap modelo) {
+	public String getPorSerie(@RequestParam("serie") String serie, ModelMap modelo) {
 		modelo.addAttribute("equipamentos", equipamentoService.buscarPorSerie(serie));
 		return "/equipamento/lista";
 	}

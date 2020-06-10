@@ -19,8 +19,8 @@ public interface TipoEquipamentoRepository extends JpaRepository<TipoEquipamento
 	@Query("select t.descricao from TipoEquipamento t where t.descricao like :modelo%")
 	Optional<TipoEquipamento> findByTipoEquipamentoModelo(String modelo);
 
-	@Query("select t.descricao from TipoEquipamento t where t.descricao like :termo%")
-	List<String> findTipoEquipamentoByTermo(String termo);
+	@Query("select t from TipoEquipamento t where t.descricao like :termo%")
+	List<TipoEquipamento> findTipoEquipamentoByTermo(String termo);
 
 	@Query("select t from TipoEquipamento t where t.descricao like :search%")
 	Page<TipoEquipamento> findAllByDescricao(String search, Pageable pageable);

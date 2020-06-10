@@ -15,10 +15,6 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
 	@Query("Select s from Servico s where s.serNome like :nome%")
 	List<Servico> buscarPorNome(String nome);
 
-	/*
-	 * @Query("Select s from Servico s where s.equipamento.id = :id") List<Servico>
-	 * buscarPorEquipamento(Long id);
-	 */
 	@Query("select s from Servico s join s.equipamentos e where e.id = :id")
 	List<Servico> findByIdEquipamento(Long id);
 

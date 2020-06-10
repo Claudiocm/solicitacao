@@ -27,10 +27,11 @@ public class TecnicoImplements implements TecnicoService {
 		t.setId(tecnico.getId());
 		t.setTecNome(tecnico.getTecNome());
 		t.setUsuario(tecnico.getUsuario());
+		t.setSetor(tecnico.getSetor());
 		if (!tecnico.getChamados().isEmpty()) {
 			t.getChamados().addAll(tecnico.getChamados());
-			;
 		}
+		t.setChamados(tecnico.getChamados());
 	
 	}
 

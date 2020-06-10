@@ -5,7 +5,9 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-
+    <div class="container col-md-10">
+			<img class="d-block mx-auto" th:src="@{/image/brasao_sao_vicente.png}" width="50" height="50">
+			<h1 class="jumbotron-heading">Solicitação de Serviços</h1>
 		<nav class="navbar navbar-expand-md bg-light">
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
@@ -19,7 +21,7 @@
 			</a>
 
 		</nav>
-
+     </div>
 		<div class="container" id="painel">
 			<p>
 				<i class="oi oi-magnifying-glass"></i><span></span>
@@ -97,6 +99,7 @@
 							<th>Nº</th>
 							<th>Data abertura</th>
 							<th>Setor</th>
+							<th>Solicitante</th>
 							<th>Equipamento/Série</th>
 							<th>Situação</th>
 						</tr>
@@ -107,6 +110,7 @@
 							<td
 								th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">2017/08/14</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
+							<td th:text="${c.solicitante.nome}">Solicitante</td>
 							<td><a><span
 									th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}"
 									th:href="@{/servicos/{id} (id=${c.id}) }"></span></a></td>

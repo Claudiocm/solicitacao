@@ -16,8 +16,6 @@ public interface TipoEquipamentoService {
 
 	public Set<TipoEquipamento> buscarPorNomes(String[] nomes);
 
-	public List<String> buscarTipoEquipamentoByTermo(String termo);
-
 	public void remover(Long id);
 
 	public TipoEquipamento buscarPorId(Long id);

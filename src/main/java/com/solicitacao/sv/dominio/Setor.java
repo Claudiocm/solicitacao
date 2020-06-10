@@ -3,15 +3,19 @@ package com.solicitacao.sv.dominio;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Setor")
@@ -26,12 +30,13 @@ public class Setor extends AbstractEntity<Long> {
 	@Digits(integer = 4, fraction = 0)
 	@Column(name = "set_ramal")
 	private Integer setRamal;
-	@ManyToMany
-	@JoinTable(name = "setores_tem_usuarios", joinColumns = {
-			@JoinColumn(name = "usuario", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "setor", referencedColumnName = "id") })
+	@OneToMany(mappedBy="setor")
 	private List<Usuario> usuarios;
-
+	@JsonIgnore
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "equipamentos_tem_chamados", joinColumns = @JoinColumn(name = "equipamento", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "chamado", referencedColumnName = "id"))
+	private List<Chamado> chamados;
+	
 	public Setor() {
 		super();
 	}
@@ -72,4 +77,13 @@ public class Setor extends AbstractEntity<Long> {
 		this.usuarios = usuarios;
 	}
 
+	public List<Chamado> getChamados() {
+		return chamados;
+	}
+
+	public void setChamados(List<Chamado> chamados) {
+		this.chamados = chamados;
+	}
+
+	
 }

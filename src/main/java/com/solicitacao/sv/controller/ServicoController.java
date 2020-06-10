@@ -81,7 +81,7 @@ public class ServicoController {
 		return listar(modelo);
 	}
 
-	@GetMapping("/buscar/nome")
+	@GetMapping("/nome")
 	public String getPorNome(@RequestParam("nome") String nome, ModelMap modelo) {
 		modelo.addAttribute("servicos", servico.buscarPorNome(nome));
 		return "/servico/lista";

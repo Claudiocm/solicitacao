@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Cargo;
@@ -79,6 +80,12 @@ public class CargoController {
 			attr.addFlashAttribute("success", "Cargo excluido com sucesso.");
 		}
 		return "redirect:/cargos/listar";
+	}
+	
+	@GetMapping("/nome")
+	public String buscarDescricao(@RequestParam("nome") String nome, ModelMap modelo) {
+		modelo.addAttribute("cargos", cargoService.buscarPorNome(nome));
+		return "/cargo/lista";
 	}
 	
 	@ModelAttribute("departamentos")

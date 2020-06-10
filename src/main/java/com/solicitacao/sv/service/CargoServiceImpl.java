@@ -55,4 +55,9 @@ public class CargoServiceImpl implements CargoService {
 		return true;
 	}
 
+	@Override
+	public List<Cargo> buscarPorNome(String nome) {
+		return dao.buscarPorNome(nome);
+	}
+
 }

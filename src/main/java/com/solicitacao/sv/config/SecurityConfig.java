@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// acessos privados admin
 				.antMatchers("/usuarios/editar/senha", "/usuarios/confirmar/senha")
-				.hasAnyAuthority(SOLICITANTE, TECNICO, ADMIN).antMatchers("/usuarios/**").hasAuthority(ADMIN)
+				.hasAnyAuthority(SOLICITANTE, TECNICO, ADMIN)
+				.antMatchers("/usuarios/**").hasAuthority(ADMIN)
 
 				// acessos privados solicitantes
 				.antMatchers("/setores").hasAnyAuthority(TECNICO, ADMIN)
@@ -46,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// acessos privados chamados
 				.antMatchers("/chamados/**").hasAnyAuthority(TECNICO, ADMIN)
-				.antMatchers("/chamados/cadastrar", "/chamados/salvar", "/chamados/editar").hasAnyAuthority(SOLICITANTE, TECNICO, ADMIN)
+				.antMatchers("/chamados/cadastrar", "/chamados/salvar", "/chamados/editar", "/chamados/buscar").hasAnyAuthority(SOLICITANTE, TECNICO, ADMIN)
 
 				// acessos privados tecnicos
 				.antMatchers("/equipamentos/**").hasAnyAuthority(TECNICO, ADMIN)
@@ -59,8 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/servicos/**").hasAnyAuthority(ADMIN, TECNICO)
 				
 				// acessos privados solicitantes
-				.antMatchers("/solicitantes/**").hasAuthority(SOLICITANTE).antMatchers("/solicitantes/dados")
-				.hasAnyAuthority(SOLICITANTE, ADMIN)
+				.antMatchers("/solicitantes/**").hasAuthority(SOLICITANTE)
+				.antMatchers("/solicitantes/dados").hasAnyAuthority(SOLICITANTE, ADMIN)
 
 				.anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/", true)
 				.failureUrl("/login-error").permitAll().and().logout().logoutSuccessUrl("/").and().exceptionHandling()

@@ -5,7 +5,9 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-
+     <div class="container col-md-10">
+			<img class="d-block mx-auto" th:src="@{/image/brasao_sao_vicente.png}" width="50" height="50">
+			<h1 class="jumbotron-heading">Solicitação de Serviços</h1>
 		<nav class="navbar navbar-expand-md bg-light">
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
@@ -21,7 +23,7 @@
 				title="Lista de Chamados" aria-hidden="true"></span> <span>Painel</span>
 			</a>
 		</nav>
-		
+	</div>
 		<div class="container" id="listagem">
 			<div class="table-responsive">
 				<div th:replace="fragments/alert"></div>
@@ -33,17 +35,17 @@
 							<th>Data de Abertura</th>
 							<th>Série</th>
 							<th>Setor</th>
+							<th>Solicitante</th>
 							<th>Situação</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="c : ${chamados}">
 							<td th:text="${c.id}">1</td>
-							<td
-								th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">Data</td>
-							<td
-								th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
+							<td	th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">Data</td>
+							<td	th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
+							<td th:text="${c.solicitante.nome}">Setor</td>
 							<td th:text="${c.chSituacao.descricao}">Situação</td>
 							<td colspan="2">
 							<a class="btn btn-info btn-sm"	th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">

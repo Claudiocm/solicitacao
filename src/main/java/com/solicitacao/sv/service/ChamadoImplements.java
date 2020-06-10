@@ -16,6 +16,7 @@ import com.solicitacao.sv.datatables.Datatables;
 import com.solicitacao.sv.datatables.DatatablesColunas;
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Servico;
+import com.solicitacao.sv.dominio.Tecnico;
 import com.solicitacao.sv.exception.AcessoNegadoException;
 import com.solicitacao.sv.repository.ChamadoRepository;
 import com.solicitacao.sv.repository.projection.HistoricoSolicitante;
@@ -39,6 +40,7 @@ public class ChamadoImplements implements ChamadoService {
 	public void editar(Chamado chamado) {
 		Chamado chama = dao.findById(chamado.getId()).get();
 
+		//chama.setId(chamado.getId());
 		chama.setChDataAbertura(chamado.getChDataAbertura());
 		chama.setChDataFechamento(chamado.getChDataFechamento());
 		chama.setChIp(chamado.getChIp());
@@ -118,19 +120,15 @@ public class ChamadoImplements implements ChamadoService {
 	}
 
 	@Transactional(readOnly = true)
-	public Map<String, Object> buscarHistoricoPorSolicitanteEmail(String email, HttpServletRequest request) {
-		datatables.setRequest(request);
-		datatables.setColunas(DatatablesColunas.CHAMADOS);
-		Page<HistoricoSolicitante> page = dao.findHistoricoBySolicitanteEmail(email, datatables.getPageable());
-		return datatables.getResponse(page);
+	public List<Chamado> buscarHistoricoPorSolicitanteEmail(String email) {
+		List<Chamado> page = dao.findHistoricoBySolicitanteEmail(email);
+		return page;
 	}
 
 	@Transactional(readOnly = true)
-	public Map<String, Object> buscarHistoricoPorTecnicoEmail(String email, HttpServletRequest request) {
-		datatables.setRequest(request);
-		datatables.setColunas(DatatablesColunas.CHAMADOS);
-		Page<HistoricoTecnico> page = dao.findHistoricoByTecnicoEmail(email, datatables.getPageable());
-		return datatables.getResponse(page);
+	public List<Chamado> buscarHistoricoPorTecnicoEmail(String email) {
+		List<Chamado> page = dao.findHistoricoByTecnicoEmail(email);
+		return page;
 	}
 
 	@Transactional(readOnly = true)
@@ -141,7 +139,7 @@ public class ChamadoImplements implements ChamadoService {
 	}
 
 	public Chamado buscarPorUsuarioEmail(String username) {
-		return null;
+		return dao.findByUsuarioEmail(username).orElse(new Chamado());
 	}
 
 }

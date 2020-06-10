@@ -1,11 +1,14 @@
 <!DOCTYPE html >
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
 <body>
 	<!-- Modal -->
-	<div th:fragment="modal-cadastro" class="modal fade"
-		id="modal-cadastro" tabindex="-1" role="dialog"	aria-labelledby="myModaLabel" aria-hidden="true">
+	<div th:fragment="setor-modal" class="modal fade"
+		id="setor" tabindex="-1" role="dialog"	aria-labelledby="myModaLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -19,8 +22,7 @@
 					<h4 class="modal-title text-center" id="myModal-label">Cadastrar Setor</h4>
 				</div>
 				<div class="modal-body">
-					<form	th:action="${setor.id == null} ? @{/setores/salvar} : @{/setores/editar}"
-						th:object="${setor}" method="POST">
+					<form	id="form-edit-setor"action="@{/setores/editar}" method="PUT">
 
 						<div th:replace="fragments/validacao  :: validacao"></div>
 

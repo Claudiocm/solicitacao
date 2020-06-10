@@ -37,6 +37,7 @@ public class ServicoImplements implements ServicoService {
 		s.setId(servico.getId());
 		s.setSerNome(servico.getSerNome());
 		s.setTipo(servico.getTipo());
+		
 	}
 
 	@Override

@@ -27,4 +27,6 @@ public interface UsuarioService {
 
 	public void alterarSenha(Usuario u, String s1);
 
+	List<Usuario> buscaPorEmail(String email);
+
 }

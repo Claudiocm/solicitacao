@@ -17,4 +17,6 @@ public interface CargoService {
 
 	public boolean cargoTemTecnicos(Long id);
 
+	public List<Cargo> buscarPorNome(String nome);
+
 }

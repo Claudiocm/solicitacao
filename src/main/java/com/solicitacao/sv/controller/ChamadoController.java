@@ -79,7 +79,7 @@ public class ChamadoController {
 		binder.addValidators(new ChamadoValidator());
 	}
 
-	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN','SOLICITANTE')")
 	@GetMapping("/cadastrar")
 	public String cadastrar(Chamado chamado) throws UnknownHostException {
 		/*
@@ -95,12 +95,7 @@ public class ChamadoController {
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		List<Chamado> c = chService.buscarTodos();
-		for (Chamado ch : c) {
-			ch.setEquipamento(ch.getEquipamento());
-
-			model.addAttribute("chamados", chService.buscarTodos());
-		}
+		model.addAttribute("chamados",chService.buscarTodos());
 		return "/chamado/lista";
 	}
 
@@ -118,7 +113,7 @@ public class ChamadoController {
 		return "/chamado/painel";
 	}
 
-	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN','SOLICITANTE')")
 	@PostMapping("/salvar")
 	public String salvar(@Valid Chamado chamado, BindingResult result, RedirectAttributes attr,
 			@AuthenticationPrincipal User user) {
@@ -128,6 +123,7 @@ public class ChamadoController {
 		if (result.hasErrors()) {
 			return "/chamado/cadastro";
 		}
+		
 		String titulo = chamado.getServico().getSerNome();
 		Servico servico = serService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
 		chamado.setTecnico(tecnico);
@@ -151,10 +147,7 @@ public class ChamadoController {
 
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@PostMapping("/editar")
-	public String editar(@PathVariable("id") Long id, RedirectAttributes attr, BindingResult result,
-			@AuthenticationPrincipal User user) {
-		Chamado chamado = chService.buscarPorIdEUsuario(id, user.getUsername());
-
+	public String editar(@Valid Chamado chamado, RedirectAttributes attr, BindingResult result) {
 		if (result.hasErrors()) {
 			return "/chamado/cadastro";
 		}
@@ -176,44 +169,30 @@ public class ChamadoController {
 
 	// abrir pagina de historico de chamdoo do tecnico
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
-	@GetMapping({ "/historico/tecnico" })
-	public String historicoTecnico() {
-		return "chamado/historico-tecnico";
+	@GetMapping("/historico/tecnico")
+	public String historicoTecnico(ModelMap model, @AuthenticationPrincipal User user) {
+		/*
+		 * if (user.getAuthorities().contains(new
+		 * SimpleGrantedAuthority(PerfilTipo.TECNICO.getDesc()))) {
+		 * model.addAttribute("chamados",
+		 * chService.buscarHistoricoPorTecnicoEmail(user.getUsername())); }
+		 */
+		 model.addAttribute("chamados", chService.buscarHistoricoPorTecnicoEmail(user.getUsername()));
+		return "/chamado/historico-tecnico";
 	}
 
 	// abrir pagina de historico de chamdo do Solicitante
 	@PreAuthorize("hasAnyAuthority('SOLICITANTE','ADMIN','TECNICO')")
-	@GetMapping({ "/historico/solicitante" })
-	public String historicoSolicitante() {
-		return "chamado/historico-Solicitante";
-	}
-
-	// localizar o historico de agendamentos por usuario logado
-	@PreAuthorize("hasAnyAuthority('SOLICITANTE','TECNICO','ADMIN')")
-	@GetMapping("/datatables/server/historico-solicitante")
-	public ResponseEntity<?> historicoChamadosPorSolicitante(HttpServletRequest request,
-			@AuthenticationPrincipal User user) {
-
-		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.SOLICITANTE.getDesc()))) {
-
-			return ResponseEntity.ok(chService.buscarHistoricoPorSolicitanteEmail(user.getUsername(), request));
-		}
-
-		return ResponseEntity.notFound().build();
-	}
-
-	// localizar o historico de agendamentos por usuario logado
-	@PreAuthorize("hasAnyAuthority('ADMIN', 'TECNICO')")
-	@GetMapping("/datatables/server/historico-tecnico")
-	public ResponseEntity<?> historicoChamadosPorTecnico(HttpServletRequest request,
-			@AuthenticationPrincipal User user) {
-
-		if (user.getAuthorities().contains(new SimpleGrantedAuthority(PerfilTipo.TECNICO.getDesc()))) {
-
-			return ResponseEntity.ok(chService.buscarHistoricoPorTecnicoEmail(user.getUsername(), request));
-		}
-
-		return ResponseEntity.notFound().build();
+	@GetMapping("/historico/solicitante")
+	public String historicoSolicitante(ModelMap model, @AuthenticationPrincipal User user) {
+		/*
+		 * if (user.getAuthorities().contains(new
+		 * SimpleGrantedAuthority(PerfilTipo.SOLICITANTE.getDesc()))) {
+		 * model.addAttribute("chamados",
+		 * chService.buscarHistoricoPorSolicitanteEmail(user.getUsername())); }
+		 */
+		model.addAttribute("chamados", chService.buscarHistoricoPorSolicitanteEmail(user.getUsername()));
+		return "/solicitante/historico-Solicitante";
 	}
 
 	@GetMapping("/buscar/{id}")

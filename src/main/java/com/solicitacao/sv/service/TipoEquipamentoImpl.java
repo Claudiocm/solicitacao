@@ -78,12 +78,6 @@ public class TipoEquipamentoImpl implements TipoEquipamentoService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public List<String> buscarTipoEquipamentoByTermo(String termo) {
-		return repository.findTipoEquipamentoByTermo(termo);
-	}
-
-	@Transactional(readOnly = true)
-	@Override
 	public Set<TipoEquipamento> buscarPorNomes(String[] nomes) {
 		return repository.findByNomes(nomes);
 	}
@@ -92,5 +86,10 @@ public class TipoEquipamentoImpl implements TipoEquipamentoService {
 	@Transactional(readOnly = true)
 	public List<TipoEquipamento> buscarTodos() {
 		return repository.findAll();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<TipoEquipamento> buscarTipoEquipamentoByNome(String termo) {
+		return repository.findTipoEquipamentoByTermo(termo);
 	}
 }

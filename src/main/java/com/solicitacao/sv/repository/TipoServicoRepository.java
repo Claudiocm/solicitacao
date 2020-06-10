@@ -29,4 +29,7 @@ public interface TipoServicoRepository extends JpaRepository<TipoServico, Long> 
 
 	@Query("select t from TipoServico t where t.id = :id")
 	Page<TipoServico> findByTipoServico(Long id, Pageable pageable);
+
+	@Query("select t from TipoServico t where t.descricao like :nome%")
+	List<String> buscarPorNome(String nome);
 }

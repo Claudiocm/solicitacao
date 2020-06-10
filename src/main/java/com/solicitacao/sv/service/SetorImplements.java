@@ -1,12 +1,15 @@
 package com.solicitacao.sv.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solicitacao.sv.dominio.Servico;
 import com.solicitacao.sv.dominio.Setor;
+import com.solicitacao.sv.dominio.Usuario;
 import com.solicitacao.sv.repository.SetorRepository;
 
 @Service
@@ -26,9 +29,11 @@ public class SetorImplements implements SetorService {
 		s.setId(setor.getId());
 		s.setSetNome(setor.getSetNome());
 		s.setSetRamal(setor.getSetRamal());
+		
 		if (!setor.getUsuarios().isEmpty()) {
 			s.getUsuarios().addAll(setor.getUsuarios());
 		}
+		s.setUsuarios(setor.getUsuarios());
 	}
 
 	@Override
@@ -53,6 +58,11 @@ public class SetorImplements implements SetorService {
 		return dao.findByName(nome);
 	}
 
+	@Transactional(readOnly = true)
+	public Set<Setor> buscarPorTitulos(String[] titulos) {
+		return dao.findByTitulos(titulos);
+	}
+	
 	public boolean setorTemUsuarios(Long id) {
 		if (buscarPorId(id).getUsuarios().isEmpty()) {
 			return false;

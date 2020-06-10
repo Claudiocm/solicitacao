@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+	<!-- Modal -->
+	<div class="modal fade" id="servico" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true"
+		th:fragment="servico-modal">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Editar
+						Equipamento</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="form-edit-servico" action="@{/equipamentos/editar}"
+						method="PUT">
+
+						<div class="form-row">
+							<div class="col-sm-5">
+								<div class="form-group">
+									<label for="eqModelo">Modelo</label> <input type="text"
+										class="form-control" id="eqModelo" name="modelo" />
+									<div id="error-modelo"></div>
+								</div>
+								<div class="form-group">
+									<label for="eqDescricao">Descrição</label> <input type="text"
+										class="form-control" id="eqDescricao" name="Descrição"
+										placeholder="Descrição do Equipamento"
+										data-mask-reverse="true" />
+									<div id="error-equipamento" class=""></div>
+								</div>
+							</div>
+								<div class="col-sm-5">
+									<div class="form-group">
+										<label for="tipos">Tipo de Equipamento</label> <select
+											id="tipos" name="tipo" class="form-control">
+											<option value="">Selecione</option>
+											<option th:each="t : ${tipos}" th:text="${t.descricao}"
+												th:value="${t.id}">...</option>
+										</select>
+										<div id="error-tipo"></div>
+									</div>
+									<div class="form-group">
+										<label for="eqSeriebp">Série/BP</label> <input
+											class="form-control" id="eqSeriebp" name="Série/BP"
+											placeholder="Série ou BP do Equipamento"></input>
+									</div>
+									
+								</div>
+								<div class="col-sm-5">
+									<div class="form-group">
+										<label for="ip">IP</label> <input class="form-control" id="ip"
+											name="I.P da equipamento"
+											placeholder="I.P do Computador ou Notebook"></input>
+									</div>
+
+								</div>
+								<div class="col-sm-5">
+									<label for="servico">Serviço</label> <select id="servico"
+										name="servico" class="form-control">
+										<option value="">Selecione</option>
+										<option th:each="s : ${servicos}" th:text="${s.serNome}"
+											th:value="${s.id}">...</option>
+									</select>
+									<div id="error-servico"></div>
+								</div>
+							</div>
+						<input type="hidden" class="form-control" id="id" name="id" />
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Cancelar</button>
+					<button id="btn-edit-modal" class="btn btn-primary">Confirmar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -30,7 +30,8 @@ public class SolicitanteServiceImpl implements SolicitanteService {
 		sol.setNome(solicitante.getNome());
 		sol.setDtCadastro(solicitante.getDtCadastro());
 		sol.setSetor(solicitante.getSetor());
-		
+		sol.setUsuario(solicitante.getUsuario());
+		sol.setChamados(solicitante.getChamados());
 	}
 
 	@Override

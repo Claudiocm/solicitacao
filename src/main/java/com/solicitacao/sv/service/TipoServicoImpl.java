@@ -93,4 +93,8 @@ public class TipoServicoImpl implements TipoServicoService {
 	public List<TipoServico> buscarTodos() {
 		return repository.findAll();
 	}
+
+	public List<String> buscarTipoServicoByNome(String nome) {
+		return repository.buscarPorNome(nome);
+	}
 }

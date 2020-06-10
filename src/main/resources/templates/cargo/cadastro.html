@@ -5,12 +5,15 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-
+    <div class="container col-md-10">
+			<img class="d-block mx-auto" th:src="@{/image/brasao_sao_vicente.png}" width="50" height="50">
+			<h1 class="jumbotron-heading">Solicitação de Serviços</h1>
+			<p class="lead text-muted">Cadastrar Cargo</p>
 		<nav class="navbar navbar-expand-md bg-light">
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active"><i class="oi oi-caret-right"></i>
-						<span>Cadastrar Cargo</span></li>
+						<span></span></li>
 				</ul>
 			</div>
 			<a class="btn btn-primary btn-md" th:href="@{/cargos/listar}"
@@ -19,6 +22,7 @@
 				<span>Listar de Cargos</span>
 			</a>
 		</nav>
+    </div>
 		<div class="container" id="cadastro">
 			<div th:replace="fragments/alert"></div>
 

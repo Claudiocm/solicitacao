@@ -36,6 +36,9 @@ public class Tecnico extends AbstractEntity<Long> {
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "usuario")
 	private Usuario usuario;
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "setor")
+	private Setor setor;
 	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "tecnicos_tem_equipamentos", joinColumns = @JoinColumn(name = "tecnico", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "equipamento", referencedColumnName = "id"))
@@ -95,5 +98,15 @@ public class Tecnico extends AbstractEntity<Long> {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
+	}
+	
+	
 
 }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.solicitacao.sv.dominio.Chamado;
+import com.solicitacao.sv.dominio.Tecnico;
 import com.solicitacao.sv.repository.projection.HistoricoSolicitante;
 import com.solicitacao.sv.repository.projection.HistoricoTecnico;
 
@@ -42,14 +43,13 @@ public interface ChamadoRepository extends JpaRepository<Chamado, Long> {
 	@Query("Select c from Chamado c order by c.chDataAbertura asc")
 	List<Chamado> buscaLista();
 
-	@Query("select c.id as id, c.solicitante as solicitante, c.chDataAbertura as dataAbertura,"
-			+ "c.tecnico as tecnico, c.servico as servico from Chamado c "
-			+ "where c.tecnico.usuario.email like :email")
-	Page<HistoricoSolicitante> findHistoricoBySolicitanteEmail(String email, Pageable pageable);
+	@Query("select c from Chamado c where c.solicitante.usuario.email like :email")
+	List<Chamado> findHistoricoBySolicitanteEmail(String email);
 
-	@Query("select c from Chamado c where (c.id = :id AND c.solicitante.usuario.email like :email) "
-			+ " OR  (c.id = :id AND c.tecnico.usuario.email like :email)")
-	Page<HistoricoTecnico> findHistoricoByTecnicoEmail(String email, Pageable pageable);
+	@Query("select c from Chamado c where c.tecnico.usuario.email like :email")
+	List<Chamado> findHistoricoByTecnicoEmail(String email);
 	
-
+	@Query("select c from Chamado c where c.tecnico.usuario.email like :email"
+			+ " OR c.solicitante.usuario.email like :email")
+	Optional<Chamado> findByUsuarioEmail(String email);
 }

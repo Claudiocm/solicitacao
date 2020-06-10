@@ -15,6 +15,7 @@ import com.solicitacao.sv.datatables.DatatablesColunas;
 import com.solicitacao.sv.dominio.Equipamento;
 import com.solicitacao.sv.dominio.Servico;
 import com.solicitacao.sv.repository.EquipamentoRepository;
+import com.solicitacao.sv.repository.ServicoRepository;
 
 @Service
 @Transactional(readOnly = false)
@@ -23,7 +24,9 @@ public class EquipamentoImplements implements EquipamentoService {
     private Datatables datatables;
 	@Autowired
 	private EquipamentoRepository dao;
-
+	@Autowired
+	private ServicoRepository daoServico;
+	
 	@Override
 	public void salvar(Equipamento equipamento) {
 		dao.save(equipamento);
@@ -32,6 +35,8 @@ public class EquipamentoImplements implements EquipamentoService {
 	@Override
 	public void editar(Equipamento equipamento) {
 		Equipamento e = dao.findById(equipamento.getId()).get();
+		List<Servico> servicos = daoServico.findByIdEquipamento(e.getId());
+		
 		e.setEqDescricao(equipamento.getEqDescricao());
 		e.setEqModelo(equipamento.getEqModelo());
 		e.setEqSeriebp(equipamento.getEqSeriebp());
@@ -39,7 +44,7 @@ public class EquipamentoImplements implements EquipamentoService {
 		if (!equipamento.getServicos().isEmpty()) {
 			e.getServicos().addAll(equipamento.getServicos());
 		}
-		e.setServicos(e.getServicos());
+		e.setServicos(servicos);
 		e.setTecnico(equipamento.getTecnico());
 	}
 
@@ -62,7 +67,6 @@ public class EquipamentoImplements implements EquipamentoService {
 
 	@Override
 	public List<Equipamento> buscarPorDescricao(String descricao) {
-
 		return dao.findByDescricao(descricao);
 	}
 
