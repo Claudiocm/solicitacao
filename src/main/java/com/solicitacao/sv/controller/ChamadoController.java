@@ -3,17 +3,15 @@ package com.solicitacao.sv.controller;
 import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,13 +24,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Cargo;
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Equipamento;
-import com.solicitacao.sv.dominio.PerfilTipo;
 import com.solicitacao.sv.dominio.Prioridade;
 import com.solicitacao.sv.dominio.Servico;
 import com.solicitacao.sv.dominio.Setor;
@@ -92,7 +88,6 @@ public class ChamadoController {
 		return "/chamado/cadastro";
 	}
 
-	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
 		model.addAttribute("chamados",chService.buscarTodos());
@@ -111,6 +106,14 @@ public class ChamadoController {
 	public String busca(ModelMap model) {
 		model.addAttribute("chamados", chService.buscar());
 		return "/chamado/painel";
+	}
+	
+	@RequestMapping(value = "/grafico")
+	@GetMapping()
+    public String chart(ModelMap model) {
+		model.addAttribute("servico",chService.buscarTotalChamados());
+		model.addAttribute("total",chService.buscarTotalChamados());
+	 return "grafico-chamado";
 	}
 
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN','SOLICITANTE')")
@@ -151,6 +154,10 @@ public class ChamadoController {
 		if (result.hasErrors()) {
 			return "/chamado/cadastro";
 		}
+		if(chamado.getChSituacao().getDescricao().contains("ENTREGUE") || chamado.getChSituacao().getDescricao().contains("FECHADO")) {
+			chamado.setChDataFechamento(LocalDate.now());
+		}
+			
 		chService.editar(chamado);
 		attr.addAttribute("success", "Chamado editado com sucesso!");
 
@@ -195,16 +202,16 @@ public class ChamadoController {
 		return "/solicitante/historico-Solicitante";
 	}
 
-	@GetMapping("/buscar/{id}")
-	public String getPorNumero(@RequestParam("id") Long id, ModelMap model) {
-		model.addAttribute("chamados", chService.buscarPorNumero(id));
-		return "/chamado/lista";
+	@GetMapping("/buscar/numero")
+	public String getPorNumero(@RequestParam("numero") Long numero, ModelMap model) {
+		model.addAttribute("chamados", chService.buscarPorNumero(numero));
+		return "/chamado/painel";
 	}
 
-	@GetMapping("/buscar/equipamento")
-	public String getPorEquipamento(@RequestParam("eqSeriebp") String bp, ModelMap model) {
-		model.addAttribute("chamados", chService.buscarPorBpEquipamento(bp));
-		return "/chamado/lista";
+	@GetMapping("/buscar/patrimonio")
+	public String getPorEquipamento(@RequestParam("eqSeriebp") String eqSeriebp, ModelMap model) {
+		model.addAttribute("chamados", chService.buscarPorBpEquipamento(eqSeriebp));
+		return "/chamado/painel";
 	}
 
 	@GetMapping("/buscar/data")
@@ -214,7 +221,7 @@ public class ChamadoController {
 			ModelMap model) {
 
 		model.addAttribute("chamados", chService.buscarPorDatas(abertura, fechamento));
-		return "/chamado/lista";
+		return "/chamado/painel";
 	}
 
 	@GetMapping("/equipamento/{id}")
@@ -231,7 +238,7 @@ public class ChamadoController {
 	public Prioridade[] getPrioridade() {
 		return Prioridade.values();
 	}
-
+	
 	@ModelAttribute("servicos")
 	public List<Servico> getServico() {
 		return serService.buscarTodos();

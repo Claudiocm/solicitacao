@@ -34,9 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll().antMatchers("/usuarios/confirmacao/cadastro").permitAll().antMatchers("/usuarios/p/**")
 				.permitAll()
 
-				// acessos privados admin
 				.antMatchers("/usuarios/editar/senha", "/usuarios/confirmar/senha")
-				.hasAnyAuthority(SOLICITANTE, TECNICO, ADMIN)
+				.hasAnyAuthority(TECNICO, ADMIN)
 				.antMatchers("/usuarios/**").hasAuthority(ADMIN)
 
 				// acessos privados solicitantes

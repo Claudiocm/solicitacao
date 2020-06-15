@@ -98,7 +98,7 @@ public class ChamadoImplements implements ChamadoService {
 	public List<Chamado> buscarPorBpEquipamento(String bp) {
 		return dao.findByBp(bp);
 	}
-
+	
 	@Override
 	public List<Chamado> buscarPorNumero(Long id) {
 		return dao.findByNumber(id);
@@ -140,6 +140,11 @@ public class ChamadoImplements implements ChamadoService {
 
 	public Chamado buscarPorUsuarioEmail(String username) {
 		return dao.findByUsuarioEmail(username).orElse(new Chamado());
+	}
+
+	@Transactional(readOnly = true)
+	public List<Chamado> buscarTotalChamados() {
+		return dao.buscarRelatorio();
 	}
 
 }

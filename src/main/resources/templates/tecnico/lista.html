@@ -55,7 +55,13 @@
 		                        </td>
 		                    </tr>	
 	                    </tbody>
-	                </table>
+					<tfoot>
+						<tr>
+							<td rowspan="2">Total:</td>
+							<td th:text="${#lists.size(tecnicos)}"></td>
+						</tr>
+					</tfoot>
+				</table>
 	            </div>
 	        </div>
 	        

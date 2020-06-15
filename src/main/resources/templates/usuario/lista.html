@@ -2,7 +2,6 @@
 <html layout:decorate="~{layout}">
 <head><meta charset="UTF-8"/></head>
 <body>
-
 	    <section class="layout-content" layout:fragment="corpo">
 
 		<div class="container col-md-10">
@@ -31,34 +30,44 @@
         	      <input class="waves-effect btn-primary btn" type="submit" value="Buscar" />
 	        	</form>
 	            <div class="table-responsive">
-					<table class="table table-striped table-hover table-sm">
-					    <thead>
-					    <tr>
-					        <th>Nº</th>
-					        <th>Email</th>
-					        <th>Ativo</th>
-					        <th>Setor</th>
-					    </tr>
-					    </thead>
-					    <tbody>
-					     <tr th:each="u : ${usuarios}">
-					         <td th:text="${u.id}">3</td>
-					         <td th:text="${u.email}">E-mail</td>
-					         <td th:text="${u.ativo} ? 'Sim' : 'Não'">Ativo</td>
-					         <td th:text="${u.setor.setNome}">Setor</td>
-					         <td colspan="2">
-					             <a class="btn btn-info btn-sm" th:href="@{/usuarios/editar/{id} (id=${u.id}) }" role="button">
-					                 <span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
-					             </a>
-					             <button th:id="${ 'btn_usuarios/excluir/' + u.id}" type="button" class="btn btn-danger btn-sm"
-					             		data-toggle="modal" data-target="#myModal">
-					                 <span class="oi oi-circle-x" title="Exclusão desabilitada" aria-hidden="true"></span>
-					             </button>
-					         </td>
-					     </tr>
-					    </tbody>
-					</table>
-	            </div>
+				<table class="table table-striped table-hover table-sm">
+					<thead>
+						<tr>
+							<th>Nº</th>
+							<th>Email</th>
+							<th>Perfil</th>
+							<th>Setor</th>
+							<th>Ativo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="u : ${usuarios}">
+							<td th:text="${u.id}">3</td>
+							<td th:text="${u.email}">E-mail</td>
+							<td th:each="p :${u.perfis}" th:text="${p.desc}">E-mail</td>
+							<td th:text="${u.setor.setNome}">Setor</td>
+							<td th:text="${u.ativo} ? 'Sim' : 'Não'">Ativo</td>
+							<td colspan="2"><a class="btn btn-info btn-sm"
+								th:href="@{/usuarios/editar/{id} (id=${u.id}) }" role="button">
+									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
+							</a>
+								<button th:id="${ 'btn_usuarios/excluir/' + u.id}" type="button"
+									class="btn btn-danger btn-sm" data-toggle="modal"
+									data-target="#myModal">
+									<span class="oi oi-circle-x" title="Exclusão desabilitada"
+										aria-hidden="true"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td rowspan="2">Total:</td>
+							<td th:text="${#lists.size(usuarios)}"></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
 	        </div>
 	        
 			<div th:replace="fragments/modal :: modal"></div>

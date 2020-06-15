@@ -72,9 +72,8 @@ public class UsuarioController {
 			return "/usuario/cadastro";
 		}
 		List<Perfil> perfis = usuario.getPerfis();
-		if (perfis.size() > 2 || perfis.containsAll(Arrays.asList(new Perfil(1L), new Perfil(3L)))
-				|| perfis.containsAll(Arrays.asList(new Perfil(2L), new Perfil(3L)))) {
-			attr.addFlashAttribute("falha", "Solicitante não pode ser Admin e/ou Técnico.");
+		if (perfis.size() > 2) {
+			attr.addFlashAttribute("falha", "Solicitante não pode ser Admin");
 			attr.addFlashAttribute("usuario", usuario);
 		} else {
 			try {
@@ -89,24 +88,26 @@ public class UsuarioController {
 
 	@GetMapping("/editar/{id}")
 	public ModelAndView preEditar(@PathVariable("id") Long id) {
-		return new ModelAndView("usuario/cadastro", "usuario", servico.buscarPorId(id));
+		return new ModelAndView("/usuario/cadastro", "usuario", servico.buscarPorId(id));
 	}
 
-	@PostMapping("/editar/usuario/{id}/perfis/{perfis}")
-	public ModelAndView editar(@PathVariable("id") Long usuarioId, @PathVariable("perfis") Long[] perfisId) {
+	@PostMapping("/editar")
+	public ModelAndView editar(@AuthenticationPrincipal User user) {
 
-		Usuario us = servico.buscarPorIdEPerfis(usuarioId, perfisId);
+		Usuario us = servico.buscarPorEmail(user.getUsername());
 
 		if (us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))
-				&& !us.getPerfis().contains(new Perfil(PerfilTipo.TECNICO.getCod()))) {
+				&& us.getPerfis().contains(new Perfil(PerfilTipo.TECNICO.getCod()))) {
 
-			return new ModelAndView("usuario/cadastro", "usuario", us);
-		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.TECNICO.getCod()))) {
-
-			Tecnico tecnico = tecnicoService.buscarPorUsuarioId(usuarioId);
+			Tecnico tecnico = tecnicoService.buscarPorUsuarioId(us.getId());
 			return tecnico.hasNotId()
-					? new ModelAndView("tecnico/cadastro", "tecnico", new Tecnico(new Usuario(usuarioId)))
+					? new ModelAndView("tecnico/cadastro", "tecnico", new Tecnico(new Usuario(us.getId())))
 					: new ModelAndView("tecnico/cadastro", "tecnico", tecnico);
+
+		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))
+				&& !us.getPerfis().contains(new Perfil(PerfilTipo.TECNICO.getCod())) ) {
+			
+			return new ModelAndView("/usuario/cadastro", "usuario", us);
 		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.SOLICITANTE.getCod()))) {
 			ModelAndView model = new ModelAndView("error");
 			model.addObject("status", 403);
@@ -115,7 +116,7 @@ public class UsuarioController {
 			return model;
 		}
 
-		return new ModelAndView("redirect:/usuarios/lista");
+		return new ModelAndView("redirect:/usuarios/editar");
 	}
 
 	@GetMapping("/excluir/{id}")
@@ -135,8 +136,7 @@ public class UsuarioController {
 
 	@GetMapping("/editar/senha")
 	public String abrirEditarSenha() {
-
-		return "usuario/editar-senha";
+		return "/usuario/editar-senha";
 	}
 
 	@PostMapping("/confirmar/senha")
@@ -169,7 +169,7 @@ public class UsuarioController {
 	@GetMapping("/cadastro/realizado")
 	public String cadastroRealizado() {
 
-		return "fragments/mensagem";
+		return "/fragments/mensagem";
 	}
 
 	// rebece o form da página cadastrar-se

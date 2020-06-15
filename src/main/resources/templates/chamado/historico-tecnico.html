@@ -16,6 +16,20 @@
 				<h1 class="jumbo-heading">Chamados técnicos</h1>
 				<p class="lead text-muted"></p>
 			</div>
+			<nav class="navbar navbar-expand-md bg-light">
+	            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+	                <ul class="navbar-nav mr-auto">
+	                    <li class="nav-item active">
+	                        <i class="oi oi-caret-right"></i>
+	                        <span></span>
+	                    </li>
+	                </ul>
+	            </div>
+	            <a class="btn btn-primary btn-md" th:href="@{/tecnicos/cadastrar}" role="button">
+	                <span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
+	                <span>Novo Técnico</span>
+	            </a>
+	        </nav>
 		</section>
 
 		<div class="container" id="listagem">
@@ -42,12 +56,18 @@
 							<td th:text="${c.solicitante.nome}">Setor</td>
 							<td th:text="${c.chSituacao.descricao}">Situação</td>
 							<td colspan="1">
-							<a class="btn btn-info btn-sm"	th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
+							<!-- <a class="btn btn-info btn-sm"	th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
 									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
-							</a>
+							</a> -->
 							</td>
 						</tr>
 					</tbody>
+					<tfoot>
+						<tr>
+							<td rowspan="2">Total:</td>
+							<td th:text="${#lists.size(chamados)}"></td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>

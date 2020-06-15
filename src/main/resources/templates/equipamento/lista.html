@@ -12,7 +12,8 @@
 		<nav class="navbar navbar-expand-md bg-light">
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+					<li class="nav-item active">
+					<i class="oi oi-caret-right"></i>
 						<span></span></li>
 				</ul>
 				<a class="btn btn-primary btn-md"
@@ -65,6 +66,12 @@
 								</button></td>
 						</tr>
 					</tbody>
+					<tfoot>
+						<tr>
+							<td rowspan="2">Total:</td>
+							<td th:text="${#lists.size(equipamentos)}"></td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>

@@ -41,7 +41,7 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								th:action="@{/chamados/buscar/equipamento}">
+								th:action="@{/chamados/buscar/patrimonio}">
 								<input class="form-control mr-sm-2" type="text"
 									aria-label="Search" th:name="eqSeriebp" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar
@@ -58,9 +58,9 @@
 
 						<nav class="navbar navbar-light bg-light">
 							<form class="form-inline" method="GET"
-								th:action="@{/chamados/buscar/id}">
+								th:action="@{/chamados/buscar/numero}">
 								<input class="form-control mr-sm-2" type="text"
-									aria-label="Search" th:name="id" />
+									aria-label="Search" th:name="numero" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar
 									Número</button>
 							</form>
@@ -77,8 +77,8 @@
 							<form class="form-inline" method="GET"
 								th:action="@{/chamados/buscar/data}">
 								<input class="form-control mr-sm-2" type="date"
-									aria-label="Search" th:name="chDataAbertura" /> <input
-									class="form-control mr-sm-2" type="date" aria-label="Search"
+									aria-label="Search" th:name="chDataAbertura" /> 
+								<input class="form-control mr-sm-2" type="date" aria-label="Search"
 									th:name="chDataFechamento" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar
 									Data</button>
@@ -89,7 +89,7 @@
 				</div>
 			</div>
 			
-			<div class="table-responsive">
+			<div class="table-responsive" style="margin:auto;">
 
 				<div th:replace="fragments/alert"></div>
 
@@ -97,7 +97,8 @@
 					<thead>
 						<tr>
 							<th>Nº</th>
-							<th>Data abertura</th>
+							<th>Abertura</th>
+							<th>Fechamento</th>
 							<th>Setor</th>
 							<th>Solicitante</th>
 							<th>Equipamento/Série</th>
@@ -107,8 +108,8 @@
 					<tbody>
 						<tr th:each="c : ${chamados}">
 							<td th:text="${c.id}">2</td>
-							<td
-								th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">2017/08/14</td>
+							<td th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy HH:mm')}">2017/08/14</td>
+							<td th:text="${#temporals.format(c.chDataFechamento, 'dd/MM/yyyy HH:mm')}">2017/08/14</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
 							<td th:text="${c.solicitante.nome}">Solicitante</td>
 							<td><a><span
@@ -125,18 +126,24 @@
 									data-target="#myModal">
 									<span class="oi oi-circle-x" title="Exclusão desabilitada"
 										aria-hidden="true"></span>
-							</button></td>
+							</button>
+							</td>
 						</tr>
 					</tbody>
+					<tfoot>
+						<tr align=left>
+							<td  rowspan="2">Total:</td>
+							<td th:text="${#lists.size(chamados)}"></td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>
-        <canvas id="grfTotal"></canvas>
 		<div th:replace="fragments/modal :: modal"></div>
-
+         
 	</section>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
-	<script src="https://cdnjs/cloudfare.com/ajax/libs/Chart.js/2.8.0/Chart.js" type="text/javascript"></script>
-	<script type="text/javascript" src="js/grafico.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="/graficos.js"></script>
 </body>
 </html>

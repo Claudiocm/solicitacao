@@ -36,9 +36,15 @@ public interface ChamadoRepository extends JpaRepository<Chamado, Long> {
 	@Query("Select c from Chamado c where c.id = :id")
 	List<Chamado> findByNumber(@Param("id") Long id);
 
-	@Query("Select c from Chamado c WHERE c.chSituacao = 'ABERTO' or c.chSituacao = 'EM_ANDAMENTO' or c.chSituacao = 'AGUARDANDO_PECA'"
-			+ " order by c.chDataAbertura asc")
+	@Query("Select c from Chamado c "
+			+ "WHERE c.chSituacao = 'ABERTO' or c.chSituacao = 'EM_ANDAMENTO' or c.chSituacao = 'AGUARDANDO_PECA'"
+			+ "Order by c.chDataAbertura asc")
 	List<Chamado> buscar();
+	
+	@Query("Select COUNT(c) as total, c.servico as servico from Chamado c "
+			+ "WHERE c.chSituacao = 'ABERTO' or c.chSituacao = 'EM_ANDAMENTO' or c.chSituacao = 'AGUARDANDO_PECA'"
+			+ " GROUP BY c.servico.serNome Order by c.chDataAbertura asc")
+	List<Chamado> buscarRelatorio();
 
 	@Query("Select c from Chamado c order by c.chDataAbertura asc")
 	List<Chamado> buscaLista();
