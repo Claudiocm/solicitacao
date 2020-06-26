@@ -25,9 +25,13 @@
 	                    </li>
 	                </ul>
 	            </div>
+	             <a class="btn btn-primary btn-md" th:href="@{/chamados/buscar}" role="button">
+	                <span class="oi oi-action-undo" title="Cadastro" aria-hidden="true"></span>
+	                <span> Painel</span>
+	            </a>&nbsp;
 	            <a class="btn btn-primary btn-md" th:href="@{/tecnicos/cadastrar}" role="button">
 	                <span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
-	                <span>Novo Técnico</span>
+	                <span>  Novo Técnico</span>
 	            </a>
 	        </nav>
 		</section>
@@ -48,7 +52,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="c : ${chamados}" disable="false">
+						<tr th:each="c : ${chamados}" >
 							<td th:text="${c.id}">1</td>
 							<td	th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">Data</td>
 							<td	th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
@@ -69,6 +73,7 @@
 						</tr>
 					</tfoot>
 				</table>
+		
 			</div>
 		</div>
 

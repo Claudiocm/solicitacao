@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.solicitacao.sv.datatables.Datatables;
 import com.solicitacao.sv.datatables.DatatablesColunas;
+import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Equipamento;
 import com.solicitacao.sv.dominio.Servico;
+import com.solicitacao.sv.repository.ChamadoRepository;
 import com.solicitacao.sv.repository.EquipamentoRepository;
 import com.solicitacao.sv.repository.ServicoRepository;
 
@@ -26,6 +28,8 @@ public class EquipamentoImplements implements EquipamentoService {
 	private EquipamentoRepository dao;
 	@Autowired
 	private ServicoRepository daoServico;
+	@Autowired
+	private ChamadoRepository daoChamado;
 	
 	@Override
 	public void salvar(Equipamento equipamento) {
@@ -36,6 +40,7 @@ public class EquipamentoImplements implements EquipamentoService {
 	public void editar(Equipamento equipamento) {
 		Equipamento e = dao.findById(equipamento.getId()).get();
 		List<Servico> servicos = daoServico.findByIdEquipamento(e.getId());
+		List<Chamado> chamados = daoChamado.findByIdEquipamentoChamado(e.getId());
 		
 		e.setEqDescricao(equipamento.getEqDescricao());
 		e.setEqModelo(equipamento.getEqModelo());
@@ -45,7 +50,10 @@ public class EquipamentoImplements implements EquipamentoService {
 			e.getServicos().addAll(equipamento.getServicos());
 		}
 		e.setServicos(servicos);
-		e.setTecnico(equipamento.getTecnico());
+		if(!equipamento.getChamados().isEmpty()) {
+			e.getChamados().addAll(equipamento.getChamados());
+		}
+		e.setChamados(chamados);
 	}
 
 	@Override
@@ -115,11 +123,5 @@ public class EquipamentoImplements implements EquipamentoService {
 		return true;
 	}
 
-	public boolean equipamentoTemTecnicos(Long id) {
-		if(buscarPorId(id).getTecnico().isEmpty()) {
-			return false;
-		}
-		return true;
-	}
 
 }

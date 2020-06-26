@@ -7,7 +7,7 @@
 	<header th:fragment="cabecalho">
 		<br /> <br /> <br /><br />
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-			<a class="navbar-brand " th:href="@{/chamados/buscar}">Solicitação de Serviços</a>
+			<a class="navbar-brand " th:href="@{/}">Solicitação de Serviços</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarCollapse" aria-controls="navbarCollapse"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -19,70 +19,87 @@
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item dropdown"	sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
 						<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
-						href="#" role="tablist" aria-orientation="vertical"		aria-expanded="false"> Solicitações </a>
+						href="#" role="tablist" aria-orientation="vertical" aria-expanded="false"> 
+						   <i class="oi oi-list-rich"></i>  Solicitações
+						</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/chamados/cadastrar}"> 
-							   <span>Cadastrar</span>
+							   <i class="oi oi-book"></i>
+							   <span> Cadastrar</span>
 							</a> 
 							<a class="dropdown-item" th:href="@{/chamados/buscar}"> 
-							   <i	class="oi oi-spreadsheet"></i>
-							   <span>Listar</span>
+							   <i class="oi oi-spreadsheet"></i>
+							   <span> Listar</span>
 							</a> 
-					
 						</div>
 					</li>
 					<li class="nav-item dropdown"	sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
 						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"	href="#" role="tablist" aria-orientation="vertical"
-						aria-expanded="false"> Equipamentos </a>
+						aria-expanded="false"> <i class="oi oi-wrench"></i>  Equipamentos </a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/equipamentos/cadastrar}">
-								<span>Cadastrar</span>
+							    <i class="oi oi-plus"></i>
+								<span> Cadastrar</span>
 							</a> <a class="dropdown-item" th:href="@{/equipamentos/listar}">
-								<i class="oi oi-spreadsheet"></i> <span> Listar </span>
+								<i class="oi oi-spreadsheet"></i> 
+								<span>  Listar </span>
 							</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item"> Tipo Equipamentos </a> <a
-								class="dropdown-item" th:href="@{/tipoEquipamentos/cadastrar}"> <i
-								class="oi oi-plus"></i> <span> Cadastrar </span>
+							<a class="dropdown-item"> Tipo Equipamentos </a> 
+							<a class="dropdown-item" th:href="@{/tipoEquipamentos/cadastrar}"> 
+							   <i class="oi oi-plus"></i> 
+							   <span> Cadastrar </span>
 							</a> 
-							<a class="dropdown-item" th:href="@{/tipoEquipamentos/listar}"> <i
-								class="oi oi-spreadsheet"></i> <span> Listar </span>
+							<a class="dropdown-item" th:href="@{/tipoEquipamentos/listar}"> 
+							   <i class="oi oi-spreadsheet"></i> 
+							   <span> Listar </span>
 							</a>
 						</div>
 						
 					</li>
-					
+					<li class="nav-item dropdown"
+						sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">
+						    <i class="oi oi-plus"></i>  Arquivos</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/upload}"> 
+							<i class="oi oi-data-transfer-upload"></i> 
+								<span>  Carregar Arquivos...</span>
+							</a> 
+						</div>
+						</li>
 					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
 						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
-						href="#" role="button" aria-haspopup="true" aria-expanded="false">Serviços</a>
+						href="#" role="button" aria-haspopup="true" aria-expanded="false">  Serviços</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/servicos/cadastrar}">
 							<i	class="oi oi-plus"></i> 
-							<span>Cadastrar</span>
+							<span> Cadastrar</span>
 							</a> 
 							<a class="dropdown-item" th:href="@{/servicos/listar}"> 
 							<i	class="oi oi-spreadsheet"></i>
-							<span>Listar </span>
+							<span> Listar </span>
 							</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item"> Tipo Serviços </a> <a
-								class="dropdown-item" th:href="@{/tipoServicos/cadastrar}"> <i
-								class="oi oi-plus"></i> <span>Cadastrar</span>
+							<a class="dropdown-item"> Tipo Serviços </a> 
+							<a	class="dropdown-item" th:href="@{/tipoServicos/cadastrar}"> <i
+								class="oi oi-plus"></i> <span> Cadastrar</span>
 							</a> 
 							<a class="dropdown-item" th:href="@{/tipoServicos/listar}"> <i
-								class="oi oi-spreadsheet"></i> <span>Listar </span>
+								class="oi oi-spreadsheet"></i> <span> Listar </span>
 							</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
 					<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
 						href="#" role="button" aria-haspopup="true" aria-expanded="false">
-							Técnicos </a>
+							<i class="oi oi-shield"></i>  Técnicos </a>
 						<div class="dropdown-menu">
 						    
 							<a class="dropdown-item" th:href="@{/tecnicos/cadastrar}"> 
 							<i	class="oi oi-plus"></i>
-							    <span>Cadastrar</span>
+							    <span> Cadastrar</span>
 							</a> 
 							<a class="dropdown-item" th:href="@{/tecnicos/listar}">
 							<i	class="oi oi-spreadsheet"></i> 
@@ -90,17 +107,17 @@
 							</a>
 							<a class="dropdown-item"
 								th:href="@{/chamados/historico/tecnico}"> 
-								<i class="oi oi-spreadsheet"></i> 
-								<span>Histórico [Técnico]</span>
+								<i class="oi oi-book"></i> 
+								<span>  Histórico [Técnico]</span>
 							</a>
 							<a class="dropdown-item" th:href="@{/usuarios/editar/senha}"> 
 							   <i	class="oi oi-key"></i>
-							   <span>Alterar Senha</span>
+							   <span>  Alterar Senha</span>
 							</a>
 						</div></li>
 					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN')">
 					<a		class="nav-link active dropdown-toggle" data-toggle="dropdown"
-						href="#" role="button" aria-haspopup="true" aria-expanded="false">Usuários</a>
+						href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="oi oi-person"></i>  Usuários</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/usuarios/cadastrar}"> 
 							<i	class="oi oi-plus"></i>
@@ -113,28 +130,38 @@
 							   <i	class="oi oi-key"></i>
 							   <span>Alterar Senha</span>
 							</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item">  Setores </a> 
+							<a class="dropdown-item" th:href="@{/setores/cadastrar}"> 
+							  <i	class="oi oi-plus"></i>
+							  <span> Cadastrar</span>
+							</a> 
+							<a class="dropdown-item" th:href="@{/setores/listar}"> 
+							  <i	class="oi oi-spreadsheet"></i>
+							  <span>  Listar</span>
+							</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('SOLICITANTE')">
 					<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
 						href="#" role="button" aria-haspopup="true" aria-expanded="false">
-							Solicitantes </a>
+							<i class="oi oi-persons"></i>  Solicitantes </a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/solicitantes/dados}"> 
 							   <i	class="fas fa-user"></i>
-							   <span>Dados do Usuário</span>
+							   <span>  Dados do Usuário</span>
 							</a> 
 							<a class="dropdown-item" th:href="@{/usuarios/editar/senha}"> 
 							   <i	class="oi oi-key"></i>
-							   <span>Alterar Senha</span>
+							   <span>  Alterar Senha</span>
 							</a>
 							<a class="dropdown-item" th:href="@{/solicitantes/solicitar}"> 
 							   <i	class="oi oi-plus"></i>
-							   <span>Solicitar Chamado</span>
+							   <span>  Solicitar Chamado</span>
 							</a>
 							<a class="dropdown-item" th:href="@{/solicitantes/historico/solicitante}"> 
-							   <i	class="oi oi-spreadsheet"></i>
-							   <span>Histórico do Usuário</span>
+							   <i	class="oi oi-list-rich"></i>
+							   <span>  Histórico do Usuário</span>
 							</a>
 						</div>
 					</li>
@@ -142,33 +169,18 @@
 					<li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
 					<a	class="nav-link active dropdown-toggle" data-toggle="dropdown"
 						href="#" role="button" aria-haspopup="true" aria-expanded="false">
-							Cargos </a>
+							<i class="oi oi-tag"></i>  Cargos </a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/cargos/cadastrar}"> 
 							<i	class="oi oi-plus"></i>
-							<span>Cadastrar</span>
+							<span>  Cadastrar</span>
 							</a> <a class="dropdown-item" th:href="@{/cargos/listar}"> 
 							<i	class="oi oi-spreadsheet"></i>
-							<span>Listar</span>
+							<span>  Listar</span>
 							</a>
 						</div>
 					</li>
-					<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
-						<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
-						href="#" role="button" aria-haspopup="true" aria-expanded="false">
-							Setor </a>
-						<div class="dropdown-menu">
-						  
-							<a class="dropdown-item" th:href="@{/setores/cadastrar}"> 
-							<i	class="oi oi-plus"></i>
-							<span>Cadastrar</span>
-							</a> 
-							<a class="dropdown-item" th:href="@{/setores/listar}"> 
-							<i	class="oi oi-spreadsheet"></i>
-							<span>Listar</span>
-							</a>
-						</div>
-					</li>
+					
 				</ul>
 
 				<form class="form-inline mt-2 mt-md-0"	sec:authorize="!isAuthenticated()">

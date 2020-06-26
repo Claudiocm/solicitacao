@@ -17,7 +17,7 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
 
 	@Query("select s from Servico s join s.equipamentos e where e.id = :id")
 	List<Servico> findByIdEquipamento(Long id);
-
+	
 	@Query("select s from Servico s join s.equipamentos e where e.id = :id")
 	List<Servico> buscarServicoId(Long id);
 

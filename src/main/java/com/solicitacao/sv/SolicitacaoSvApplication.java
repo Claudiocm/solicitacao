@@ -17,12 +17,11 @@ public class SolicitacaoSvApplication implements CommandLineRunner {
 		SpringApplication.run(SolicitacaoSvApplication.class, args);
 	}
 
-	@Autowired
-	EmailService service;
-
+    @Autowired EmailService service;
+	 
 	@Override
 	public void run(String... args) throws Exception {
-		//service.enviarPedidoDeConfirmacaoDeCadastro("claudio.c.matos@gmail.com", "a2018c44");
+		//service.enviarPedidoDeConfirmacaoDeCadastro("claudio.c.matos@gmail.com", "a2018c");
 	}
 
 }

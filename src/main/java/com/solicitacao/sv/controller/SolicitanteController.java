@@ -54,12 +54,12 @@ public class SolicitanteController {
 
 	@GetMapping("/solicitar")
 	public String solicitar(Chamado chamado, ModelMap model, @AuthenticationPrincipal User user ) {
-		Solicitante solicitante = service.buscarPorUsuarioEmail(user.getUsername());
-		if (solicitante.hasNotId()) {
-			solicitante.setUsuario(new Usuario(user.getUsername()));
-		}
-		
+		Solicitante solicitante = service.buscarPorUsuarioEmail(user.getUsername());;
+	    int total = chamadoService.buscarTodos().size();
+	    
+		chamado.setId((long) total + 1);
 		chamado.setSolicitante(solicitante);
+		chamado.setSetor(solicitante.getSetor());
     	chamado.setchSituacao(Situacao.ABERTO);
 		chamado.setChDataAbertura(LocalDate.now());
 		
@@ -125,7 +125,7 @@ public class SolicitanteController {
 		return equipamentoService.buscarTodos();
 	}
 	
-	@ModelAttribute("equipamentos")
+	@ModelAttribute("solicitantes")
 	private List<Solicitante> getSolicitantes() {
 		return service.buscarTodos();
 	}

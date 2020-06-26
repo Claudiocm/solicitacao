@@ -3,17 +3,19 @@ package com.solicitacao.sv.controller;
 import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -82,9 +84,11 @@ public class ChamadoController {
 		 * quando for solicitante setar o ip da maquina InetAddress ip =
 		 * InetAddress.getLocalHost(); chamado.setChIp(ip.getHostAddress());
 		 */
-
+		long chamados = chService.buscarTodos().size();
+        //chamado.setId((long) chamados + 1);
 		chamado.setchSituacao(Situacao.ABERTO);
 		chamado.setChDataAbertura(LocalDate.now());
+		
 		return "/chamado/cadastro";
 	}
 
@@ -113,7 +117,7 @@ public class ChamadoController {
     public String chart(ModelMap model) {
 		model.addAttribute("servico",chService.buscarTotalChamados());
 		model.addAttribute("total",chService.buscarTotalChamados());
-	 return "grafico-chamado";
+	 return "/grafico-chamado";
 	}
 
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN','SOLICITANTE')")
@@ -227,6 +231,14 @@ public class ChamadoController {
 	@GetMapping("/equipamento/{id}")
 	public ResponseEntity<?> getServicoEquipamentos(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(serService.buscarPorIdEquipamento(id));
+	}
+	
+	@GetMapping("/page")
+	public String findPage(@RequestParam(defaultValue = "0") int page, Model modelo) {
+		modelo.addAttribute("data", chService.findPage(PageRequest.of(page, 5)));
+		modelo.addAttribute("currentPage", page);
+
+		return "/chamado/historico-tecnico";
 	}
 
 	@ModelAttribute("situacoes")

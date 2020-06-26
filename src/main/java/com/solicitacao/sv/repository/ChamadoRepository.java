@@ -58,4 +58,7 @@ public interface ChamadoRepository extends JpaRepository<Chamado, Long> {
 	@Query("select c from Chamado c where c.tecnico.usuario.email like :email"
 			+ " OR c.solicitante.usuario.email like :email")
 	Optional<Chamado> findByUsuarioEmail(String email);
+
+	@Query("select c from Chamado c join c.equipamento e where e.id = :id")
+	List<Chamado> findByIdEquipamentoChamado(Long id);
 }

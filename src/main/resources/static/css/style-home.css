@@ -1,13 +1,13 @@
 .jumbotron {
   padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
   margin-bottom: 0;
   background-color: #fff;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 860px) {
   .jumbotron {
-    padding-top: 6rem;
+    padding-top: 5rem;
     padding-bottom: 3rem;
   }
 }
@@ -17,7 +17,7 @@
 }
 
 .jumbotron-heading {
-  font-weight: 200;
+  font-weight: 120;
 }
 
 .jumbotron .container {
@@ -30,7 +30,7 @@ footer {
 }
 
 footer p {
-  margin-bottom: .25rem;
+  margin-bottom: .20rem;
 }
 
 .modal .modal-body input, .modal .modal-body textarea{

@@ -86,8 +86,6 @@ public class EquipamentoController {
 			modelo.addAttribute("fail", "Equipamento não removido. Possui serviços(s) vinculado(s).");
 		} else if (equipamentoService.equiapamentoTemChamado(id)) {
 			modelo.addAttribute("fail", "Equipamento não removido. Possui chamados(s) vinculado(s).");
-		} else if (equipamentoService.equipamentoTemTecnicos(id)) {
-			modelo.addAttribute("fail", "Equipamento não removido. Possui tecnicos(s) vinculado(s).");
 		} else {
 			equipamentoService.excluir(id);
 			modelo.addAttribute("success", "Equipamento excluido com sucesso");

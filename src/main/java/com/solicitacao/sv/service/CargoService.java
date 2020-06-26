@@ -2,6 +2,8 @@ package com.solicitacao.sv.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.solicitacao.sv.dominio.Cargo;
 
 public interface CargoService {
@@ -18,5 +20,7 @@ public interface CargoService {
 	public boolean cargoTemTecnicos(Long id);
 
 	public List<Cargo> buscarPorNome(String nome);
+
+	Page<Cargo> findPagenated(int page, int pageSize, String sortField, String sortDirection);
 
 }

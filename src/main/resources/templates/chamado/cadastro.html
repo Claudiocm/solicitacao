@@ -140,6 +140,7 @@
 							<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
 						</button>
 					</div>
+					
 					<div class="form-group col-md-5">
 						<label for="equipamento">Equipamento</label> <select
 							id="equipamento" class="form-control" th:field="*{equipamento}"
@@ -154,23 +155,13 @@
 						</div>
 					</div>
 					<div class="form-group col-md-1">
-						<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#servico">
+						<button type="button" class="btn btn-primary btn-sm">
 							<span class="oi oi-plus" title="Editar" aria-hidden="true"></span>
 						</button>
 					</div>
-					<div class="form-group col-md-6">
-						<label for="problema">Problema</label>
-						<textarea class="form-control" id="problema" rows="1"
-							placeholder="Descreva o problema" autofocus="autofocus"
-							th:field="*{chProblema}" th:classappend="${#fields.hasErrors('chProblema')} ? 'is-invalid'">
-						</textarea>
-						<div class="invalid-feedback">
-							<span th:errors="*{chProblema}"></span>
-						</div>
-					</div>
-					
 					<div class="form-group col-md-3">
-						<label for="ip">IP</label> <input type="text" class="form-control"
+						<label for="ip">IP</label> 
+						<input type="text" class="form-control"
 							id="ip" placeholder="IP (000.000.000.000)" autofocus="autofocus"
 							th:field="*{chIp}"
 							th:classappend="${#fields.hasErrors('chIp')} ? 'is-invalid'" />
@@ -178,34 +169,60 @@
 							<span th:errors="*{chIp}"></span>
 						</div>
 					</div>
-				</div>
-				<div class="form-row">
-					
-					<div class="form-group col-md-5">
-						<label for="observacao">Descrição do Serviço</label>
-						<textarea class="form-control" id="observacao" rows="2"
-							placeholder="Descreva a observação" autofocus="autofocus"
-							th:field="*{chObservacao}"
-							th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
-						<div class="invalid-feedback">
-							<span th:errors="*{chObservacao}"></span>
-						</div>
+					<div class="form-group col-md-6">
+						<label for="ip">Serviços</label> 
+						<table class="table table-striped table-hover table-sm">
+							<thead>
+								<tr>
+									<th>Nº</th>
+									<th>Nome</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="s : ${chamado.id != null} ? ${chamado.equipamento.servicos}" >
+									<td th:text="${s.id}">1</td>
+									<td th:text="${s.serNome}">Auxiliar Contábil</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 					<div class="form-group col-md-1">
 						<a type="button" class="btn btn-primary btn-sm"
 							th:href="${chamado.id != null} ? @{/equipamentos/editar/{idEquipamento} (idEquipamento=${chamado.equipamento.id}) }"
-							role="button"> 
-							<span class="oi oi-plus" title="Editar"	aria-hidden="true">Adicionar</span>
+							role="button"> <span class="oi oi-plus" title="Editar"	aria-hidden="true"></span>
 						</a>
 					</div>
 					
 				</div>
+				<div class="form-row">
+					<div class="form-group col-md-5">
+						<label for="problema">Problema</label>
+						<textarea class="form-control" id="problema" rows="1"
+							placeholder="Descreva o problema" autofocus="autofocus"
+							th:field="*{chProblema}"
+							th:classappend="${#fields.hasErrors('chProblema')} ? 'is-invalid'">
+						</textarea>
+						<div class="invalid-feedback">
+							<span th:errors="*{chProblema}"></span>
+						</div>
+					</div>
+
+					<div class="form-group col-md-6">
+						<label for="observacao">Descrição do Serviço</label>
+						<textarea class="form-control" id="observacao" rows="2"
+							placeholder="Descreva a observação" autofocus="autofocus"
+							th:field="*{chObservacao}" th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
+						<div class="invalid-feedback">
+							<span th:errors="*{chObservacao}"></span>
+						</div>
+					</div>
+				</div>
 
 				<input type="hidden" id="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+				<button type="reset" class="btn btn-danger btn-sm">Cancelar</button>
 			</form>			
 		</div>
-		<div th:replace="modal/servico-modal :: servico-modal"></div>
 		
 	</section>
 	

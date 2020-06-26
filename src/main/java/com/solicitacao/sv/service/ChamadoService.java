@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Servico;
 
@@ -32,5 +35,7 @@ public interface ChamadoService {
 	public void adicionaServico(@Valid Chamado chamado, List<Servico> buscarPorNome);
 
 	public Iterable<Chamado> todos();
+
+	Page<Chamado> findPage(PageRequest of);
 
 }

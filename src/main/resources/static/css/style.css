@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-	padding-top: 56px;
+	padding-top: 20px;
 	padding-left: 0;
 } 
 
@@ -15,8 +15,8 @@ body {
  */
 .layout-main {
     display: flex;
-    min-height: calc(100vh - 52px);
-    overflow: hidden;
+    min-height: calc(100vh - 80px);
+    overflow: auto;
 }
 
 /*
@@ -29,7 +29,7 @@ body {
 
 .container {
 	width: 100%;
-	padding-top: 20px;
+	padding-top: 10px;
 }
 
 /*
@@ -42,7 +42,7 @@ body {
     border-right: 1px solid #eee;    
     background-color: #f8f9fa;
     flex-shrink: 0;
-    overflow: hidden;
+    overflow: auto;
     transition: width .5s;
 }
 
@@ -104,17 +104,17 @@ body {
  * Footer
  */
 .layout-footer {
-	position: fixed;
+	position: relative;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	margin: 0;
-	height: 50px;
+	height: 30px;
 	border-top: 1px solid #eeeeee;
 }
 
 .footer-copy {
-	font-size: 92%;
+	font-size: 80%;
 	display: block;
 	color: #777777;
 	text-align: center;

@@ -10,10 +10,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.solicitacao.sv.datatables.Datatables;
 import com.solicitacao.sv.datatables.DatatablesColunas;
+import com.solicitacao.sv.dominio.Cargo;
 import com.solicitacao.sv.dominio.Chamado;
 import com.solicitacao.sv.dominio.Servico;
 import com.solicitacao.sv.dominio.Tecnico;
@@ -51,8 +53,8 @@ public class ChamadoImplements implements ChamadoService {
 		if (chamado != null) {
 			chama.setEquipamento(chamado.getEquipamento());
 		}
-		if (chamado != null) {
-			chama.setServico(chamado.getServico());
+		if (chamado != null && !chamado.getEquipamento().getServicos().isEmpty()) {
+			chama.getEquipamento().getServicos().addAll(chamado.getEquipamento().getServicos());
 		}
 		chama.setSetor(chamado.getSetor());
 		chama.setTecnico(chamado.getTecnico());
@@ -145,6 +147,11 @@ public class ChamadoImplements implements ChamadoService {
 	@Transactional(readOnly = true)
 	public List<Chamado> buscarTotalChamados() {
 		return dao.buscarRelatorio();
+	}
+
+	@Override
+	public Page<Chamado> findPage(PageRequest of) {
+		return dao.findAll(of);
 	}
 
 }

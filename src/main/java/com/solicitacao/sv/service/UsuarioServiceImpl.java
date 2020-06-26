@@ -141,10 +141,8 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	public void pedidoRedefinicaoDeSenha(String email) throws MessagingException {
 		Usuario usuario = buscarPorEmailEAtivo(email)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuario " + email + " não encontrado."));
-		;
 
 		String verificador = RandomStringUtils.randomAlphanumeric(6);
-
 		usuario.setCodigoVerificador(verificador);
 
 		emailService.enviarPedidoRedefinicaoSenha(email, verificador);
@@ -155,9 +153,10 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		String crypt = new BCryptPasswordEncoder().encode(usuario.getUsuSenha());
 		usuario.setUsuSenha(crypt);
 		usuario.addPerfil(PerfilTipo.SOLICITANTE);
+		
 		dao.save(usuario);
 
-		emailDeConfirmacaoDeCadastro(usuario.getEmail());
+		//emailDeConfirmacaoDeCadastro(usuario.getEmail());
 	}
 
 	@Transactional(readOnly = false)
@@ -167,7 +166,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		usuario.addPerfil(PerfilTipo.TECNICO);
 		dao.save(usuario);
 
-		emailDeConfirmacaoDeCadastro(usuario.getEmail());
+		//emailDeConfirmacaoDeCadastro(usuario.getEmail());
 	}
 
 	@Transactional(readOnly = true)

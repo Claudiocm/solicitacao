@@ -5,24 +5,25 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-   <div class="container col-md-10">
+		<div class="container col-md-10">
 			<img class="d-block mx-auto"
 				th:src="@{/image/brasao_sao_vicente.png}" width="70" height="70">
 			<h1 class="jumbotron-heading">Solicitação de Serviços</h1>
 			<p class="lead text-muted">Cadastrar de Solicitantes</p>
-		<nav class="navbar navbar-expand-md bg-light">
-			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><i class="oi oi-caret-right"></i>
-						<span></span></li>
-				</ul>
-			</div>
-			<a class="btn btn-primary btn-md" th:href="@{/solicitantes/listar}"
-				role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
-				aria-hidden="true"></span> <span>Listar Solicitantes</span>
-			</a>
-		</nav>
-	</div>
+			<nav class="navbar navbar-expand-md bg-light">
+				<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active"><i class="oi oi-caret-right"></i>
+							<span></span></li>
+					</ul>
+				</div>
+				<a class="btn btn-primary btn-md"
+					th:href="@{/solicitantes/historico/solicitante}" role="button">
+					<span class="oi oi-spreadsheet" title="Cadastro" aria-hidden="true"></span>
+					<span>Histórico de Solicitantes</span>
+				</a>
+			</nav>
+		</div>
 		<div class="container" id="cadastro">
 			<div th:replace="fragments/alert"></div>
 
@@ -33,9 +34,9 @@
 				<div th:replace="fragments/validacao  :: validacao"></div>
 
 				<div class="form-row">
-					<div class="form-group col-md-5">
-						<label for="nome">Nome do Solicitante</label> 
-						<input type="text"	class="form-control" id="nome" placeholder="Nome do Solicitante"
+					<div class="form-group col-md-4">
+						<label for="nome">Nome do Solicitante</label> <input type="text"
+							class="form-control" id="nome" placeholder="Nome do Solicitante"
 							autofocus="autofocus" th:field="*{nome}"
 							th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
@@ -43,17 +44,20 @@
 						</div>
 					</div>
 					<div class="form-group col-md-5">
-						<label for="usuario">Email</label> 
-						<input type="email"	class="form-control" id="usuario" placeholder="Login de usuário"
+						<label for="usuario">Email</label> <input type="email"
+							class="form-control" id="usuario" placeholder="Login de usuário"
 							autofocus="autofocus" th:field="*{usuario.email}"
 							th:classappend="${#fields.hasErrors('usuario.email')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
 							<span th:errors="*{usuario.email}"></span>
 						</div>
 					</div>
+				</div>
+				<div class="form-row">
+
 					<div class="form-group col-md-3">
-						<label for="data-cadastro">Data de Cadastro</label> 
-						<input type="date" class="form-control" id="data-cadastro"
+						<label for="data-cadastro">Data de Cadastro</label> <input
+							type="date" class="form-control" id="data-cadastro"
 							placeholder="Data de Cadastro" autofocus="autofocus"
 							th:field="*{dtCadastro}"
 							th:classappend="${#fields.hasErrors('dtCadastro')} ? 'is-invalid'" />
@@ -62,8 +66,7 @@
 						</div>
 					</div>
 					<div class="form-group col-md-5">
-						<label for="setor">Nome do Setor</label> 
-						<select id="setor"
+						<label for="setor">Nome do Setor</label> <select id="setor"
 							class="form-control" th:field="*{setor}"
 							th:classappend="${#fields.hasErrors('setor')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -77,11 +80,9 @@
 					</div>
 				</div>
 
-
 				<input type="hidden" id="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
-				
-				
+                <button type="reset" class="btn btn-danger btn-sm">Cancelar</button>
 			</form>
 		</div>
 	</section>

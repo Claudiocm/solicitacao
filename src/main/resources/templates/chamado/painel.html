@@ -16,8 +16,9 @@
 				</ul>
 			</div>
 			<a class="btn btn-primary btn-md" th:href="@{/chamados/cadastrar}"
-				role="button"> <span class="oi oi-plus" title="Cadastro"
-				aria-hidden="true"></span> <span>Novo Chamado</span>
+				role="button"> 
+				<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span> 
+				<span>Novo Chamado</span>
 			</a>
 
 		</nav>
@@ -40,8 +41,7 @@
 					<div class="collapse" id="collapsePatrimonio">
 
 						<nav class="navbar navbar-light bg-light">
-							<form class="form-inline" method="GET"
-								th:action="@{/chamados/buscar/patrimonio}">
+							<form class="form-inline" method="GET"	th:action="@{/chamados/buscar/patrimonio}">
 								<input class="form-control mr-sm-2" type="text"
 									aria-label="Search" th:name="eqSeriebp" />
 								<button class="btn btn-outline-success my-2 my-sm-0">Pesquisar
@@ -90,7 +90,6 @@
 			</div>
 			
 			<div class="table-responsive" style="margin:auto;">
-
 				<div th:replace="fragments/alert"></div>
 
 				<table class="table table-striped table-hover table-sm">
@@ -108,24 +107,19 @@
 					<tbody>
 						<tr th:each="c : ${chamados}">
 							<td th:text="${c.id}">2</td>
-							<td th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy HH:mm')}">2017/08/14</td>
-							<td th:text="${#temporals.format(c.chDataFechamento, 'dd/MM/yyyy HH:mm')}">2017/08/14</td>
+							<td th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">2017/08/14</td>
+							<td th:text="${#temporals.format(c.chDataFechamento, 'dd/MM/yyyy')}">2017/08/14</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
 							<td th:text="${c.solicitante.nome}">Solicitante</td>
-							<td><a><span
-									th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}"
-									th:href="@{/servicos/{id} (id=${c.id}) }"></span></a></td>
+							<td th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Série/BP</td>
 							<td th:text="${c.chSituacao.descricao}">Situação</td>
 							<td colspan="2">
-							<a class="btn btn-info btn-sm"
-								th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
+							<a class="btn btn-info btn-sm"  th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
 									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
 							</a>
-							<button th:id="${'btn_chamados/excluir/' + c.id}"
-									type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-									data-target="#myModal">
-									<span class="oi oi-circle-x" title="Exclusão desabilitada"
-										aria-hidden="true"></span>
+							<button th:id="${'btn_chamados/excluir/' + c.id}" 
+									type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+									<span class="oi oi-circle-x" title="Exclusão desabilitada" aria-hidden="true"></span>
 							</button>
 							</td>
 						</tr>
@@ -137,6 +131,17 @@
 						</tr>
 					</tfoot>
 				</table>
+				<nav aria-label="Page navigation example">
+					<ul class="pagination justify-content-center">
+						<li class="page-item disabled"><a class="page-link" href="#"
+							tabindex="-1">Previous</a></li>
+						<li class="page-item"><a class="page-link" href="#">1</a></li>
+						<li class="page-item"><a class="page-link" href="#">2</a></li>
+						<li class="page-item"><a class="page-link" href="#">3</a></li>
+						<li class="page-item"><a class="page-link" href="#">Next</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
 		</div>
 		<div th:replace="fragments/modal :: modal"></div>

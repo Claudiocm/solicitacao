@@ -1,8 +1,13 @@
 package com.solicitacao.sv.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +33,21 @@ public class CargoServiceImpl implements CargoService {
 	@Override
 	@Transactional(readOnly = true)
 	public Cargo buscarPorId(Long id) {
-		return dao.findById(id).get();
+		Optional<Cargo> cargo = dao.findById(id);
+		Cargo c = null;
+		if(cargo.isPresent()) {
+			c = cargo.get();
+		}else {
+			
+			throw new RuntimeException("O cargo não encontrado com este código: " + id);
+		}
+		return c;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Cargo> buscarTodos() {
+		//Pageable page = PageRequest.of(1, 5, Sort.Direction.ASC);
 		return dao.findAll();
 	}
 
@@ -49,7 +63,7 @@ public class CargoServiceImpl implements CargoService {
 
 	@Override
 	public boolean cargoTemTecnicos(Long id) {
-		if(buscarPorId(id).getTecnicos().isEmpty()){
+		if (buscarPorId(id).getTecnicos().isEmpty()) {
 			return false;
 		}
 		return true;
@@ -58,6 +72,15 @@ public class CargoServiceImpl implements CargoService {
 	@Override
 	public List<Cargo> buscarPorNome(String nome) {
 		return dao.buscarPorNome(nome);
+	}
+
+	@Override
+	public Page<Cargo> findPagenated(int page, int pageSize, String sortField, String sortDirection) {
+		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())? Sort.by(sortField).ascending() 
+				: Sort.by(sortField).descending();
+		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+		
+		return this.dao.findAll(pageable);
 	}
 
 }

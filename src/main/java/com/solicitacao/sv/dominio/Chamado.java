@@ -1,6 +1,5 @@
 package com.solicitacao.sv.dominio;
 
-import java.net.InetAddress;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -11,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.format.annotation.DateTimeFormat;

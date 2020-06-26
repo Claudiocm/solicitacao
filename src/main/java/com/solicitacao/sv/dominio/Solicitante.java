@@ -7,7 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,7 +30,8 @@ public class Solicitante extends AbstractEntity<Long> {
 	private LocalDate dtCadastro;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "solicitante")
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "solicitante_tem_chamados", joinColumns = @JoinColumn(name = "solicitante", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "chamado", referencedColumnName = "id"))
 	private List<Chamado> chamados;
 	
 	@OneToOne(cascade = CascadeType.REMOVE)
@@ -40,6 +42,14 @@ public class Solicitante extends AbstractEntity<Long> {
 	@JoinColumn(name = "setor")
 	private Setor setor;
 	
+	public Solicitante() {
+		super();
+	}
+	
+	public Solicitante(Long id) {
+		super.setId(id);
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -80,5 +90,7 @@ public class Solicitante extends AbstractEntity<Long> {
 	public void setSetor(Setor setor) {
 		this.setor = setor;
 	}
+	
+	
 
 }

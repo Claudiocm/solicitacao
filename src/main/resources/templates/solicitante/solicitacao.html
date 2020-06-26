@@ -50,10 +50,9 @@
 						</div>
 					</div>
 					<div class="form-group col-md-2">
-						<label for="fechamento">Data Fechamento</label> <input type="date"
-							class="form-control" id="fechamento"
-							placeholder="Data de fechamento" autofocus="autofocus"
-							th:field="*{chDataFechamento}"
+						<label for="fechamento">Data Fechamento</label> 
+						<input type="date"	class="form-control" id="fechamento"
+							placeholder="Data de fechamento" autofocus="autofocus" 	th:field="*{chDataFechamento}"
 							th:classappend="${#fields.hasErrors('chDataFechamento')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
 							<span th:errors="*{chDataFechamento}"></span>
@@ -131,10 +130,9 @@
 
 				<input type="hidden" id="id" th:field="*{id}" />
 				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+				<button type="reset" class="btn btn-danger btn-sm">Cancelar</button>
 			</form>			
-		</div>
-		<div th:replace="modal/servico-modal :: servico-modal"></div>
-		
+		</div>		
 	</section>
 	
 	</body>

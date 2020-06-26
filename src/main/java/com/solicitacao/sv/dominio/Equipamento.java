@@ -2,7 +2,6 @@ package com.solicitacao.sv.dominio;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,8 +50,8 @@ public class Equipamento extends AbstractEntity<Long> {
 	private List<Servico> servicos;
 	
 	@ManyToMany
-	@JoinTable(name = "tecnicos_tem_equipamentoS", joinColumns = @JoinColumn(name = "equipamento", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tecnico", referencedColumnName = "id"))
-	private List<Tecnico> tecnico;
+	@JoinTable(name = "equipamentos_tem_chamados", joinColumns = @JoinColumn(name = "equipamento", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "chamado", referencedColumnName = "id"))
+	private List<Chamado> chamado;
 
 	public Equipamento() {
 		super();
@@ -117,12 +116,12 @@ public class Equipamento extends AbstractEntity<Long> {
 		this.servicos = servicos;
 	}
 
-	public List<Tecnico> getTecnico() {
-		return tecnico;
+	public List<Chamado> getChamado() {
+		return chamado;
 	}
 
-	public void setTecnico(List<Tecnico> tecnico) {
-		this.tecnico = tecnico;
+	public void setChamado(List<Chamado> chamado) {
+		this.chamado = chamado;
 	}
 
 }
