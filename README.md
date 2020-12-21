@@ -3,10 +3,10 @@
  8 Desenvolvimento de Aplicação para atendimento interno de manutenção.
 
 ## Tecnologias
-*** Produzido linguagem java, frameworks, MVC e SQL.
+* Produzido linguagem java, frameworks, MVC e SQL.
 
 ## Integraççao
-** com Springboot, JPA
+* Springboot, JPA
 
 ## Linguagens
 * Linguagens Web [HTML, Javascript, Jquery, CSS] SQL
