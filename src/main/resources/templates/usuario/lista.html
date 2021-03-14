@@ -14,8 +14,9 @@
 							<span></span></li>
 					</ul>
 					<a class="btn btn-primary btn-md" th:href="@{/usuarios/cadastrar}"
-						role="button"> <span class="oi oi-plus" title="Cadastro"
-						aria-hidden="true"></span> <span>Novo Usuário</span>
+						role="button"> 
+						<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span> 
+						<span>Novo Usuário</span>
 					</a>
 				</div>
 			</nav>
@@ -30,7 +31,7 @@
         	      <input class="waves-effect btn-primary btn" type="submit" value="Buscar" />
 	        	</form>
 	            <div class="table-responsive">
-				<table class="table table-striped table-hover table-sm">
+				<table id="usuario-table" class="table table-striped table-hover table-sm">
 					<thead>
 						<tr>
 							<th>Nº</th>
@@ -38,13 +39,14 @@
 							<th>Perfil</th>
 							<th>Setor</th>
 							<th>Ativo</th>
+							<th>Editar</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="u : ${usuarios}">
 							<td th:text="${u.id}">3</td>
 							<td th:text="${u.email}">E-mail</td>
-							<td th:each="p :${u.perfis}" th:text="${p.desc}">E-mail</td>
+							<td th:each="p :${u.perfis}" th:text="${p.desc}">Perfil</td>
 							<td th:text="${u.setor.setNome}">Setor</td>
 							<td th:text="${u.ativo} ? 'Sim' : 'Não'">Ativo</td>
 							<td colspan="2"><a class="btn btn-info btn-sm"
@@ -71,7 +73,12 @@
 	        </div>
 	        
 			<div th:replace="fragments/modal :: modal"></div>
-			
-	    </section>
+		    <script th:inline="javascript" th:fragment="inlinescript">
+		    $(document).ready(
+			  function () { 
+			   $('#usuario-table').DataTable(); 
+			});
+		    </script>
+	</section>
 </body>
 </html>		

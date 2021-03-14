@@ -31,23 +31,23 @@
 								class="was-validated">
 
 								<div class="mb-3">
-									<label for="senha1">Nova senha</label> 
-									<input type="password" class="form-control pass" id="senha1" name="senha1"
+									<label th:for="senha1">Nova senha</label> 
+									<input type="password" class="form-control pass" id="senha1" name="senha1" 
 										maxlength="8" placeholder="Insira sua senha de acesso" value="" required />
 									<div class="invalid-feedback">Digite sua nova senha.</div>
 								</div>
 
 								<div class="mb-3">
-									<label for="senha2">Repita nova senha</label> 
-									<input	type="password" class="form-control pass" id="senha2"
+									<label th:for="senha2">Repita nova senha</label> 
+									<input	type="password" class="form-control pass" id="senha2" 
 										name="senha2" maxlength="8" placeholder="Insira sua senha de acesso" value="" required />
 									<div class="invalid-feedback">Repita sua nova senha.</div>
 								</div>
 
 								<div class="mb-3">
-									<label for="senha3">Senha atual</label>
-									 <input type="password" class="form-control" id="senha3"
-									 name="senha3" maxlength="8" placeholder="Insira sua senha de acesso" value="" required readonly/>
+									<label th:for="senha3">Senha atual</label>
+									 <input type="password" class="form-control" id="senha3" 
+									 name="senha3" maxlength="8" placeholder="Insira sua senha de acesso" value="" required/>
 									<div class="invalid-feedback">Digite sua senha atual para confirmar.</div>
 								</div>
 

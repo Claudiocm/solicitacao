@@ -1,13 +1,13 @@
 package com.solicitacao.sv.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -24,6 +24,7 @@ import com.solicitacao.sv.dominio.Cargo;
 import com.solicitacao.sv.dominio.Tecnico;
 import com.solicitacao.sv.service.CargoServiceImpl;
 import com.solicitacao.sv.service.TecnicoImplements;
+import com.solicitacao.sv.util.PaginacaoUtil;
 
 @Controller
 @RequestMapping("/cargos")
@@ -39,8 +40,8 @@ public class CargoController {
 	}
 
 	@GetMapping("/listar")
-	public String listar(ModelMap model) {
-		model.addAttribute("cargos", cargoService.buscarTodos());
+	public String listar(ModelMap modelo) {
+		modelo.addAttribute("cargos", cargoService.buscarTodos());
 		return "/cargo/lista";
 	}
 
@@ -82,6 +83,7 @@ public class CargoController {
 
 		cargoService.editar(cargo);
 		attr.addFlashAttribute("success", "Registro atualizado com sucesso.");
+		attr.addAttribute("cargo",cargo);
 		return "redirect:/cargos/cadastrar";
 	}
 

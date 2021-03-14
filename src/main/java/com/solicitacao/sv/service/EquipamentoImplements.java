@@ -1,5 +1,6 @@
 package com.solicitacao.sv.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -22,15 +23,15 @@ import com.solicitacao.sv.repository.ServicoRepository;
 @Service
 @Transactional(readOnly = false)
 public class EquipamentoImplements implements EquipamentoService {
-    @Autowired
-    private Datatables datatables;
+	@Autowired
+	private Datatables datatables;
 	@Autowired
 	private EquipamentoRepository dao;
 	@Autowired
 	private ServicoRepository daoServico;
 	@Autowired
 	private ChamadoRepository daoChamado;
-	
+
 	@Override
 	public void salvar(Equipamento equipamento) {
 		dao.save(equipamento);
@@ -39,21 +40,21 @@ public class EquipamentoImplements implements EquipamentoService {
 	@Override
 	public void editar(Equipamento equipamento) {
 		Equipamento e = dao.findById(equipamento.getId()).get();
-		List<Servico> servicos = daoServico.findByIdEquipamento(e.getId());
 		List<Chamado> chamados = daoChamado.findByIdEquipamentoChamado(e.getId());
-		
+        List<Servico> servicos = daoServico.buscarServicoId(e.getId());
+        
 		e.setEqDescricao(equipamento.getEqDescricao());
 		e.setEqModelo(equipamento.getEqModelo());
 		e.setEqSeriebp(equipamento.getEqSeriebp());
 		e.setTipo(equipamento.getTipo());
-		if (!equipamento.getServicos().isEmpty()) {
-			e.getServicos().addAll(equipamento.getServicos());
+		if (!e.getServicos().isEmpty()) {
+			 e.getServicos().addAll(equipamento.getServicos());
 		}
-		e.setServicos(servicos);
-		if(!equipamento.getChamados().isEmpty()) {
-			e.getChamados().addAll(equipamento.getChamados());
+		//e.setServicos(servicos);
+
+		if (!e.getChamados().isEmpty()) {
+			e.setChamados(chamados);
 		}
-		e.setChamados(chamados);
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class EquipamentoImplements implements EquipamentoService {
 	public List<Equipamento> buscarPorSerie(String serie) {
 		return dao.findBySerie(serie);
 	}
-	
+
 	@Transactional(readOnly = true)
 	@Override
 	public List<Equipamento> buscarEquipamentosPorServico(String titulo) {
@@ -93,8 +94,7 @@ public class EquipamentoImplements implements EquipamentoService {
 	public Map<String, Object> buscarServicos(HttpServletRequest request) {
 		datatables.setRequest(request);
 		datatables.setColunas(DatatablesColunas.SERVICOS);
-		Page<?> page = datatables.getSearch().isEmpty()
-				? dao.findAll(datatables.getPageable())
+		Page<?> page = datatables.getSearch().isEmpty() ? dao.findAll(datatables.getPageable())
 				: dao.findAllByTitulo(datatables.getSearch(), datatables.getPageable());
 		return datatables.getResponse(page);
 	}
@@ -103,25 +103,23 @@ public class EquipamentoImplements implements EquipamentoService {
 	public Map<String, Object> buscarEquipamentos(HttpServletRequest request) {
 		datatables.setRequest(request);
 		datatables.setColunas(DatatablesColunas.EQUIPAMENTOS);
-		Page<?> page = datatables.getSearch().isEmpty()
-				? dao.findAll(datatables.getPageable())
+		Page<?> page = datatables.getSearch().isEmpty() ? dao.findAll(datatables.getPageable())
 				: dao.findAllByModelo(datatables.getSearch(), datatables.getPageable());
 		return datatables.getResponse(page);
 	}
 
 	public boolean equipamentoTemServicos(Long id) {
-		if(buscarPorId(id).getServicos().isEmpty()) {
+		if (buscarPorId(id).getServicos().isEmpty()) {
 			return false;
 		}
 		return true;
 	}
 
 	public boolean equiapamentoTemChamado(Long id) {
-		if(buscarPorId(id).getChamados().isEmpty()) {
+		if (buscarPorId(id).getChamados().isEmpty()) {
 			return false;
 		}
 		return true;
 	}
-
 
 }

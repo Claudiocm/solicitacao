@@ -1,6 +1,7 @@
 package com.solicitacao.sv.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +55,9 @@ public class SolicitanteController {
 
 	@GetMapping("/solicitar")
 	public String solicitar(Chamado chamado, ModelMap model, @AuthenticationPrincipal User user ) {
-		Solicitante solicitante = service.buscarPorUsuarioEmail(user.getUsername());;
-	    int total = chamadoService.buscarTodos().size();
-	    
-		chamado.setId((long) total + 1);
+		Solicitante solicitante = service.buscarPorUsuarioEmail(user.getUsername());
+
+		//chamado.setId((long) total + 1);
 		chamado.setSolicitante(solicitante);
 		chamado.setSetor(solicitante.getSetor());
     	chamado.setchSituacao(Situacao.ABERTO);
@@ -66,13 +66,15 @@ public class SolicitanteController {
 		model.addAttribute("solicitante", solicitante);
 		model.addAttribute("chamado",chamado);
 		
-		return "/solicitante/solicitacao";
+		return "redirect:/chamados/cadastrar";
 	}
 	
 	@GetMapping("/historico/solicitante")
-	public String historico(Chamado chamado, ModelMap model, @AuthenticationPrincipal User user) {
+	public String historico(Solicitante solicitante, ModelMap model, @AuthenticationPrincipal User user) {
 
-		model.addAttribute("chamado", service.buscarPorUsuarioEmail(user.getUsername()));
+		model.addAttribute("chamados", chamadoService.buscarHistoricoPorSolicitanteEmail(user.getUsername()));
+		//model.addAttribute("chamados", service.buscarPorUsuarioEmail(user.getUsername()));
+		model.addAttribute("Solicitante",solicitante);
 		return "/solicitante/historico-solicitante";
 	}
 	
@@ -95,12 +97,16 @@ public class SolicitanteController {
 	@PostMapping("/editar")
 	public String editar(Solicitante solicitante, ModelMap model, @AuthenticationPrincipal User user) {
 		Usuario u = usuarioService.buscarPorEmail(user.getUsername());
-		if (UsuarioService.isSenhaCorreta(solicitante.getUsuario().getUsuSenha(), u.getUsuSenha())) {
-			service.editar(solicitante);
-			model.addAttribute("sucesso", "Seus dados foram editados com sucesso.");
-		} else {
-			model.addAttribute("falha", "Sua senha não confere, tente novamente.");
-		}
+		service.editar(solicitante);
+		model.addAttribute("sucesso", "Seus dados foram editados com sucesso.");
+		
+//		if (UsuarioService.isSenhaCorreta(solicitante.getUsuario().getUsuSenha(), u.getUsuSenha())) {
+//			service.editar(solicitante);
+//			model.addAttribute("sucesso", "Seus dados foram editados com sucesso.");
+//		} else {
+//			model.addAttribute("falha", "Sua senha não confere, tente novamente.");
+//		}
+		
 		return "/solicitante/cadastro";
 	}
 	
@@ -114,18 +120,13 @@ public class SolicitanteController {
 	private List<Setor> getSetor() {
 		return setorService.buscarTodos();
 	}
-	
-	@ModelAttribute("chamados")
-	private List<Chamado> getChamados() {
-		return chamadoService.buscarTodos();
-	}
-	
+
 	@ModelAttribute("equipamentos")
 	private List<Equipamento> getEquipamentos() {
 		return equipamentoService.buscarTodos();
 	}
 	
-	@ModelAttribute("solicitantes")
+    @ModelAttribute("solicitantes")
 	private List<Solicitante> getSolicitantes() {
 		return service.buscarTodos();
 	}

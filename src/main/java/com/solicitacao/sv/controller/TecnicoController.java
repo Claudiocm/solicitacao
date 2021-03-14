@@ -69,7 +69,6 @@ public class TecnicoController {
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap modelo) {
 		modelo.addAttribute("tecnico", servico.buscarPorId(id));
-
 		return "/tecnico/cadastro";
 	}
 
@@ -80,7 +79,7 @@ public class TecnicoController {
 		}
 		servico.editar(tecnico);
 		attr.addFlashAttribute("success", "Técnico editado com sucesso!");
-		attr.addFlashAttribute("tecnico", tecnico);
+		attr.addAttribute("tecnico",tecnico);
 		return "redirect:/tecnicos/cadastrar";
 	}
 

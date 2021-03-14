@@ -2,6 +2,7 @@ package com.solicitacao.sv.controller;
 
 import java.net.UnknownHostException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -84,17 +85,17 @@ public class ChamadoController {
 		 * quando for solicitante setar o ip da maquina InetAddress ip =
 		 * InetAddress.getLocalHost(); chamado.setChIp(ip.getHostAddress());
 		 */
-		long chamados = chService.buscarTodos().size();
-        //chamado.setId((long) chamados + 1);
+		// long chamados = chService.buscarTodos().size();
+		// chamado.setId((long) chamados + 1);
 		chamado.setchSituacao(Situacao.ABERTO);
 		chamado.setChDataAbertura(LocalDate.now());
-		
+
 		return "/chamado/cadastro";
 	}
 
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("chamados",chService.buscarTodos());
+		model.addAttribute("chamados", chService.buscarTodos());
 		return "/chamado/lista";
 	}
 
@@ -111,36 +112,24 @@ public class ChamadoController {
 		model.addAttribute("chamados", chService.buscar());
 		return "/chamado/painel";
 	}
-	
-	@RequestMapping(value = "/grafico")
-	@GetMapping()
-    public String chart(ModelMap model) {
-		model.addAttribute("servico",chService.buscarTotalChamados());
-		model.addAttribute("total",chService.buscarTotalChamados());
-	 return "/grafico-chamado";
-	}
 
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN','SOLICITANTE')")
 	@PostMapping("/salvar")
-	public String salvar(@Valid Chamado chamado, BindingResult result, RedirectAttributes attr,
-			@AuthenticationPrincipal User user) {
-		Tecnico tecnico = tecService.buscarPorUsuarioEmail(user.getUsername());
-		Solicitante solicitante = solService.buscarPorUsuarioEmail(user.getUsername());
+	public synchronized String salvar(@Valid Chamado chamado, BindingResult result, RedirectAttributes attr,
+			@AuthenticationPrincipal User user) throws InterruptedException {
+        //Tecnico tecnico = tecService.buscarPorUsuarioEmail(user.getUsername());
+        //Solicitante solicitante = solService.buscarPorUsuarioEmail(user.getUsername());
 
 		if (result.hasErrors()) {
 			return "/chamado/cadastro";
 		}
 		
-		String titulo = chamado.getServico().getSerNome();
-		Servico servico = serService.buscarPorTitulos(new String[] { titulo }).stream().findFirst().get();
-		chamado.setTecnico(tecnico);
-		chamado.setServico(servico);
-		chamado.setSolicitante(solicitante);
-
 		chService.salvar(chamado);
-
-		attr.addAttribute("success", "Chamado inserido com sucesso!");
-		return "redirect:/chamados/cadastrar";
+		attr.addAttribute("success", "Chamado Nº 000" + chamado.getId() + " aberto com sucesso!/n");
+		attr.addAttribute("title","Anote o número do chamado para consulta");
+		attr.addAttribute("text", "Data da Solicitação: "+chamado.getChDataAbertura()+" - Técnico: "+chamado.getTecnico().getTecNome());
+		attr.addAttribute("chamado", chamado);
+		return "redirect:/chamados/painel";
 	}
 
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
@@ -154,20 +143,45 @@ public class ChamadoController {
 
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@PostMapping("/editar")
-	public String editar(@Valid Chamado chamado, RedirectAttributes attr, BindingResult result) {
+	public String editar(@Valid Chamado chamado, RedirectAttributes attr, BindingResult result)
+			throws InterruptedException {
 		if (result.hasErrors()) {
 			return "/chamado/cadastro";
 		}
-		if(chamado.getChSituacao().getDescricao().contains("ENTREGUE") || chamado.getChSituacao().getDescricao().contains("FECHADO")) {
+		if (chamado.getChSituacao().getDescricao().contains("FECHADO")
+				|| chamado.getChSituacao().getDescricao().contains("ENTREGUE") && chamado.getChDataFechamento().equals(LocalDate.now())) {
 			chamado.setChDataFechamento(LocalDate.now());
+			chService.editar(chamado);
+			attr.addFlashAttribute("success", "Chamado encerrado com sucesso!");
+			return "redirect:/chamados/buscar";
+		} else {
+			chService.editar(chamado);
+			attr.addFlashAttribute("success", "Solicitação Nº SS-000" + chamado.getId() + " atendido com sucesso!");
+			attr.addFlashAttribute("text", "Data de Solicitação: "+chamado.getChDataAbertura()+" - Técnico"+chamado.getTecnico().getTecNome());
+			attr.addAttribute("chamado", chamado);
+			return "redirect:/chamados/cadastrar";
 		}
-			
-		chService.editar(chamado);
-		attr.addAttribute("success", "Chamado editado com sucesso!");
-
-		return "redirect:/chamados/cadastrar";
+		
 	}
 
+	@GetMapping("/selecionar/{id}")
+	public String preSelecionar(@PathVariable("id") Long id, ModelMap modelo, @AuthenticationPrincipal User user) {
+		Chamado chamado = chService.buscarPorIdEUsuario(id, user.getUsername());
+
+		modelo.addAttribute("chamado", chamado);
+		return "/chamado/detalhe-chamado";
+	}
+
+	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
+	@PostMapping("/selecionar")
+	public String selecionar(@Valid Chamado chamado, RedirectAttributes attr, BindingResult result)
+			throws InterruptedException {
+		if (result.hasErrors()) {
+			return "/chamado/detalhe-chamado";
+		}
+		return "redirect:/chamados/selecionar";
+		
+	}
 	@PreAuthorize("hasAnyAuthority('TECNICO','ADMIN')")
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap modelo) {
@@ -188,7 +202,7 @@ public class ChamadoController {
 		 * model.addAttribute("chamados",
 		 * chService.buscarHistoricoPorTecnicoEmail(user.getUsername())); }
 		 */
-		 model.addAttribute("chamados", chService.buscarHistoricoPorTecnicoEmail(user.getUsername()));
+		model.addAttribute("chamados", chService.buscarHistoricoPorTecnicoEmail(user.getUsername()));
 		return "/chamado/historico-tecnico";
 	}
 
@@ -232,7 +246,7 @@ public class ChamadoController {
 	public ResponseEntity<?> getServicoEquipamentos(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(serService.buscarPorIdEquipamento(id));
 	}
-	
+
 	@GetMapping("/page")
 	public String findPage(@RequestParam(defaultValue = "0") int page, Model modelo) {
 		modelo.addAttribute("data", chService.findPage(PageRequest.of(page, 5)));
@@ -250,7 +264,7 @@ public class ChamadoController {
 	public Prioridade[] getPrioridade() {
 		return Prioridade.values();
 	}
-	
+
 	@ModelAttribute("servicos")
 	public List<Servico> getServico() {
 		return serService.buscarTodos();
@@ -280,7 +294,7 @@ public class ChamadoController {
 	public List<Solicitante> getSolicitante() {
 		return solService.buscarTodos();
 	}
-	
+
 	@ModelAttribute("tipoEquipamentos")
 	public List<TipoEquipamento> getTipoEquipamentos() {
 		return tipoEquipamentoService.buscarTodos();

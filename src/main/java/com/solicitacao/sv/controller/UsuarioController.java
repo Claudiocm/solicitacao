@@ -1,6 +1,6 @@
 package com.solicitacao.sv.controller;
 
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.solicitacao.sv.dominio.Perfil;
@@ -40,7 +39,7 @@ import com.solicitacao.sv.service.UsuarioServiceImpl;
 public class UsuarioController {
 	@Autowired
 	private UsuarioRepository repositorio;
-	
+
 	@Autowired
 	private UsuarioServiceImpl servico;
 	@Autowired
@@ -58,10 +57,10 @@ public class UsuarioController {
 		model.addAttribute("usuarios", servico.buscarTodos());
 		return "/usuario/lista";
 	}
-	
-	//metodo produzir relatorio
-	@GetMapping(value="/{id}/",produces="application/pdf")
-	public ResponseEntity<Usuario> relatorio(@PathVariable(value="id") Long id){
+
+	// metodo produzir relatorio
+	@GetMapping(value = "/{id}/", produces = "application/pdf")
+	public ResponseEntity<Usuario> relatorio(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> usuario = repositorio.findById(id);
 		return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
 	}
@@ -71,52 +70,64 @@ public class UsuarioController {
 		if (result.hasErrors()) {
 			return "/usuario/cadastro";
 		}
-		List<Perfil> perfis = usuario.getPerfis();
-		if (perfis.size() > 2) {
-			attr.addFlashAttribute("falha", "Solicitante não pode ser Admin");
-			attr.addFlashAttribute("usuario", usuario);
-		} else {
-			try {
-				servico.salvar(usuario);
-				attr.addFlashAttribute("sucess", "Usuário inserido com sucesso!");
-			} catch (DataIntegrityViolationException ex) {
-				attr.addFlashAttribute("falha", "Cadastro não realizado, email já existente.");
-			}
+		try {
+			usuario.setCriadoPor(usuario.getEmail());
+			usuario.setDataCriada(new Date(System.currentTimeMillis()));
+
+			servico.salvar(usuario);
+			attr.addFlashAttribute("sucess", "Usuário inserido com sucesso!");
+			attr.addAttribute("usuario", usuario);
+		} catch (DataIntegrityViolationException ex) {
+			attr.addFlashAttribute("falha", "Cadastro não realizado, email já existente.");
 		}
+
 		return "redirect:/usuarios/cadastrar";
 	}
 
 	@GetMapping("/editar/{id}")
-	public ModelAndView preEditar(@PathVariable("id") Long id) {
-		return new ModelAndView("/usuario/cadastro", "usuario", servico.buscarPorId(id));
+	public String preEditar(@PathVariable("id") Long id, Usuario usuario, ModelMap modelo) {
+		modelo.addAttribute("usuario", servico.buscarPorId(id));
+
+		return "/usuario/cadastro";
 	}
 
 	@PostMapping("/editar")
-	public ModelAndView editar(@AuthenticationPrincipal User user) {
+	public String editar(@AuthenticationPrincipal Usuario usuario, ModelMap modelo) {
 
-		Usuario us = servico.buscarPorEmail(user.getUsername());
+		// usuario.setModificadoPor(user.getUsername());
+		// usuario.setUltimaDataModificada(new Date(System.currentTimeMillis()));
+		Usuario us = servico.buscarPorId(usuario.getId());
 
 		if (us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))
 				&& us.getPerfis().contains(new Perfil(PerfilTipo.TECNICO.getCod()))) {
+			
+			servico.editar(us);
+			modelo.addAttribute("success", "Usuário cadastrado com sucesso!");
+			modelo.addAttribute("usuario", us);
+
+			return "usuario/cadastro";
+		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.TECNICO.getCod()))) {
 
 			Tecnico tecnico = tecnicoService.buscarPorUsuarioId(us.getId());
-			return tecnico.hasNotId()
-					? new ModelAndView("tecnico/cadastro", "tecnico", new Tecnico(new Usuario(us.getId())))
-					: new ModelAndView("tecnico/cadastro", "tecnico", tecnico);
+			if (tecnico.hasId()) {
+				servico.editar(tecnico.getUsuario());
+				modelo.addAttribute("success", "Técnico cadastrado com sucesso!");
+				modelo.addAttribute("tecnico", tecnico);
 
-		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.ADMIN.getCod()))
-				&& !us.getPerfis().contains(new Perfil(PerfilTipo.TECNICO.getCod())) ) {
-			
-			return new ModelAndView("/usuario/cadastro", "usuario", us);
+				return "tecnico/cadastro";
+			}else {
+				modelo.addAttribute("fail", "Não foi possível adicionar o usuário.");
+			}
+
 		} else if (us.getPerfis().contains(new Perfil(PerfilTipo.SOLICITANTE.getCod()))) {
-			ModelAndView model = new ModelAndView("error");
-			model.addObject("status", 403);
-			model.addObject("error", "Área Restrita");
-			model.addObject("message", "Os dados do solicitante são restritos a ele.");
-			return model;
+			modelo = new ModelMap("error");
+			modelo.addAttribute("status", 403);
+			modelo.addAttribute("error", "Área restrita");
+			modelo.addAttribute("message", "Os dados de pacientes são restritos a ele.");
+
 		}
 
-		return new ModelAndView("redirect:/usuarios/editar");
+		return "/usuario/cadastro";
 	}
 
 	@GetMapping("/excluir/{id}")
@@ -127,7 +138,7 @@ public class UsuarioController {
 
 		return listar(modelo);
 	}
-	
+
 	@GetMapping("/email")
 	public String getPorEmail(@RequestParam("email") String email, ModelMap modelo) {
 		modelo.addAttribute("usuarios", servico.buscaPorEmail(email));
@@ -139,23 +150,25 @@ public class UsuarioController {
 		return "/usuario/editar-senha";
 	}
 
+	
 	@PostMapping("/confirmar/senha")
-	public String editarSenha(@RequestParam("senha1") String s1, @RequestParam("senha2") String s2,
-			@RequestParam("senha3") String s3, @AuthenticationPrincipal User user, RedirectAttributes attr) {
+	public String editarSenha(@RequestParam("senha1") String senha1, @RequestParam("senha2") String senha2,
+			@RequestParam("senha3") String senha3, @AuthenticationPrincipal User user, RedirectAttributes attr) {
 
-		if (!s1.equals(s2)) {
+		if (!senha1.equals(senha2)) {
 			attr.addFlashAttribute("falha", "Senhas não conferem, tente novamente");
 			return "redirect:/usuarios/editar/senha";
 		}
 
 		Usuario u = servico.buscarPorEmail(user.getUsername());
-		if (!UsuarioServiceImpl.isSenhaCorreta(s3, u.getUsuSenha())) {
+		if (!UsuarioServiceImpl.isSenhaCorreta(senha3, u.getUsuSenha())) {
 			attr.addFlashAttribute("falha", "Senha atual não confere, tente novamente");
 			return "redirect:/usuarios/editar/senha";
 		}
 
-		servico.alterarSenha(u, s1);
+		servico.alterarSenha(u, senha1);
 		attr.addFlashAttribute("sucesso", "Senha alterada com sucesso.");
+		//attr.addAttribute("usuario", u);
 		return "redirect:/usuarios/editar/senha";
 	}
 
@@ -208,7 +221,7 @@ public class UsuarioController {
 		attr.addFlashAttribute("subtexto", "Siga com seu login/senha");
 		return "redirect:/login";
 	}
-	
+
 	// recebe a requisicao de confirmacao de cadastro
 	@GetMapping("/confirmacao/cadastro")
 	public String respostaConfirmacaoCadastroTecnico(@RequestParam("codigo") String codigo, RedirectAttributes attr) {
@@ -256,5 +269,10 @@ public class UsuarioController {
 	@ModelAttribute("setores")
 	public List<Setor> getSetor() {
 		return setorService.buscarTodos();
+	}
+
+	@ModelAttribute("perfis")
+	public PerfilTipo[] getPerfis() {
+		return PerfilTipo.values();
 	}
 }

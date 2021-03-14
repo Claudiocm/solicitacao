@@ -46,6 +46,10 @@ public class Solicitante extends AbstractEntity<Long> {
 		super();
 	}
 	
+	public Solicitante(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	public Solicitante(Long id) {
 		super.setId(id);
 	}

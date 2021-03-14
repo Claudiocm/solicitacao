@@ -50,7 +50,7 @@ public class SetorController {
 		}
 		servico.salvar(setor);
 		attr.addAttribute("success", "Setor inserido com sucesso!");
-
+        attr.addAttribute("setor",setor);
 		return "redirect:/setores/cadastrar";
 	}
 
@@ -67,6 +67,7 @@ public class SetorController {
 		}
 		servico.editar(setor);
 		attr.addFlashAttribute("success", "Setor editado com sucesso!");
+		attr.addAttribute("setor",setor);
 		return "redirect:/setores/cadastrar";
 	}
 

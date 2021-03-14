@@ -45,14 +45,14 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	@Override
 	public void editar(Usuario usuario) {
 		Usuario u = dao.findById(usuario.getId()).get();
-		u.setId(usuario.getId());
+		String crypt = new BCryptPasswordEncoder().encode(usuario.getUsuSenha());
+		usuario.setUsuSenha(crypt);
+
+		//u.setId(usuario.getId());
 		u.setSetor(usuario.getSetor());
 		u.setUsuSenha(usuario.getUsuSenha());
 		u.setEmail(usuario.getEmail());
-		u.setCodigoVerificador(usuario.getCodigoVerificador());
-		if (!usuario.getPerfis().isEmpty()) {
-			u.getPerfis().addAll(usuario.getPerfis());
-		}
+		//u.setCodigoVerificador(usuario.getCodigoVerificador());
 		u.setPerfis(usuario.getPerfis());
 	}
 
@@ -111,10 +111,10 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	}
 
 	public static boolean isSenhaCorreta(String senhaDigitada, String senhaArmazenada) {
-
 		return new BCryptPasswordEncoder().matches(senhaDigitada, senhaArmazenada);
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public void alterarSenha(Usuario usuario, String senha) {
 		usuario.setUsuSenha(new BCryptPasswordEncoder().encode(senha));

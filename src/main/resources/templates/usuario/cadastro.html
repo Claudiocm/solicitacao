@@ -38,44 +38,44 @@
 
 				<div class="form-row">
 					<div class="form-group col-md-4">
-						<label for="email">E-mail</label> <input type="text"
+						<label th:for="email">E-mail</label> <input type="text"
 							class="form-control" id="email" placeholder="Login"
 							autofocus="autofocus" th:field="*{email}"
 							th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" />
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="form-group col-md-4">
-						<label for="senha">Senha</label> <input type="password"
-							class="form-control" id="senha" placeholder="Senha"
-							autofocus="autofocus" th:field="*{usuSenha}"
-							th:classappend="${#fields.hasErrors('usuSenha')} ? 'is-invalid'" />
+						<label th:for="senha">Senha</label> 
+						<input type="password"	class="form-control" id="senha" placeholder="Senha"
+					      th:field="*{usuSenha}" th:classappend="${#fields.hasErrors('usuSenha')} ? 'is-invalid'" />
 						<div class="invalid-feedback"></div>
 					</div>
 					</div>
 
 				<div class="form-row">
-					<div class="mb-3">
-						<label for="perfis">Perfil</label> <select id="perfis"
-							class="custom-select" size="2" th:field="*{perfis}" multiple
-							required>
-							<option value="1">Administrador</option>
-							<option value="2">Técnico</option>
-							<option value="3">Solicitante</option>
-						</select> <input type="hidden" value="0" name="perfis" />
-						<div class="invalid-feedback">Pelo menos um perfil é
-							requerido.</div>
+					<div class="form-group col-md-3">
+						<label th:for="perfis">Perfil</label> 
+						<select id="perfis" class="form-control" th:field="*{perfis}" 
+						th:classappend="${#fields.hasErrors('perfis')} ? 'is-invalid'" required>
+							<option value="">Selecione ...</option>
+							<option th:each="p : ${perfis}" th:value="${p}"
+								th:text="${p.desc}">Admin</option>
+						</select> 
+						<div class="invalid-feedback">Pelo menos um perfil é requerido.</div>
 					</div>
 					<div class="mb-3">
 						<div class="custom-control custom-switch">
+							<label class="custom-control-label" th:for="ativo">
+							Cadastro Ativo</label> 
 							<input type="checkbox" class="custom-control-input"
 								th:field="*{ativo}" id="ativo"
-								th:if="${ativo == true ? 'checked=checked' : ''}" /> <label
-								class="custom-control-label" for="ativo">Cadastro Ativo</label>
+								th:if="${ativo == true ? 'checked=checked' : ''}" />
+
 						</div>
 					</div>
 					<div class="form-group col-md-4">
-						<label for="setor">Setor</label> <select id="setor"
-							class="form-control" th:field="*{setor}"
+						<label th:for="setor">Setor</label> 
+						<select id="setor" class="form-control" th:field="*{setor}"
 							th:classappend="${#fields.hasErrors('setor')} ? 'is-invalid'">
 							<option value="">Selecione</option>
 							<option th:each="s : ${setores}" th:value="${s.id}"
@@ -91,14 +91,6 @@
 		</div>
 	</section>
 	<script	th:src="~{}" th:fragment="js"></script>
-	<script th:inline="javascript" th:fragment="inlinescript">
-		$('#perfis').ready(function(){
-			var perfis = [[${usuario.perfis}]];
-			$.each(perfis, function(k, v) {
-				$('#perfis option[value="'+ v.id +'"]').attr('selected', 'selected');
-			})
-		});
-	</script>
-	
+
 </body>
 </html>

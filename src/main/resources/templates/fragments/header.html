@@ -126,7 +126,7 @@
 							<i	class="oi oi-spreadsheet"></i>
 							   <span>Listar</span>
 							</a>
-							<a class="dropdown-item" th:href="@{/usuarios/editar/senha}"> 
+							<a class="dropdown-item" th:href="@{/usuarios/editar/senha}" sec:authorize="hasAnyAuthority('SOLICITANTE, ADMIN')"> 
 							   <i	class="oi oi-key"></i>
 							   <span>Alterar Senha</span>
 							</a>
@@ -187,12 +187,6 @@
 					<div class="form-check mb-2 mr-sm-2">
 						<a class="btn btn-outline-success my-2 my-sm-0" role="button"
 							th:href="@{/login}">Login</a>
-					</div>
-
-					<div class="form-check mb-2 mr-sm-2"
-						sec:authorize="!isAuthenticated()">
-						<a class="btn btn-outline-success my-2 my-sm-0" role="button"
-							th:href="@{/}">Cadastrar-se</a>
 					</div>
 				</form>
 

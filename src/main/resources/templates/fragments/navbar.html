@@ -13,7 +13,7 @@
 			</li>
 		</ul>
 		<ul class="nav nav-pills">
-			<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO')">
+			<li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ADMIN','TECNICO','SOLICITANTE')">
 			<a class="nav-link active dropdown-toggle" data-toggle="dropdown"
 				href="#" role="tablist" aria-orientation="vertical"	aria-expanded="false">
 				<i class="oi oi-phone"></i> Solicitações</a>
@@ -133,12 +133,13 @@
 			</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" th:href="@{/setores/cadastrar}"> 
-					<i	class="oi oi-plus"> 
-					<span>Cadastrar</span>
-					</a> <a class="dropdown-item" th:href="@{/setores/listar}"> 
-					<i	class="oi oi-spreadsheet"></i> 
-					<span>Listar </span>
-					</i>
+					  <i class="oi oi-plus"> 
+					     <span>Cadastrar</span>
+					  </i>
+					</a> 
+					<a class="dropdown-item" th:href="@{/setores/listar}"> 
+					  <i	class="oi oi-spreadsheet"></i> 
+					  <span>Listar </span>
 					</a>
 				</div>
 			</li>

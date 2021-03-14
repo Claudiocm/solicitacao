@@ -57,6 +57,7 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script th:inline="javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		var url = '';
@@ -77,6 +78,18 @@
 			$(".sidebar-toggle").click(function() {
 				$(".sidebar").toggleClass("sidebar-open");
 			})
+		});
+		$(document).ready(
+				  function () { 
+				   $('#usuario-table').DataTable(); 
+		});
+		$(document).ready(
+				  function () { 
+				   $('#servico-table').DataTable(); 
+		});
+		$(document).ready(
+				  function () { 
+				   $('#tipo-servico-table').DataTable(); 
 		});
 	</script>
 

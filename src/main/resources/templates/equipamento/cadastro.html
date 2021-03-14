@@ -21,9 +21,14 @@
 					role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
 					aria-hidden="true"></span> <span>Listar Equipamentos</span>
 				</a>
+				
+				<a class="btn btn-primary btn-md" th:href="@{/chamados/buscar}"
+					role="button"> 
+					<span class="oi oi-spreadsheet" title="Painel"
+					aria-hidden="true"></span> <span>Painel de Chamados</span>
+				</a>
 			</nav>
 		</div>
-
 
 		<div class="container" id="cadastro">
 			<div th:replace="fragments/alert"></div>
@@ -82,8 +87,8 @@
 						</div>
 					</div>
 					<div class="form-group col-md-4">
-						<label for="servico">Serviço</label> <select id="servico"
-							class="form-control" th:field="*{servicos}"
+						<label for="servico">Serviço</label> 
+						<select id="servico" class="form-control" th:field="*{servicos}"
 							th:classappend="${#fields.hasErrors('servicos')} ? 'is-invalid'">
 							<option value="">Selecione</option>
 							<option th:each="s: ${servicos}" th:value="${s.id}"
@@ -99,9 +104,10 @@
 					<div class="form-group col-md-8">
 						<p class="lead text-muted">Serviços</p>
 						<hr />
-						<table class="table table-striped table-hover table-sm">
-							<thead>
-								<tr>
+					
+						<table id="tabela-servico" class="table table-striped table-hover table-sm">
+							<thead class="dark">
+								<tr class="item">
 									<th>Nº</th>
 									<th>Nome</th>
 									<th>Tipo</th>
@@ -109,7 +115,6 @@
 							</thead>
 							<tbody>
 								<tr th:each="s : ${equipamento.servicos}">
-									<td th:text="${s.id}">1</td>
 									<td th:text="${s.serNome}">Auxiliar Contábil</td>
 									<td th:text="${s.tipo.descricao}">Limpeza</td>
 									<td colspan="2">
@@ -139,6 +144,8 @@
 	</section>
 
 	<script th:src="@{/js/equipamento.js(v=${version})}" th:fragment="js"></script>
-	
+	<script >
+
+	</script>
 </body>
 </html>

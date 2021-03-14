@@ -45,24 +45,28 @@
 						<tr>
 							<th>Nº</th>
 							<th>Data de Abertura</th>
+							<th>Data de Fechamento</th>
 							<th>Série</th>
 							<th>Setor</th>
 							<th>Solicitante</th>
 							<th>Situação</th>
+							<th>Editar</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="c : ${chamados}" >
 							<td th:text="${c.id}">1</td>
 							<td	th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">Data</td>
+							<td	th:text="${#temporals.format(c.chDataFechamento, 'dd/MM/yyyy')}">Data</td>
 							<td	th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
 							<td th:text="${c.solicitante.nome}">Setor</td>
 							<td th:text="${c.chSituacao.descricao}">Situação</td>
 							<td colspan="1">
-							<!-- <a class="btn btn-info btn-sm"	th:href="@{/chamados/editar/{id} (id=${c.id}) }" role="button">
-									<span class="oi oi-brush" title="Editar" aria-hidden="true"></span>
-							</a> -->
+							<a class="btn btn-info btn-sm"	th:href="@{/chamados/selecionar/{id} (id=${c.id}) }" 
+						    th:classappend="${c.chSituacao.descricao} == 'FECHADO' OR ${c.chSituacao.descricao} == 'ENTREGUE'? 'btn-danger': 'bg-success'"	role="button">
+									<span class="oi oi-eye" title="Visualizar" aria-hidden="true"></span>  Visualizar
+							</a> 
 							</td>
 						</tr>
 					</tbody>

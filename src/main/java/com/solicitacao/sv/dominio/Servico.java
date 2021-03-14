@@ -12,18 +12,20 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "Servico")
 public class Servico extends AbstractEntity<Long> {
 	private static final long serialVersionUID = 1L;
-	@NotBlank(message = "O nome do serviço é obrigatório.")
 	@Size(max = 60, message = "O nome do serviço deve ter entre {min} e {max} caracteres.")
 	@Column(name = "ser_nome", nullable = false, unique = true, length = 60)
 	private String serNome;
 	@ManyToOne
 	@JoinColumn(name = "tipoServico", referencedColumnName = "id")
 	private TipoServico tipo;
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 			name = "equipamentos_tem_servicos",

@@ -39,19 +39,14 @@ public class Equipamento extends AbstractEntity<Long> {
 	@ManyToOne
 	@JoinColumn(name = "tipoEquipamento", referencedColumnName = "id")
 	private TipoEquipamento tipo;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "equipamento")
-	private List<Chamado> chamados;
-
-	@JsonIgnore
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnore
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinTable(name = "equipamentos_tem_servicos", joinColumns = @JoinColumn(name = "equipamento", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "servico", referencedColumnName = "id"))
 	private List<Servico> servicos;
 	
 	@ManyToMany
 	@JoinTable(name = "equipamentos_tem_chamados", joinColumns = @JoinColumn(name = "equipamento", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "chamado", referencedColumnName = "id"))
-	private List<Chamado> chamado;
+	private List<Chamado> chamados;
 
 	public Equipamento() {
 		super();
@@ -100,14 +95,6 @@ public class Equipamento extends AbstractEntity<Long> {
 		this.tipo = tipo;
 	}
 
-	public List<Chamado> getChamados() {
-		return chamados;
-	}
-
-	public void setChamados(List<Chamado> chamados) {
-		this.chamados = chamados;
-	}
-
 	public List<Servico> getServicos() {
 		return servicos;
 	}
@@ -116,12 +103,12 @@ public class Equipamento extends AbstractEntity<Long> {
 		this.servicos = servicos;
 	}
 
-	public List<Chamado> getChamado() {
-		return chamado;
+	public List<Chamado> getChamados() {
+		return chamados;
 	}
 
-	public void setChamado(List<Chamado> chamado) {
-		this.chamado = chamado;
+	public void setChamados(List<Chamado> chamados) {
+		this.chamados = chamados;
 	}
 
 }

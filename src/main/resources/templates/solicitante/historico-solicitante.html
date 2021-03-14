@@ -44,7 +44,9 @@
 							<th>Nº</th>
 							<th>Abertura</th>
 							<th>Fechamento</th>
+							<th>Solicitante</th>
 							<th>Série</th>
+							<th>Técnico</th>
 							<th>Setor</th>
 							<th>Situação</th>
 						</tr>
@@ -54,7 +56,9 @@
 							<td th:text="${c.id}">1</td>
 							<td	th:text="${#temporals.format(c.chDataAbertura, 'dd/MM/yyyy')}">Data</td>
 							<td	th:text="${#temporals.format(c.chDataFechamento, 'dd/MM/yyyy')}">Data</td>
+							<td th:text="${c.solicitante.nome}">Solicitante</td>
 							<td	th:text="${c.equipamento.eqModelo} + ' '+ ${c.equipamento.eqSeriebp}">Equipamento</td>
+							<td th:text="${c.tecnico.tecNome}">Técnico</td>
 							<td th:text="${c.setor.setNome}">Setor</td>
 							<td th:text="${c.chSituacao.descricao}">Situação</td>
 							

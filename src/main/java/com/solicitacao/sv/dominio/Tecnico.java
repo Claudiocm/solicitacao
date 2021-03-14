@@ -24,7 +24,6 @@ public class Tecnico extends AbstractEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotBlank(message = "O nome do técnico é obrigatório.")
 	@Size(min = 3, max = 60, message = "O nome do técnico deve ter entre {min} e {max} caracteres.")
 	@Column(name = "tec_nome", nullable = false, unique = true, length = 60)
 	private String tecNome;
@@ -38,7 +37,7 @@ public class Tecnico extends AbstractEntity<Long> {
 	@JoinColumn(name = "setor")
 	private Setor setor;
 	@JsonIgnore
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinTable(name = "tecnicos_tem_equipamentos", joinColumns = @JoinColumn(name = "tecnico", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "equipamento", referencedColumnName = "id"))
 	private Set<Equipamento> equipamentos;
 	@JsonIgnore

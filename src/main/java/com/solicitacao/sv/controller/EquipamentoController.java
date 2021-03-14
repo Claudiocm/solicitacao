@@ -47,13 +47,14 @@ public class EquipamentoController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Equipamento equipamento, BindingResult result, RedirectAttributes attr) {
+	public String salvar(@Valid Equipamento equipamento, BindingResult result, RedirectAttributes attr) throws InterruptedException {
 		if (result.hasErrors()) {
 			return "/equipamento/cadastro";
 		}
 
 		equipamentoService.salvar(equipamento);
-		attr.addAttribute("success", "Equipamento inserido com sucesso!");
+		attr.addAttribute("success", "Equipamento com BP/Serie "+equipamento.getEqSeriebp()+" inserido com sucesso!");
+		attr.addAttribute("equipamento", equipamento);
 		return "redirect:/equipamentos/cadastrar";
 	}
 
@@ -70,13 +71,16 @@ public class EquipamentoController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(@Valid Equipamento equipamento, BindingResult result, RedirectAttributes attr) {
+	public String editar(@Valid Equipamento equipamento, BindingResult result, RedirectAttributes attr) throws InterruptedException {
 		if (result.hasErrors()) {
 			return "/equipamento/cadastro";
 		}
-
+       
 		equipamentoService.editar(equipamento);
-		attr.addFlashAttribute("success", "Equipamento editado com sucesso!");
+        attr.addFlashAttribute("success", "Equipamento com BP/Serie "+equipamento.getEqSeriebp()+" atualizado com sucesso!");
+		attr.addAttribute("equipamento", equipamento);
+		//attr.addAttribute("servicos",equipamento.getServicos());
+		
 		return "redirect:/equipamentos/cadastrar";
 	}
 

@@ -29,11 +29,11 @@ public class SetorImplements implements SetorService {
 		s.setId(setor.getId());
 		s.setSetNome(setor.getSetNome());
 		s.setSetRamal(setor.getSetRamal());
-		
-		if (!setor.getUsuarios().isEmpty()) {
-			s.getUsuarios().addAll(setor.getUsuarios());
+	
+		if (!s.getUsuarios().isEmpty()) {
+			s.setUsuarios(setor.getUsuarios());
 		}
-		s.setUsuarios(setor.getUsuarios());
+		
 	}
 
 	@Override

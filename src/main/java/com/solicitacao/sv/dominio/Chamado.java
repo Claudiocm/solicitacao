@@ -1,6 +1,10 @@
 package com.solicitacao.sv.dominio;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -167,6 +171,18 @@ public class Chamado extends AbstractEntity<Long> {
 
 	public void setSolicitante(Solicitante solicitante) {
 		this.solicitante = solicitante;
+	}
+	
+	public Long getTempo() {
+		DateTimeFormatter entrada = DateTimeFormatter.ofPattern("hh:mm");
+		
+		Instant hoje = Instant.now();
+		
+		Instant inicio = Instant.parse(entrada.format(chDataAbertura));
+		
+		Duration tempo = Duration.between(inicio, hoje);
+	
+		return tempo.toHours();
 	}
 
 }

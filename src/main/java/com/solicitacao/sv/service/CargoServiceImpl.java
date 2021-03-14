@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.solicitacao.sv.dominio.Cargo;
 import com.solicitacao.sv.repository.CargoRepository;
+import com.solicitacao.sv.util.PaginacaoUtil;
 
 @Service
 @Transactional(readOnly = false)
@@ -38,7 +39,6 @@ public class CargoServiceImpl implements CargoService {
 		if(cargo.isPresent()) {
 			c = cargo.get();
 		}else {
-			
 			throw new RuntimeException("O cargo não encontrado com este código: " + id);
 		}
 		return c;
@@ -47,7 +47,6 @@ public class CargoServiceImpl implements CargoService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Cargo> buscarTodos() {
-		//Pageable page = PageRequest.of(1, 5, Sort.Direction.ASC);
 		return dao.findAll();
 	}
 
@@ -56,9 +55,8 @@ public class CargoServiceImpl implements CargoService {
 	public void editar(Cargo cargo) {
 		Cargo c = dao.findById(cargo.getId()).get();
 		c.setNome(cargo.getNome());
-		if (!cargo.getTecnicos().isEmpty()) {
-			c.getTecnicos().addAll(cargo.getTecnicos());
-		}
+		c.setTecnicos(cargo.getTecnicos());
+	
 	}
 
 	@Override
@@ -82,5 +80,6 @@ public class CargoServiceImpl implements CargoService {
 		
 		return this.dao.findAll(pageable);
 	}
+
 
 }

@@ -16,9 +16,9 @@
 							<span>Cadastrar Chamados</span></li>
 					</ul>
 				</div>
-				<a class="btn btn-primary btn-md" th:href="@{/chamados/buscar}"
+				<a class="btn btn-primary btn-md" th:href="@{/chamados/historico/tecnico}"
 					role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
-					aria-hidden="true"></span> <span>Listar Chamados</span>
+					aria-hidden="true"></span> <span>Listar Histórico de Chamados</span>
 				</a>
 			</nav>
 		</div>
@@ -29,19 +29,21 @@
 				th:object="${chamado}" method="POST">
 
 				<div th:replace="fragments/validacao  :: validacao"></div>
-
+            
 				<div class="form-row">
 					<div class="form-group col-md-2">
-						<label for="id">Nº</label> <input type="text" class="form-control"
+						<label for="id">Nº</label> 
+						<input type="text" class="form-control" 
 							id="id" placeholder="Número do Chamado" autofocus="autofocus"
-							th:field="*{id}" disabled="true"
+							th:field="*{id}"  disabled="true"
 							th:classappend="${#fields.hasErrors('id')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
 							<span th:errors="*{id}"></span>
 						</div>
 					</div>
 					<div class="form-group col-md-2">
-						<label for="abertura">Data Abertura</label> <input type="date"
+						<label for="abertura">Data Abertura</label> 
+						<input type="date" disabled="true"
 							class="form-control" id="abertura" placeholder="Data de abertura"
 							autofocus="autofocus" th:field="*{chDataAbertura}"
 							th:classappend="${#fields.hasErrors('chDataAbertura')} ? 'is-invalid'" />
@@ -50,7 +52,8 @@
 						</div>
 					</div>
 					<div class="form-group col-md-2">
-						<label for="fechamento">Data Fechamento</label> <input type="date"
+						<label for="fechamento">Data Fechamento</label> 
+						<input type="date" disabled="true"
 							class="form-control" id="fechamento"
 							placeholder="Data de fechamento" autofocus="autofocus"
 							th:field="*{chDataFechamento}"
@@ -61,7 +64,8 @@
 
 					</div>
 					<div class="form-group col-md-4">
-						<label for="situacao">Situação</label> <select id="situacao"
+						<label for="situacao">Situação</label> 
+						<select id="situacao" disabled="true"
 							class="form-control" th:field="*{chSituacao}"
 							th:classappend="${#fields.hasErrors('chSituacao')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -76,7 +80,8 @@
 				</div>
 				<div class="form-row">
 					<div class="form-group col-md-3">
-						<label for="prioridade">Prioridade</label> <select id="prioridade"
+						<label for="prioridade">Prioridade</label> 
+						<select id="prioridade" disabled="true"
 							class="form-control" th:field="*{chPrioridade}"
 							th:classappend="${#fields.hasErrors('chPrioridade')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -88,7 +93,8 @@
 						</div>
 					</div>
 					<div class="form-group col-md-4">
-						<label for="setor">Nome do Setor</label> <select id="setor"
+						<label for="setor">Nome do Setor</label> 
+						<select id="setor" disabled="true"
 							class="form-control" th:field="*{setor}"
 							th:classappend="${#fields.hasErrors('setor')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -100,14 +106,10 @@
 							<span th:errors="*{setor.setNome}"></span>
 						</div>
 					</div>
-					<div class="form-group col-md-1">
-						<button type="button" class="btn btn-primary btn-sm"
-							data-toggle="modal" data-target="#setor">
-							<span class="oi oi-plus" title="Editar" aria-hidden="true"></span>
-						</button>
-					</div>
+				
 					<div class="form-group col-md-5">
-						<label for="setor">Nome do Solicitante</label> <select
+						<label for="setor">Nome do Solicitante</label>
+						 <select disabled="true"
 							id="solicitante" class="form-control" th:field="*{solicitante}"
 							th:classappend="${#fields.hasErrors('solicitante')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -120,7 +122,8 @@
 						</div>
 					</div>
 					<div class="form-group col-md-4">
-						<label for="tecnico">Nome do Técnico</label> <select id="tecnico"
+						<label for="tecnico">Nome do Técnico</label>
+						 <select id="tecnico" disabled="true"
 							class="form-control" th:field="*{tecnico}"
 							th:classappend="${#fields.hasErrors('tecnico')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -130,18 +133,14 @@
 						<div class="invalid-feedback">
 							<span th:errors="*{tecnico.tecNome}"></span>
 						</div>
-
 					</div>
-					<div class="form-group col-md-1">
-						<button class="btn btn-primary btn-sm" type="button">
-							<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
-						</button>
-					</div>
+				
 				</div>
 
 				<div class="form-row">
 					<div class="form-group col-md-5">
-						<label for="equipamento">Equipamento</label> <select
+						<label for="equipamento">Equipamento</label> 
+						<select disabled="true"
 							id="equipamento" class="form-control" th:field="*{equipamento}"
 							th:classappend="${#fields.hasErrors('equipamento')} ? 'is-invalid'">
 							<option value="">Selecione</option>
@@ -153,15 +152,11 @@
 							<span th:errors="*{equipamento}"></span>
 						</div>
 					</div>
-					<div class="form-group col-md-1">
-						<button type="button" class="btn btn-primary btn-sm">
-							<span class="oi oi-plus" title="Editar" aria-hidden="true"></span>
-						</button>
-					</div>
 					<div class="form-group col-md-3">
-						<label for="ip">IP</label> <input type="text" class="form-control"
+						<label for="ip">IP</label> 
+						<input type="text" class="form-control"
 							id="ip" placeholder="IP (000.000.000.000)" autofocus="autofocus"
-							th:field="*{chIp}"
+							th:field="*{chIp}" disabled="true"
 							th:classappend="${#fields.hasErrors('chIp')} ? 'is-invalid'" />
 						<div class="invalid-feedback">
 							<span th:errors="*{chIp}"></span>
@@ -179,28 +174,21 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr
-									th:each="s : ${chamado.id != null} ? ${chamado.equipamento.servicos}">
+								<tr th:each="s : ${chamado.id != null} ? ${chamado.equipamento.servicos}">
 									<td th:text="${s.id}">1</td>
 									<td th:text="${s.serNome}">Auxiliar Contábil</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
-					<div class="form-group col-md-1">
-						<a type="button" class="btn btn-primary btn-sm"
-							th:href="${chamado.id != null} ? @{/equipamentos/editar/{idEquipamento} (idEquipamento=${chamado.equipamento.id}) }"
-							role="button"> <span class="oi oi-plus" title="Editar"
-							aria-hidden="true"></span>
-						</a>
-					</div>
+		
 				</div>
 				<div class="form-row">
 					<div class="form-group col-md-5">
 						<label for="problema">Problema</label>
 						<textarea class="form-control" id="problema" rows="2"
 							placeholder="Descreva o problema" autofocus="autofocus"
-							th:field="*{chProblema}"
+							th:field="*{chProblema}" disabled="true"
 							th:classappend="${#fields.hasErrors('chProblema')} ? 'is-invalid'">
 						</textarea>
 						<div class="invalid-feedback">
@@ -210,19 +198,15 @@
 
 					<div class="form-group col-md-6">
 						<label for="observacao">Descrição do Serviço</label>
-						<textarea class="form-control" id="observacao" rows="2"
+						<textarea class="form-control" id="observacao" rows="2" disabled="true"
 							placeholder="Descreva a observação" autofocus="autofocus"
-							th:field="*{chObservacao}"
-							th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
+							th:field="*{chObservacao}"	th:classappend="${#fields.hasErrors('chObservacao')} ? 'is-invalid'"></textarea>
 						<div class="invalid-feedback">
 							<span th:errors="*{chObservacao}"></span>
 						</div>
 					</div>
 				</div>
-
 				<input type="hidden" id="id" th:field="*{id}" />
-				<button type="submit" class="btn btn-primary btn-sm">Salvar</button>
-				<button type="reset" class="btn btn-danger btn-sm">Cancelar</button>
 			</form>			
 		</div>
 		

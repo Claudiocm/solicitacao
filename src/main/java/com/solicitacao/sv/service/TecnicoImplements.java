@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.solicitacao.sv.dominio.Tecnico;
+import com.solicitacao.sv.dominio.Usuario;
 import com.solicitacao.sv.repository.TecnicoRepository;
+import com.solicitacao.sv.repository.UsuarioRepository;
 
 @Service
 @Transactional(readOnly = false)
 public class TecnicoImplements implements TecnicoService {
 	@Autowired
 	private TecnicoRepository dao;
+	@Autowired
+	private UsuarioRepository daoUsuario;
 
 	@Override
 	public void salvar(Tecnico tecnico) {
@@ -23,16 +27,15 @@ public class TecnicoImplements implements TecnicoService {
 	@Override
 	public void editar(Tecnico tecnico) {
 		Tecnico t = dao.findById(tecnico.getId()).get();
+		Usuario usuario = daoUsuario.findByEmail(t.getUsuario().getEmail());
+	    
 		t.setCargo(tecnico.getCargo());
 		t.setId(tecnico.getId());
 		t.setTecNome(tecnico.getTecNome());
-		t.setUsuario(tecnico.getUsuario());
+		t.setUsuario(usuario);
 		t.setSetor(tecnico.getSetor());
-		if (!tecnico.getChamados().isEmpty()) {
-			t.getChamados().addAll(tecnico.getChamados());
-		}
-		t.setChamados(tecnico.getChamados());
-	
+        t.setEquipamentos(tecnico.getEquipamentos());
+        t.setChamados(tecnico.getChamados());
 	}
 
 	@Override

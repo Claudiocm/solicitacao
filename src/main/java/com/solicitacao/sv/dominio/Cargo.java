@@ -6,20 +6,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CARGO")
 public class Cargo extends AbstractEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
-
-	@NotBlank(message = "O nome do cargo é obrigatório.")
 	@Size(max = 60, message = "O nome do cargo deve conter no máximo 60 caracteres.")
 	@Column(name = "nome", nullable = false, unique = true, length = 60)
 	private String nome;
-
+    @JsonIgnore
 	@OneToMany(mappedBy = "cargo")
 	private List<Tecnico> tecnicos;
 

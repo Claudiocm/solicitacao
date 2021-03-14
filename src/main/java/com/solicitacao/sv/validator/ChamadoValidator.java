@@ -16,8 +16,8 @@ public class ChamadoValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		Chamado c = (Chamado) target;
-        LocalDate entrada = c.getChDataAbertura();
-		
+		LocalDate entrada = c.getChDataAbertura();
+
 		if (c.getChDataFechamento() != null) {
 			if (c.getChDataFechamento().isBefore(entrada)) {
 				errors.rejectValue("chDataFechamento", "PosteriorChDataAbertura.chamado.chDataFechamento");

@@ -27,7 +27,8 @@
 	        
 	        	<div th:replace="fragments/alert"></div>
 	        	<form class="form-group" action="nome" method="GET">
-				  <label>Pesquisar: </label> <input name="nome" /> 
+				  <label>Pesquisar: </label> 
+				  <input name="nome" /> 
 				    <input	class="waves-effect btn-primary btn" type="submit" value="Buscar" />
 			    </form>
 	            <div class="table-responsive">
@@ -37,6 +38,8 @@
 	                        <th>Nº</th>
 	                        <th>Nome</th>
 	                        <th>Cargo</th>
+	                        <th>Perfil</th>
+	                        <th>Editar</th>
 	                    </tr>
 	                    </thead>
 	                    <tbody>
@@ -44,6 +47,7 @@
 		                        <td th:text="${t.id}">1</td>
 		                        <td th:text="${t.tecNome}">Claudio C. Matos</td>
 		                        <td th:text="${t.cargo.nome}"></td>
+		                        <td th:each="p : ${t.usuario.perfis}" th:text="${p.desc}"></td>
 		                        <td colspan="2">
 		                            <a class="btn btn-info btn-sm" th:href="@{/tecnicos/editar/{id} (id=${t.id}) }" role="button">
 		                                <span class="oi oi-brush" title="Editar" aria-hidden="true"></span>

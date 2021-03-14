@@ -76,3 +76,18 @@ $(document).ready(function() {
          ]
      });
 });
+
+$("#autocomplete-input").autocomplete({
+	source: function(request, response){
+		$.ajax({
+			method: "GET",
+			url: "/chamados/",
+			data:{
+				termo:request.term
+			},
+			success: function(result){
+				response(result);
+			}
+		});
+	}
+});
