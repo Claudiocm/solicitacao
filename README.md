@@ -1,13 +1,15 @@
 # Solicitacao de Serviços de Informática
 - HelpDesk de serviços de informática
- 8 Desenvolvimento de Aplicação para atendimento interno de manutenção.
+Desenvolvimento de Aplicação para atendimento interno de manutenção.
 
 ## Tecnologias
-* Produzido linguagem java, frameworks, MVC e SQL.
+* Desenvolvido em linguagens:
+  java, frameworks, MVC e SQL.
 
 ## Integraççao
-* Springboot, JPA
+* Spring-boot, JPA
 
-## Linguagens
-* Linguagens Web [HTML, Javascript, Jquery, CSS] SQL
+## WEB
+* Linguagens Web:
+  [HTML, Javascript, Jquery, CSS] SQL
 
