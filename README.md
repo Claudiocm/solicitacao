@@ -1,7 +1,7 @@
 # Solicitacao de Serviços de Informática
 - HelpDesk de serviços de informática
 Desenvolvimento de Aplicação para atendimento interno de manutenção.
-
+<br>
 ## Tecnologias
 
 <div style="display" inline_block> 
@@ -24,6 +24,7 @@ Desenvolvimento de Aplicação para atendimento interno de manutenção.
     <img align="center" alt="Spring" src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
     JPA - HIBERNATE
  </div>
+ <br>
 ## WEB
 
  <div style="display" inline_block> 
