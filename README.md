@@ -21,7 +21,7 @@ Desenvolvimento de Aplicação para atendimento interno de manutenção.
 
 <div style="display" inline_block> 
     <img align="center" alt="Spring" src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
-    JPA - HIBERNATE
+    Spring Boot - Spring MVC - Spring Data - JPA e HIBERNATE
  </div>
  <br>
 ## WEB
